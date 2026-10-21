@@ -10,7 +10,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import ar.edu.ort.vora.progress.ProgressScreen
 
+import ar.edu.ort.vora.progress.ProgressDashboardScreen
 @Composable
 fun VoraNavHost(navController: NavHostController = rememberNavController()) {
     NavHost(navController = navController, startDestination = Routes.LOGIN) {
@@ -33,7 +35,29 @@ fun VoraNavHost(navController: NavHostController = rememberNavController()) {
         composable(Routes.COACH) { PlaceholderScreen("Asistente VORA") {} }
         composable(Routes.WORKOUT) { PlaceholderScreen("Entrenamiento") {} }
         composable(Routes.NUTRITION) { PlaceholderScreen("Nutrición") {} }
-        composable(Routes.PROGRESS) { PlaceholderScreen("Progreso") {} }
+        composable(Routes.PROGRESS) {
+            ProgressDashboardScreen()
+        }
+
+        composable(Routes.PROGRESS_TODAY) {
+            ProgressScreen()
+        }
+
+        composable(Routes.PROGRESS_WORKOUT) {
+            PlaceholderScreen("Workout progress") {}
+        }
+
+        composable(Routes.PROGRESS_NUTRITION) {
+            PlaceholderScreen("Nutrition progress") {}
+        }
+
+        composable(Routes.PROGRESS_HEALTH) {
+            PlaceholderScreen("Health trends") {}
+        }
+
+        composable(Routes.PROGRESS_WEEKLY) {
+            PlaceholderScreen("Your weekly review") {}
+        }
         composable(Routes.PROFILE) { PlaceholderScreen("Perfil") {} }
     }
 }
