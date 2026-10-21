@@ -10,5 +10,11 @@ object Routes {
     const val NUTRITION = "nutrition"
     const val PROGRESS = "progress"
     const val PROFILE = "profile"
+
+    const val PROGRESS_TODAY = "progress/today"
+    const val PROGRESS_WORKOUT = "progress/workout"
+    const val PROGRESS_NUTRITION = "progress/nutrition"
+    const val PROGRESS_HEALTH = "progress/health"
+    const val PROGRESS_WEEKLY = "progress/weekly"
 }
 
