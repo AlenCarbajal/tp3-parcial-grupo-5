@@ -16,6 +16,7 @@ val VoraTextMuted = Color(0xFF9AA39F)
 val VoraError = Color(0xFFD95D5D)
 val VoraSuccess = Color(0xFF27AE60)
 val VoraMintTranslucent = Color(0x1F65D6B0)
+val VoraWhiteTranslucent = Color(0x1FFFFFFF)
 
 // Degradados del orbe VORA (orb-glow, orb-ring y orb-core en Figma), de izquierda a derecha.
 val OrbGlowBrush = Brush.radialGradient(listOf(VoraMint, VoraGreen))
