@@ -163,6 +163,6 @@ Los íconos son de [Lucide](https://lucide.dev) (licencia ISC), igual que en Fig
 | `ic_audio_lines` | `audio-lines` | 32 | 2 | Centro del orbe del asistente |
 | `ic_mic_large` | `mic` | 28 | 2,5 | Botón de micrófono del asistente |
 
-Los logos de Apple y Google de "Or continue with" son marcas, no íconos de Lucide: hay que exportarlos de Figma como SVG.
+Los logos de Apple y Google de "Or continue with" son marcas, no íconos de Lucide: `ic_logo_apple` (se tiñe como el resto) e `ic_logo_google` (conserva sus cuatro colores), de 22.
 
 Los tamaños y trazos salen del export de Figma. El trazo está en dp, así que en la grilla de 24 vale `trazo × 24 / tamaño`. Para sumar un ícono, buscalo en lucide.dev con el mismo nombre que la capa de Figma y copiá sus trazados con ese grosor.
