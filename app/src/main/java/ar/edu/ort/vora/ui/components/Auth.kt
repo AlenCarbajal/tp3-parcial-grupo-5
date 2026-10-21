@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
@@ -118,7 +119,7 @@ fun AuthTextField(
             modifier = Modifier.fillMaxWidth(),
             textStyle = textStyle,
             singleLine = true,
-            keyboardOptions = keyboardOptions,
+            keyboardOptions = if (password) keyboardOptions.copy(keyboardType = KeyboardType.Password, autoCorrectEnabled = false) else keyboardOptions,
             visualTransformation = if (password) PasswordVisualTransformation() else VisualTransformation.None,
             cursorBrush = SolidColor(VoraGreen),
             decorationBox = { innerTextField ->
