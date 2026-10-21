@@ -20,23 +20,25 @@ private fun manrope(size: Int, weight: FontWeight, letterSpacing: TextUnit = 0.s
     fontFamily = Manrope,
     fontWeight = weight,
     fontSize = size.sp,
-    lineHeight = (size * 1.4f).sp,
     letterSpacing = letterSpacing,
 )
 
-// Escala de specs/06-design-tokens.md sobre los estilos de Material 3.
+// Escala de Figma sobre los estilos de Material 3. Interlineado "Auto" de Figma: el natural de la fuente.
 val Typography = Typography(
-    displaySmall = manrope(32, FontWeight.Bold),          // cifras grandes
+    displaySmall = manrope(32, FontWeight.Bold),          // cifras grandes de pantalla
     headlineLarge = manrope(28, FontWeight.Bold),
     headlineMedium = manrope(26, FontWeight.Bold),
-    headlineSmall = manrope(24, FontWeight.SemiBold),     // escala alta
+    headlineSmall = manrope(24, FontWeight.SemiBold),     // cifra destacada
     titleLarge = manrope(20, FontWeight.Bold),            // título de pantalla
     titleMedium = manrope(18, FontWeight.SemiBold),       // título de tarjeta
     titleSmall = manrope(16, FontWeight.SemiBold),
     bodyLarge = manrope(15, FontWeight.Normal),
     bodyMedium = manrope(13, FontWeight.Normal),          // cuerpo
     bodySmall = manrope(12, FontWeight.Normal),
-    labelLarge = manrope(14, FontWeight.SemiBold),        // acción / botones
+    labelLarge = manrope(14, FontWeight.SemiBold),        // acción principal
     labelMedium = manrope(11, FontWeight.SemiBold),       // barra inferior
     labelSmall = manrope(10, FontWeight.SemiBold, 0.5.sp), // etiquetas en mayúsculas
 )
+
+// Título de panel destacado (22 SemiBold), sin slot en Material 3.
+val PanelTitleStyle = manrope(22, FontWeight.SemiBold)

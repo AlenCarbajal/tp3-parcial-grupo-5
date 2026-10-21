@@ -45,7 +45,7 @@ fun ThemeCatalogPreview() {
                 "Text muted" to VoraTextMuted, "Error" to VoraError, "Success" to VoraSuccess,
                 "Mint 12%" to VoraMintTranslucent,
             ).chunked(3).forEach { row ->
-                Row(horizontalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+                Row(horizontalArrangement = Arrangement.spacedBy(Spacing.s8)) {
                     row.forEach { (name, color) -> Swatch(name, color, Modifier.weight(1f)) }
                 }
             }
@@ -61,7 +61,7 @@ fun ThemeCatalogPreview() {
             }.forEach { (name, style) -> Text(name, style = style) }
 
             Text("Formas", style = MaterialTheme.typography.titleLarge)
-            Row(horizontalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(Spacing.s8)) {
                 with(MaterialTheme.shapes) {
                     listOf("8" to extraSmall, "12" to small, "16" to medium, "20" to large, "píldora" to PillShape)
                 }.forEach { (name, shape) -> ShapeSample(name, shape, Modifier.weight(1f)) }
@@ -69,7 +69,7 @@ fun ThemeCatalogPreview() {
 
             Text("Orbe VORA", style = MaterialTheme.typography.titleLarge)
             Row(
-                horizontalArrangement = Arrangement.spacedBy(Spacing.xl),
+                horizontalArrangement = Arrangement.spacedBy(Spacing.s24),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 VoraOrb()
