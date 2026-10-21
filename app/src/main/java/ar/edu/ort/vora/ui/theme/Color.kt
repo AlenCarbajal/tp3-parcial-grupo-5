@@ -1,5 +1,6 @@
 package ar.edu.ort.vora.ui.theme
 
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 // Tokens de "Sistema de diseño — VORA" (specs/06-design-tokens.md).
@@ -15,3 +16,8 @@ val VoraTextMuted = Color(0xFF9AA39F)
 val VoraError = Color(0xFFD95D5D)
 val VoraSuccess = Color(0xFF27AE60)
 val VoraMintTranslucent = Color(0x1F65D6B0)
+
+// Degradados del orbe VORA (orb-glow, orb-ring y orb-core en Figma).
+val OrbGlowBrush = Brush.radialGradient(listOf(VoraMint, VoraGreen))
+val OrbRingBrush = Brush.linearGradient(listOf(VoraLime, VoraMint, VoraGreen))
+val OrbCoreBrush = Brush.linearGradient(listOf(VoraMint, VoraGreen))
