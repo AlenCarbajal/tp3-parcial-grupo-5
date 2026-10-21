@@ -200,8 +200,8 @@ fun ScreenPatternsPreview() {
                 )
                 AuthButton("Sign In", onClick = {})
                 Row(horizontalArrangement = Arrangement.spacedBy(Spacing.s8)) {
-                    SocialButton(R.drawable.ic_user, "Continuar con Apple", onClick = {}, modifier = Modifier.weight(1f))
-                    SocialButton(R.drawable.ic_mail, "Continuar con Google", onClick = {}, modifier = Modifier.weight(1f))
+                    SocialButton(R.drawable.ic_logo_apple, "Continuar con Apple", onClick = {}, modifier = Modifier.weight(1f))
+                    SocialButton(R.drawable.ic_logo_google, "Continuar con Google", onClick = {}, modifier = Modifier.weight(1f), brandColors = true)
                     SocialButton(R.drawable.ic_scan_face, "Continuar con Face ID", onClick = {}, modifier = Modifier.weight(1f), highlighted = true)
                 }
             }

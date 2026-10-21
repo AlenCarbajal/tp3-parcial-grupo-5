@@ -21,6 +21,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -163,6 +164,7 @@ fun AuthButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier)
 }
 
 // Botón de acceso alternativo: blanco con borde, radio 16, alto 46. highlighted = Face ID (menta translúcida).
+// brandColors deja los colores propios del logo (Google) en lugar de teñirlo.
 @Composable
 fun SocialButton(
     @DrawableRes icon: Int,
@@ -170,6 +172,7 @@ fun SocialButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     highlighted: Boolean = false,
+    brandColors: Boolean = false,
 ) {
     Surface(
         onClick = onClick,
@@ -180,7 +183,12 @@ fun SocialButton(
         border = BorderStroke(1.dp, AuthFieldBorder),
     ) {
         Box(Modifier.padding(vertical = Spacing.s12), contentAlignment = Alignment.Center) {
-            Icon(painterResource(icon), contentDescription = contentDescription, modifier = Modifier.size(22.dp))
+            Icon(
+                painterResource(icon),
+                contentDescription = contentDescription,
+                modifier = Modifier.size(22.dp),
+                tint = if (brandColors) Color.Unspecified else LocalContentColor.current,
+            )
         }
     }
 }
