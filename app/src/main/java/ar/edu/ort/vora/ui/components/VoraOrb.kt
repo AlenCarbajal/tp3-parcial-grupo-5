@@ -22,15 +22,25 @@ import ar.edu.ort.vora.ui.theme.OrbRingBrush
 import ar.edu.ort.vora.ui.theme.VoraMint
 
 // Proporciones de Figma: anillo 89 % (aro de 7 sobre 120, con separación hasta el núcleo) y núcleo 75 %.
-// La sombra del núcleo no escala con el orbe.
+// La sombra del núcleo no escala con el orbe. ripple: aro exterior de 115 % al escuchar (Listening, glow 45 %).
 @Composable
 fun VoraOrb(
     modifier: Modifier = Modifier,
     size: Dp = 120.dp,
     glowAlpha: Float = 0.2f,
+    ripple: Boolean = false,
     content: @Composable BoxScope.() -> Unit = {},
 ) {
-    Box(modifier.size(size), contentAlignment = Alignment.Center) {
+    Box(
+        modifier
+            .size(size)
+            .drawBehind {
+                if (ripple) {
+                    drawCircle(VoraMint.copy(alpha = 0.3f), radius = this.size.minDimension * 1.15f / 2, style = Stroke(1.5.dp.toPx()))
+                }
+            },
+        contentAlignment = Alignment.Center,
+    ) {
         Box(
             Modifier
                 .size(size)
