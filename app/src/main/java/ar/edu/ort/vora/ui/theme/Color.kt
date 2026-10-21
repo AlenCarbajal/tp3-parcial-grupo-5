@@ -17,7 +17,7 @@ val VoraError = Color(0xFFD95D5D)
 val VoraSuccess = Color(0xFF27AE60)
 val VoraMintTranslucent = Color(0x1F65D6B0)
 
-// Degradados del orbe VORA (orb-glow, orb-ring y orb-core en Figma).
+// Degradados del orbe VORA (orb-glow, orb-ring y orb-core en Figma), de izquierda a derecha.
 val OrbGlowBrush = Brush.radialGradient(listOf(VoraMint, VoraGreen))
-val OrbRingBrush = Brush.linearGradient(listOf(VoraLime, VoraMint, VoraGreen))
-val OrbCoreBrush = Brush.linearGradient(listOf(VoraMint, VoraGreen))
+val OrbRingBrush = Brush.horizontalGradient(0f to VoraLime, 0.5f to VoraMint, 1f to VoraGreen)
+val OrbCoreBrush = Brush.horizontalGradient(0f to VoraMint, 1f to VoraGreen)
