@@ -17,6 +17,17 @@ val VoraError = Color(0xFFD95D5D)
 val VoraSuccess = Color(0xFF27AE60)
 val VoraMintTranslucent = Color(0x1F65D6B0)
 val VoraWhiteTranslucent = Color(0x1FFFFFFF)
+val VoraDestructive = Color(0xFFDC2626)     // ícono para quitar ("Foods to avoid")
+
+// Acceso (Sign In / Sign Up): paleta propia de esas pantallas en Figma.
+val AuthLime = Color(0xFFCCE65E)
+val AuthFieldBackground = Color(0x99F3F9F5)  // #F3F9F5 al 60 %
+val AuthFieldBorder = Color(0xFFE2EDE7)
+val AuthScreenTint = Color(0xFFF3F9F5)
+val LogoLight = Color(0xFF86EFAC)
+val LogoMid = Color(0xFF34D399)
+val LogoDark = Color(0xFF0E382F)
+val LogoBadgeText = Color(0xFF6EE7B7)
 
 // Degradados del orbe VORA (orb-glow, orb-ring y orb-core en Figma), de izquierda a derecha.
 val OrbGlowBrush = Brush.radialGradient(listOf(VoraMint, VoraGreen))

@@ -34,6 +34,20 @@ Para revisarlo contra Figma, abrí `ThemePreview.kt` en Android Studio con la vi
 | `VoraSuccess` | `#27AE60` | | Estados correctos |
 | `VoraMintTranslucent` | `#65D6B0` al 12 % | | Mensajes y recomendaciones del coach |
 | `VoraWhiteTranslucent` | `#FFFFFF` al 12 % | | Botones secundarios sobre panel oscuro (Photo, Search) |
+| `VoraDestructive` | `#DC2626` | | Ícono para quitar un ítem ("Foods to avoid") |
+
+### Pantallas de acceso (Sign In / Sign Up)
+
+Figma usa una paleta propia en Login, distinta de la del resto de la app:
+
+| Token | Valor | Uso |
+|---|---|---|
+| `AuthLime` | `#CCE65E` | CTA "Sign In" / "Sign Up" y su sombra |
+| `AuthFieldBackground` | `#F3F9F5` al 60 % | Fondo de los campos |
+| `AuthFieldBorder` | `#E2EDE7` | Borde de campos y botones de acceso alternativo |
+| `AuthScreenTint` | `#F3F9F5` | Tinte del fondo de la pantalla |
+| `LogoLight` / `LogoMid` / `LogoDark` | `#86EFAC` / `#34D399` / `#0E382F` | Degradado radial del logo |
+| `LogoBadgeText` | `#6EE7B7` | Texto del badge "AI" |
 
 ### Orbe VORA
 
@@ -112,6 +126,16 @@ Tomadas de la página "Elementos de interfaz" del sistema de diseño de Figma. S
 | Señal / etiqueta | Punto de 8; etiqueta con radio 100 |
 | Recomendación breve | Menta al 12,16 %, borde menta, texto verde, radio 12, padding 12 |
 | Consejo destacado | Panel verde, contenido blanco, título menta, radio 16, padding 16 |
+| Barra superior | Fila de 350 con padding 12/20. Chevron suelto de 20 a 8 del título 20 / 600 (Add Food), o botón circular de 32 blanco con borde a 12 del título 20 / 700 (Profile, Voice). Variante con título centrado (Workout Overview) y acciones a la derecha (botón "…", etiqueta de estado, X) |
+| Botón circular | 32, radio 16, blanco con borde 1 `#E4E9E6`; translúcido sobre fondo oscuro |
+| Chip | Radio 100, borde 1, padding 8/14, separación 6 hasta el ícono, texto 13 / 500 (elegido 600). Variantes: blanco, menta elegido, verde elegido, con check (borde menta) y para quitar (círculo con x `#DC2626` de 12) |
+| Selector de período | Contenedor blanco tipo píldora; opción activa verde con texto blanco |
+| Logo de acceso | Esfera de 64 con degradado radial, anillo interno blanco al 30 % de 20, sombras 0/4 blur 6 y 0/10 blur 15 al 10 %; badge "AI" `#0E382F` con borde blanco, padding 2/8, texto 10 / 700 |
+| Campo de acceso | Etiqueta 12 / 700 (no en mayúsculas), valor 14 / 400, alto 55, radio 16, ícono a la izquierda |
+| CTA de acceso | `#CCE65E`, radio 16, alto 56, padding 16/24, sombra 0/6 blur 20 al 35 %, flecha a la derecha |
+| Acceso alternativo | Blanco con borde, radio 16, alto 46; Face ID en menta translúcida |
+| Orbe del asistente | 170, mismas proporciones que el orbe de 120; al escuchar, brillo al 45 % y aro exterior de 115 % en menta al 30 % |
+| Micrófono | Verde de 72 en reposo (sombra menta 0/8 blur 24 al 15 %); menta de 80 al escuchar; ícono de 28 con trazo 2,5 |
 
 ## Íconos
 
@@ -129,6 +153,16 @@ Los íconos son de [Lucide](https://lucide.dev) (licencia ISC), igual que en Fig
 | `ic_mic` | `mic` | 14,8 | 1,5 | Botón Voice |
 | `ic_camera` | `camera` | 12 | 1,5 | Botón Photo |
 | `ic_search` | `search` | 12 | 1,5 | Botón Search |
-| `ic_arrow_back` | `arrow-left` | 24 | 2 | Volver en la barra superior |
+| `ic_chevron_left` | `chevron-left` | 20 | 2 | Volver en la barra superior |
+| `ic_check` | `check` | 12 | 2 | Chip seleccionado |
+| `ic_circle_x` | `circle-x` | 12 | 2 | Chip para quitar (`#DC2626`) |
+| `ic_arrow_right` | `arrow-right` | 20 | 2 | CTA de acceso |
+| `ic_mail` / `ic_lock` / `ic_user` / `ic_eye` | `mail` / `lock` / `user` / `eye` | 20 | 2 | Campos de acceso |
+| `ic_scan_face` | `scan-face` | 20 | 2 | Acceso con Face ID |
+| `ic_more` / `ic_bell` / `ic_close` / `ic_plus` / `ic_send` | `ellipsis` / `bell` / `x` / `plus` / `send` | 20 | 2 | Acciones de encabezado y chat |
+| `ic_audio_lines` | `audio-lines` | 32 | 2 | Centro del orbe del asistente |
+| `ic_mic_large` | `mic` | 28 | 2,5 | Botón de micrófono del asistente |
+
+Los logos de Apple y Google de "Or continue with" son marcas, no íconos de Lucide: hay que exportarlos de Figma como SVG.
 
 Los tamaños y trazos salen del export de Figma. El trazo está en dp, así que en la grilla de 24 vale `trazo × 24 / tamaño`. Para sumar un ícono, buscalo en lucide.dev con el mismo nombre que la capa de Figma y copiá sus trazados con ese grosor.
