@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
@@ -113,12 +115,14 @@ fun ChatBubble(text: String, time: String, fromUser: Boolean, modifier: Modifier
     }
 }
 
-// Barra de escritura del chat: agregar, campo "Ask VORA anything...", micrófono y enviar.
+// Barra de escritura del chat: agregar, campo "Ask VORA anything...", micrófono y enviar. Se acomoda sobre la barra del sistema y el teclado.
 @Composable
 fun ChatInputBar(value: String, onValueChange: (String) -> Unit, onSend: () -> Unit, modifier: Modifier = Modifier) {
     Row(
         modifier
             .fillMaxWidth()
+            .navigationBarsPadding()
+            .imePadding()
             .padding(horizontal = Spacing.screen, vertical = Spacing.s8),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(Spacing.s8),
