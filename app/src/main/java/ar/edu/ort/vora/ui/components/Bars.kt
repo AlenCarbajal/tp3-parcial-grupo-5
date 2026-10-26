@@ -4,6 +4,8 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,6 +29,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import ar.edu.ort.vora.R
 import ar.edu.ort.vora.ui.theme.PillShape
 import ar.edu.ort.vora.ui.theme.Spacing
@@ -75,11 +78,16 @@ fun VoraBottomBar(
                         verticalArrangement = Arrangement.spacedBy(Spacing.s4),
                     ) {
                         Icon(painterResource(item.icon), contentDescription = null, tint = color, modifier = Modifier.size(20.dp))
-                        Text(
+                        // Una sola línea: con letra grande o pantallas angostas achica en vez de cortarse.
+                        BasicText(
                             item.label,
-                            style = MaterialTheme.typography.labelMedium,
-                            fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium,
-                            color = color,
+                            style = MaterialTheme.typography.labelMedium.copy(
+                                fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium,
+                                color = color,
+                                textAlign = TextAlign.Center,
+                            ),
+                            maxLines = 1,
+                            autoSize = TextAutoSize.StepBased(minFontSize = 8.sp, maxFontSize = MaterialTheme.typography.labelMedium.fontSize),
                         )
                     }
                 }

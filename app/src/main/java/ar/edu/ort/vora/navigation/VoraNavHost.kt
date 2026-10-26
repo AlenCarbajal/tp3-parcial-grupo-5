@@ -1,24 +1,18 @@
 package ar.edu.ort.vora.navigation
 
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -26,17 +20,17 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import ar.edu.ort.vora.progress.ProgressDashboardScreen
 import ar.edu.ort.vora.progress.ProgressScreen
+import ar.edu.ort.vora.ui.auth.SignInScreen
+import ar.edu.ort.vora.ui.auth.SignUpScreen
+import ar.edu.ort.vora.ui.components.VoraBottomBar
+import ar.edu.ort.vora.ui.home.HomeScreen
+import ar.edu.ort.vora.ui.home.NotificationsScreen
 
-private data class BottomTab(val route: String, val label: String, val icon: ImageVector)
+// Destinos de la barra inferior, en el orden de VoraBottomBarItems (íconos y textos de Figma).
+private val bottomTabs = listOf(Routes.HOME, Routes.WORKOUT, Routes.NUTRITION, Routes.PROGRESS, Routes.PROFILE)
 
-// Íconos provisorios (core). Se cambian por los del Figma cuando estén los componentes.
-private val bottomTabs = listOf(
-    BottomTab(Routes.HOME, "Inicio", Icons.Filled.Home),
-    BottomTab(Routes.WORKOUT, "Entrenamiento", Icons.Filled.Star),
-    BottomTab(Routes.NUTRITION, "Nutrición", Icons.Filled.ShoppingCart),
-    BottomTab(Routes.PROGRESS, "Progreso", Icons.Filled.DateRange),
-    BottomTab(Routes.PROFILE, "Perfil", Icons.Filled.Person),
-)
+// Acceso: dibujan su fondo detrás de la barra de estado y manejan sus propios márgenes del sistema.
+private val edgeToEdgeRoutes = setOf(Routes.LOGIN, Routes.SIGNUP)
 
 // Rutas donde la bottom bar se ve (según specs/02-screens.md).
 private val routesWithBottomBar = setOf(
@@ -51,64 +45,65 @@ fun VoraNavHost(navController: NavHostController = rememberNavController()) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route
     val showBottomBar = currentRoute in routesWithBottomBar
+    // Notifications no tiene pestaña propia: en Figma queda marcado Home.
+    val selectedTab = if (currentRoute == Routes.NOTIFICATIONS) 0 else bottomTabs.indexOfFirst { currentRoute?.startsWith(it) == true }
     val go: (String) -> Unit = { navController.navigate(it) }
+    val goTab: (String) -> Unit = { route ->
+        navController.navigate(route) {
+            popUpTo(Routes.HOME) { saveState = true }
+            launchSingleTop = true
+            restoreState = true
+        }
+    }
+    // Al entrar se saca el acceso de la pila: desde Home, atrás cierra la app en vez de volver al login.
+    val enterApp: () -> Unit = { navController.navigate(Routes.HOME) { popUpTo(Routes.LOGIN) { inclusive = true } } }
+    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    val goBack: () -> Unit = { backDispatcher?.onBackPressed() }
 
     Scaffold(
         bottomBar = {
             if (showBottomBar) {
-                NavigationBar {
-                    bottomTabs.forEach { tab ->
-                        NavigationBarItem(
-                            selected = currentRoute?.startsWith(tab.route) == true,
-                            onClick = {
-                                navController.navigate(tab.route) {
-                                    popUpTo(Routes.HOME) { saveState = true }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
-                            },
-                            icon = { Icon(tab.icon, contentDescription = tab.label) },
-                            label = { Text(tab.label) },
-                        )
-                    }
-                }
+                VoraBottomBar(selectedIndex = selectedTab, onSelect = { goTab(bottomTabs[it]) })
             }
         },
+        contentWindowInsets = if (currentRoute in edgeToEdgeRoutes) WindowInsets(0) else ScaffoldDefaults.contentWindowInsets,
     ) { padding ->
         NavHost(
             navController = navController,
             startDestination = Routes.LOGIN,
-            modifier = Modifier.padding(padding),
+            modifier = Modifier
+                .padding(padding)
+                .consumeWindowInsets(padding),
         ) {
             // Login
             composable(Routes.LOGIN) {
-                PlaceholderScreen("Iniciar sesión", Routes.HOME to "Entrar", Routes.SIGNUP to "Crear cuenta") {
-                    if (it == Routes.HOME) {
-                        navController.navigate(Routes.HOME) { popUpTo(Routes.LOGIN) { inclusive = true } }
-                    } else {
-                        navController.navigate(it)
-                    }
-                }
+                SignInScreen(onSignIn = enterApp, onSignUp = { navController.navigate(Routes.SIGNUP) { launchSingleTop = true } }, onBack = goBack)
             }
             composable(Routes.SIGNUP) {
-                PlaceholderScreen("Crear cuenta", Routes.HOME to "Registrarme", Routes.LOGIN to "Iniciar sesión", onNavigate = go)
+                SignUpScreen(
+                    onSignUp = enterApp,
+                    onSignIn = { navController.navigate(Routes.LOGIN) { popUpTo(Routes.LOGIN) { inclusive = true } } },
+                    onBack = goBack,
+                )
             }
 
             // Home
             composable(Routes.HOME) {
-                PlaceholderScreen(
-                    "Inicio",
-                    Routes.NOTIFICATIONS to "Notificaciones",
-                    Routes.COACH to "Start voice session",
-                    Routes.workoutPrep("1") to "Start workout",
-                    Routes.WORKOUT to "Start my workout",
-                    Routes.NUTRITION_ADD to "Log breakfast",
-                    Routes.PROGRESS_TODAY to "Today's Overview",
-                    onNavigate = go,
+                HomeScreen(
+                    onNotifications = { go(Routes.NOTIFICATIONS) },
+                    onVoiceSession = { go(Routes.COACH) },
+                    onStartWorkout = { go(Routes.workoutPrep("1")) },
+                    onLogMeal = { go(Routes.NUTRITION_ADD) },
+                    onTodayOverview = { go(Routes.PROGRESS_TODAY) },
                 )
             }
             composable(Routes.NOTIFICATIONS) {
-                PlaceholderScreen("Notificaciones", Routes.PROGRESS_WEEKLY to "Weekly review", onNavigate = go)
+                NotificationsScreen(
+                    onWeeklyReview = { go(Routes.PROGRESS_WEEKLY) },
+                    onWorkout = { goTab(Routes.WORKOUT) },
+                    onNutrition = { goTab(Routes.NUTRITION) },
+                    onProgress = { goTab(Routes.PROGRESS) },
+                )
             }
 
             // Coach (asistente VORA)
