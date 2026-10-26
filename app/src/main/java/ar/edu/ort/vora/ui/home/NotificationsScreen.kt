@@ -50,7 +50,6 @@ fun NotificationsScreen(
     onWorkout: () -> Unit,
     onNutrition: () -> Unit,
     onProgress: () -> Unit,
-    onTab: (Int) -> Unit,
 ) {
     var allRead by rememberSaveable { mutableStateOf(false) }
     val today = listOf(
@@ -62,7 +61,7 @@ fun NotificationsScreen(
         Notice("Milestone Reached", "4-day workout streak logged!", "Outstanding work, Alex. Let's make it 5 today.", "1d ago", R.drawable.ic_flame, false, onProgress),
     )
 
-    TabScreen(selectedTab = 0, onTab = onTab) {
+    TabScreen {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text("Notifications", Modifier.weight(1f), style = MaterialTheme.typography.headlineMedium, color = VoraTextPrimary)
             VoraTextButton("Mark all as read", onClick = { allRead = true })
@@ -115,5 +114,5 @@ private fun NoticeCard(notice: Notice, unread: Boolean) {
 @Preview(name = "Notifications", widthDp = 390, heightDp = 844)
 @Composable
 private fun NotificationsPreview() {
-    VoraCoachTheme { NotificationsScreen({}, {}, {}, {}, {}) }
+    VoraCoachTheme { NotificationsScreen({}, {}, {}, {}) }
 }

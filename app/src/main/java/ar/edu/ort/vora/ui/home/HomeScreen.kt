@@ -23,7 +23,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
@@ -51,7 +50,6 @@ import ar.edu.ort.vora.ui.components.PrimaryButton
 import ar.edu.ort.vora.ui.components.ProgressRing
 import ar.edu.ort.vora.ui.components.StatusDot
 import ar.edu.ort.vora.ui.components.StatusTag
-import ar.edu.ort.vora.ui.components.VoraBottomBar
 import ar.edu.ort.vora.ui.components.VoraOrb
 import ar.edu.ort.vora.ui.theme.PanelTitleStyle
 import ar.edu.ort.vora.ui.theme.PillShape
@@ -75,9 +73,8 @@ fun HomeScreen(
     onStartWorkout: () -> Unit,
     onLogMeal: () -> Unit,
     onTodayOverview: () -> Unit,
-    onTab: (Int) -> Unit,
 ) {
-    TabScreen(selectedTab = 0, onTab = onTab) {
+    TabScreen {
         Header(onNotifications)
         CoachPanel(onVoiceSession, onStartWorkout, onLogMeal)
         CoachNote("You're on track. A protein-rich dinner would help you reach your daily target.")
@@ -93,29 +90,24 @@ fun HomeScreen(
     }
 }
 
-// Pantalla con barra inferior: scroll, ancho máximo centrado y márgenes de Figma. La comparte Notifications.
+// Pantalla de pestaña: scroll, ancho máximo centrado y márgenes de Figma. La barra inferior la pone VoraNavHost.
 @Composable
-internal fun TabScreen(selectedTab: Int, onTab: (Int) -> Unit, content: @Composable ColumnScope.() -> Unit) {
-    Scaffold(
-        containerColor = VoraBackground,
-        bottomBar = { VoraBottomBar(selectedIndex = selectedTab, onSelect = onTab) },
-    ) { padding ->
-        Box(
+internal fun TabScreen(content: @Composable ColumnScope.() -> Unit) {
+    Box(
+        Modifier
+            .fillMaxSize()
+            .background(VoraBackground)
+            .verticalScroll(rememberScrollState()),
+        contentAlignment = Alignment.TopCenter,
+    ) {
+        Column(
             Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .verticalScroll(rememberScrollState()),
-            contentAlignment = Alignment.TopCenter,
-        ) {
-            Column(
-                Modifier
-                    .widthIn(max = Spacing.maxContentWidth)
-                    .fillMaxWidth()
-                    .padding(horizontal = Spacing.screen, vertical = Spacing.s16),
-                verticalArrangement = Arrangement.spacedBy(Spacing.groupGap),
-                content = content,
-            )
-        }
+                .widthIn(max = Spacing.maxContentWidth)
+                .fillMaxWidth()
+                .padding(horizontal = Spacing.screen, vertical = Spacing.s16),
+            verticalArrangement = Arrangement.spacedBy(Spacing.groupGap),
+            content = content,
+        )
     }
 }
 
@@ -294,5 +286,5 @@ private fun RecommendedWorkout(onStartWorkout: () -> Unit) {
 @Preview(name = "Home tablet", widthDp = 800, heightDp = 1280)
 @Composable
 private fun HomePreview() {
-    VoraCoachTheme { HomeScreen({}, {}, {}, {}, {}, {}) }
+    VoraCoachTheme { HomeScreen({}, {}, {}, {}, {}) }
 }
