@@ -1,5 +1,6 @@
 package ar.edu.ort.vora.navigation
 
+import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -11,8 +12,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -22,6 +26,12 @@ import ar.edu.ort.vora.progress.ProgressDashboardScreen
 import ar.edu.ort.vora.progress.ProgressScreen
 import ar.edu.ort.vora.ui.auth.SignInScreen
 import ar.edu.ort.vora.ui.auth.SignUpScreen
+import ar.edu.ort.vora.ui.coach.CoachChatScreen
+import ar.edu.ort.vora.ui.coach.CoachErrorScreen
+import ar.edu.ort.vora.ui.coach.CoachIdleScreen
+import ar.edu.ort.vora.ui.coach.CoachListeningScreen
+import ar.edu.ort.vora.ui.coach.CoachProcessingScreen
+import ar.edu.ort.vora.ui.coach.CoachSpeakingScreen
 import ar.edu.ort.vora.ui.components.VoraBottomBar
 import ar.edu.ort.vora.ui.home.HomeScreen
 import ar.edu.ort.vora.ui.home.NotificationsScreen
@@ -29,8 +39,13 @@ import ar.edu.ort.vora.ui.home.NotificationsScreen
 // Destinos de la barra inferior, en el orden de VoraBottomBarItems (íconos y textos de Figma).
 private val bottomTabs = listOf(Routes.HOME, Routes.WORKOUT, Routes.NUTRITION, Routes.PROGRESS, Routes.PROFILE)
 
-// Acceso: dibujan su fondo detrás de la barra de estado y manejan sus propios márgenes del sistema.
-private val edgeToEdgeRoutes = setOf(Routes.LOGIN, Routes.SIGNUP)
+// Acceso y Coach: dibujan su fondo detrás de la barra de estado y manejan sus propios márgenes del sistema.
+private val edgeToEdgeRoutes = setOf(
+    Routes.LOGIN, Routes.SIGNUP,
+    Routes.COACH, Routes.COACH_LISTENING, Routes.COACH_PROCESSING, Routes.COACH_SPEAKING, Routes.COACH_CHAT, Routes.COACH_ERROR,
+)
+
+private val darkRoutes = setOf(Routes.COACH_LISTENING, Routes.COACH_PROCESSING, Routes.COACH_SPEAKING)
 
 // Rutas donde la bottom bar se ve (según specs/02-screens.md).
 private val routesWithBottomBar = setOf(
@@ -45,6 +60,11 @@ fun VoraNavHost(navController: NavHostController = rememberNavController()) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route
     val showBottomBar = currentRoute in routesWithBottomBar
+    // Las pantallas verdes del Coach van con íconos claros en la barra de estado; el resto, oscuros.
+    val window = LocalActivity.current?.window
+    val view = LocalView.current
+    val darkStatusBar = currentRoute in darkRoutes
+    SideEffect { window?.let { WindowCompat.getInsetsController(it, view).isAppearanceLightStatusBars = !darkStatusBar } }
     // Notifications no tiene pestaña propia: en Figma queda marcado Home.
     val selectedTab = if (currentRoute == Routes.NOTIFICATIONS) 0 else bottomTabs.indexOfFirst { currentRoute?.startsWith(it) == true }
     val go: (String) -> Unit = { navController.navigate(it) }
@@ -57,6 +77,14 @@ fun VoraNavHost(navController: NavHostController = rememberNavController()) {
     }
     // Al entrar se saca el acceso de la pila: desde Home, atrás cierra la app en vez de volver al login.
     val enterApp: () -> Unit = { navController.navigate(Routes.HOME) { popUpTo(Routes.LOGIN) { inclusive = true } } }
+    val back: () -> Unit = { navController.popBackStack() }
+    // Cada paso del Coach reemplaza al anterior: atrás vuelve a la pantalla inicial del asistente.
+    val coachStep: (String) -> Unit = { route ->
+        navController.navigate(route) {
+            popUpTo(Routes.COACH)
+            launchSingleTop = true
+        }
+    }
     val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
     val goBack: () -> Unit = { backDispatcher?.onBackPressed() }
 
@@ -108,14 +136,26 @@ fun VoraNavHost(navController: NavHostController = rememberNavController()) {
 
             // Coach (asistente VORA)
             composable(Routes.COACH) {
-                PlaceholderScreen("VORA Coach", Routes.COACH_LISTENING to "Tap to talk", Routes.COACH_CHAT to "Type instead", onNavigate = go)
+                CoachIdleScreen(onBack = back, onTalk = { go(Routes.COACH_LISTENING) }, onTypeInstead = { go(Routes.COACH_CHAT) })
             }
-            composable(Routes.COACH_LISTENING) { PlaceholderScreen("Listening", Routes.COACH_PROCESSING to "Siguiente", onNavigate = go) }
-            composable(Routes.COACH_PROCESSING) { PlaceholderScreen("Processing", Routes.COACH_SPEAKING to "Siguiente", onNavigate = go) }
-            composable(Routes.COACH_SPEAKING) { PlaceholderScreen("VORA Speaking", Routes.COACH_CHAT to "Tap to Interrupt", onNavigate = go) }
-            composable(Routes.COACH_CHAT) { PlaceholderScreen("Conversación") {} }
+            composable(Routes.COACH_LISTENING) {
+                CoachListeningScreen(onBack = back, onFinished = { heard -> coachStep(if (heard) Routes.COACH_PROCESSING else Routes.COACH_ERROR) })
+            }
+            composable(Routes.COACH_PROCESSING) {
+                CoachProcessingScreen(onBack = back, onAnswer = { coachStep(Routes.COACH_SPEAKING) })
+            }
+            composable(Routes.COACH_SPEAKING) {
+                CoachSpeakingScreen(onBack = back, onInterrupt = { coachStep(Routes.COACH_CHAT) })
+            }
+            composable(Routes.COACH_CHAT) {
+                CoachChatScreen(onBack = back, onListen = { go(Routes.COACH_SPEAKING) })
+            }
             composable(Routes.COACH_ERROR) {
-                PlaceholderScreen("System Alert", Routes.COACH_LISTENING to "Try again", Routes.COACH_CHAT to "Type instead", onNavigate = go)
+                CoachErrorScreen(
+                    onBack = back,
+                    onTryAgain = { coachStep(Routes.COACH_LISTENING) },
+                    onTypeInstead = { coachStep(Routes.COACH_CHAT) },
+                )
             }
 
             // Workout
