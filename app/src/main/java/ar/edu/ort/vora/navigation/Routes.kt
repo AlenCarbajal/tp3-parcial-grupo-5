@@ -7,8 +7,11 @@ object Routes {
     const val NOTIFICATIONS = "notifications"
     const val COACH = "coach"
     const val WORKOUT = "workout"
+    const val WORKOUT_DETAIL = "workout/{workoutId}"
     const val NUTRITION = "nutrition"
     const val PROGRESS = "progress"
     const val PROFILE = "profile"
+
+    fun workoutDetail(workoutId: String): String = "workout/$workoutId"
 }
 
