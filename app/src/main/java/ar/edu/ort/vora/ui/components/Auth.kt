@@ -30,7 +30,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.shadow.Shadow
@@ -39,10 +38,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.ui.draw.BlurredEdgeTreatment
+import androidx.compose.ui.draw.blur
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.LinearGradientShader
+import androidx.compose.ui.graphics.RadialGradientShader
+import androidx.compose.ui.graphics.ShaderBrush
+import androidx.compose.ui.text.style.TextOverflow
+import ar.edu.ort.vora.ui.theme.LogoShadow
 import ar.edu.ort.vora.R
 import ar.edu.ort.vora.ui.theme.AuthFieldBackground
 import ar.edu.ort.vora.ui.theme.AuthFieldBorder
@@ -62,38 +69,77 @@ import ar.edu.ort.vora.ui.theme.VoraTextPrimary
 
 private val AuthShape = RoundedCornerShape(16.dp)
 
-// Logo de Sign In / Sign Up: esfera de 64 con degradado radial, anillo interno blanco al 30 % y badge "AI".
+enum class LogoStyle {
+    SignIn,  // esfera de 64, degradado radial y aro blanco de 4
+    SignUp,  // esfera de 56, degradado diagonal, brillo menta y punto blanco
+}
+
+// Logo de acceso: esfera con anillo interno blanco al 30 % y badge "AI" que sobresale 4 abajo a la derecha.
 @Composable
-fun VoraLogo(modifier: Modifier = Modifier, size: Dp = 64.dp) {
+fun VoraLogo(modifier: Modifier = Modifier, style: LogoStyle = LogoStyle.SignIn) {
+    val signUp = style == LogoStyle.SignUp
+    val size = if (signUp) 56.dp else 64.dp
+    val shadowColor = if (signUp) LogoShadow else Color.Black
+    val shadowAlpha = if (signUp) 0.2f else 0.1f
     Box(modifier.size(size)) {
+        if (signUp) {
+            Box(
+                Modifier
+                    .align(Alignment.Center)
+                    .requiredSize(64.dp)
+                    .blur(16.dp, BlurredEdgeTreatment.Unbounded)
+                    .background(LogoMid.copy(alpha = 0.3f), PillShape)
+            )
+        }
         Box(
             Modifier
                 .size(size)
-                .dropShadow(PillShape, Shadow(radius = 6.dp, spread = (-4).dp, offset = DpOffset(0.dp, 4.dp), alpha = 0.1f))
-                .dropShadow(PillShape, Shadow(radius = 15.dp, spread = (-3).dp, offset = DpOffset(0.dp, 10.dp), alpha = 0.1f))
-                .background(
-                    Brush.radialGradient(
-                        0f to LogoLight, 0.5f to LogoMid, 1f to LogoDark,
-                        center = Offset.Unspecified,
-                    ),
-                    PillShape,
-                ),
+                .dropShadow(PillShape, Shadow(radius = 6.dp, color = shadowColor, spread = (-4).dp, offset = DpOffset(0.dp, 4.dp), alpha = shadowAlpha))
+                .dropShadow(PillShape, Shadow(radius = 15.dp, color = shadowColor, spread = (-3).dp, offset = DpOffset(0.dp, 10.dp), alpha = shadowAlpha))
+                .then(if (signUp) Modifier else Modifier.dropShadow(PillShape, Shadow(radius = 0.dp, color = Color.White, spread = 4.dp)))
+                .background(if (signUp) LogoSignUpBrush else LogoSignInBrush, PillShape),
             contentAlignment = Alignment.Center,
         ) {
-            Box(Modifier.size(size * 20 / 64).background(Color.White.copy(alpha = 0.3f), PillShape))
+            Box(
+                Modifier
+                    .size(20.dp)
+                    .background(Color.White.copy(alpha = 0.3f), PillShape),
+                contentAlignment = Alignment.Center,
+            ) {
+                if (signUp) Box(Modifier.size(10.dp).background(Color.White, PillShape))
+            }
         }
         Text(
             "AI",
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .offset(x = 4.dp)
+                .offset(x = if (signUp) 8.dp else 4.dp, y = 4.dp)
                 .background(LogoDark, PillShape)
-                .border(1.dp, Color.White, PillShape)
+                .then(if (signUp) Modifier else Modifier.border(1.dp, Color.White, PillShape))
                 .padding(horizontal = Spacing.s8, vertical = 2.dp),
-            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold, letterSpacing = 0.5.sp),
-            color = LogoBadgeText,
+            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold, letterSpacing = 0.5.sp, lineHeight = 15.sp),
+            color = if (signUp) AuthLime else LogoBadgeText,
         )
     }
+}
+
+// Sign In: radial con el centro arriba a la izquierda, por eso el verde oscuro casi no se ve.
+private val LogoSignInBrush = object : ShaderBrush() {
+    override fun createShader(size: Size) = RadialGradientShader(
+        center = Offset(size.width * 0.3f, size.height * 0.3f),
+        radius = size.width,
+        colors = listOf(LogoLight, LogoMid, LogoDark),
+        colorStops = listOf(0f, 0.5f, 1f),
+    )
+}
+
+// Sign Up: lineal de abajo a la izquierda (verde oscuro) hacia arriba a la derecha (lima).
+private val LogoSignUpBrush = object : ShaderBrush() {
+    override fun createShader(size: Size) = LinearGradientShader(
+        from = Offset(0f, size.height),
+        to = Offset(size.width, 0f),
+        colors = listOf(LogoDark, LogoMid, AuthLime),
+    )
 }
 
 // Campo de acceso: etiqueta 12 Bold, fondo #F3F9F5 al 60 %, borde #E2EDE7, radio 16, alto 55, ícono a la izquierda.
@@ -145,7 +191,9 @@ fun AuthTextField(
                 ) {
                     Icon(painterResource(icon), contentDescription = null, tint = if (outlined) VoraTextPrimary else VoraTextMuted, modifier = Modifier.size(16.dp))
                     Box(Modifier.weight(1f)) {
-                        if (value.isEmpty() && placeholder != null) Text(placeholder, style = textStyle, color = VoraTextMuted)
+                        if (value.isEmpty() && placeholder != null) {
+                            Text(placeholder, style = textStyle, color = VoraTextMuted, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        }
                         innerTextField()
                     }
                     if (password) Icon(painterResource(R.drawable.ic_eye), contentDescription = null, tint = if (outlined) VoraTextPrimary else VoraTextMuted, modifier = Modifier.size(16.dp))

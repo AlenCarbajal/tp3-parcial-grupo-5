@@ -31,6 +31,7 @@ val LogoLight = Color(0xFF86EFAC)
 val LogoMid = Color(0xFF34D399)
 val LogoDark = Color(0xFF0E382F)
 val LogoBadgeText = Color(0xFF6EE7B7)
+val LogoShadow = Color(0xFF064E3B)  // sombras del logo de Sign Up
 
 // Degradados del orbe VORA (orb-glow, orb-ring y orb-core en Figma), de izquierda a derecha.
 val OrbGlowBrush = Brush.radialGradient(listOf(VoraMint, VoraGreen))
