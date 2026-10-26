@@ -3,22 +3,12 @@ package ar.edu.ort.vora.navigation
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -26,16 +16,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import ar.edu.ort.vora.progress.ProgressDashboardScreen
 import ar.edu.ort.vora.progress.ProgressScreen
+import ar.edu.ort.vora.ui.components.VoraBottomBar
 
-private data class BottomTab(val route: String, val label: String, val icon: ImageVector)
-
-// Íconos provisorios (core). Se cambian por los del Figma cuando estén los componentes.
-private val bottomTabs = listOf(
-    BottomTab(Routes.HOME, "Inicio", Icons.Filled.Home),
-    BottomTab(Routes.WORKOUT, "Entrenamiento", Icons.Filled.Star),
-    BottomTab(Routes.NUTRITION, "Nutrición", Icons.Filled.ShoppingCart),
-    BottomTab(Routes.PROGRESS, "Progreso", Icons.Filled.DateRange),
-    BottomTab(Routes.PROFILE, "Perfil", Icons.Filled.Person),
+// Mismo orden que VoraBottomBarItems (ui/components/Bars.kt).
+private val tabRoutes = listOf(
+    Routes.HOME, Routes.WORKOUT, Routes.NUTRITION, Routes.PROGRESS, Routes.PROFILE,
 )
 
 // Rutas donde la bottom bar se ve (según specs/02-screens.md).
@@ -56,22 +41,16 @@ fun VoraNavHost(navController: NavHostController = rememberNavController()) {
     Scaffold(
         bottomBar = {
             if (showBottomBar) {
-                NavigationBar {
-                    bottomTabs.forEach { tab ->
-                        NavigationBarItem(
-                            selected = currentRoute?.startsWith(tab.route) == true,
-                            onClick = {
-                                navController.navigate(tab.route) {
-                                    popUpTo(Routes.HOME) { saveState = true }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
-                            },
-                            icon = { Icon(tab.icon, contentDescription = tab.label) },
-                            label = { Text(tab.label) },
-                        )
-                    }
-                }
+                VoraBottomBar(
+                    selectedIndex = tabRoutes.indexOfFirst { currentRoute?.startsWith(it) == true },
+                    onSelect = { index ->
+                        navController.navigate(tabRoutes[index]) {
+                            popUpTo(Routes.HOME) { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
+                )
             }
         },
     ) { padding ->
