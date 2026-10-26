@@ -46,6 +46,9 @@ Figma usa una paleta propia en Login, distinta de la del resto de la app:
 | `AuthFieldBackground` | `#F3F9F5` al 60 % | Fondo de los campos |
 | `AuthFieldBorder` | `#E2EDE7` | Borde de campos y botones de acceso alternativo |
 | `AuthScreenTint` | `#F3F9F5` | Tinte del fondo de la pantalla |
+| `AuthTextSecondary` | `#6B8780` | Bajada, "Or continue with", notas y pie |
+| `AuthAccent` | `#065F46` al 80 % | "ADAPTIVE INTELLIGENCE" y "Forgot your password?" |
+| `AuthOutline` | `#6B7280` | Borde de los campos de Sign Up |
 | `LogoLight` / `LogoMid` / `LogoDark` | `#86EFAC` / `#34D399` / `#0E382F` | Degradado radial del logo |
 | `LogoBadgeText` | `#6EE7B7` | Texto del badge "AI" |
 
@@ -104,6 +107,7 @@ Escala de Figma (espacio / valor): `s4` · `s6` · `s8` · `s10` · `s12` · `s1
 | `Spacing.cardPadding` | 16 | Padding interno de tarjetas |
 | `Spacing.groupGap` | 12 | Separación entre grupos |
 | `Spacing.titleGap` | 4 | Título → descripción |
+| `Spacing.maxContentWidth` | 480 | Ancho máximo del contenido; en tablets o apaisado se centra |
 
 ## Medidas de los elementos de interfaz
 
@@ -160,6 +164,7 @@ Los íconos son de [Lucide](https://lucide.dev) (licencia ISC), igual que en Fig
 | `ic_mail` / `ic_lock` / `ic_user` / `ic_eye` | `mail` / `lock` / `user` / `eye` | 20 | 2 | Campos de acceso |
 | `ic_scan_face` | `scan-face` | 20 | 2 | Acceso con Face ID |
 | `ic_more` / `ic_bell` / `ic_close` / `ic_plus` / `ic_send` | `ellipsis` / `bell` / `x` / `plus` / `send` | 20 | 2 | Acciones de encabezado y chat |
+| `ic_calendar` / `ic_flame` / `ic_shield_check` / `ic_chevron_down` | `calendar` / `flame` / `shield-check` / `chevron-down` | 14–16 | 2 | Entrenamiento recomendado, racha, notas de seguridad y selector de idioma |
 | `ic_audio_lines` | `audio-lines` | 32 | 2 | Centro del orbe del asistente |
 | `ic_mic_large` | `mic` | 28 | 2,5 | Botón de micrófono del asistente |
 
