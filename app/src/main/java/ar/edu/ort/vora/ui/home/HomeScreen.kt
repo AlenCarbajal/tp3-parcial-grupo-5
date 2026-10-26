@@ -164,6 +164,8 @@ private fun CoachPanel(onVoiceSession: () -> Unit, onStartWorkout: () -> Unit, o
                     .padding(horizontal = Spacing.s8),
                 style = MaterialTheme.typography.bodyLarge,
                 color = VoraMint,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
             StatusTag("AI online", dark = true)
         }
