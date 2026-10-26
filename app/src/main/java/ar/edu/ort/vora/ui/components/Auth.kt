@@ -47,6 +47,7 @@ import ar.edu.ort.vora.R
 import ar.edu.ort.vora.ui.theme.AuthFieldBackground
 import ar.edu.ort.vora.ui.theme.AuthFieldBorder
 import ar.edu.ort.vora.ui.theme.AuthLime
+import ar.edu.ort.vora.ui.theme.AuthOutline
 import ar.edu.ort.vora.ui.theme.LogoBadgeText
 import ar.edu.ort.vora.ui.theme.LogoDark
 import ar.edu.ort.vora.ui.theme.LogoLight
@@ -96,6 +97,7 @@ fun VoraLogo(modifier: Modifier = Modifier, size: Dp = 64.dp) {
 }
 
 // Campo de acceso: etiqueta 12 Bold, fondo #F3F9F5 al 60 %, borde #E2EDE7, radio 16, alto 55, ícono a la izquierda.
+// outlined es el de Sign Up: etiqueta 16 Regular, fondo blanco, borde #6B7280, radio 12 y alto 52.
 @Composable
 fun AuthTextField(
     value: String,
@@ -105,13 +107,21 @@ fun AuthTextField(
     modifier: Modifier = Modifier,
     placeholder: String? = null,
     password: Boolean = false,
+    outlined: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     labelAction: @Composable () -> Unit = {},
 ) {
-    val textStyle = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Normal, color = VoraTextPrimary)
+    val textStyle = (if (outlined) MaterialTheme.typography.titleSmall else MaterialTheme.typography.labelLarge)
+        .copy(fontWeight = FontWeight.Normal, color = VoraTextPrimary)
+    val labelStyle = if (outlined) {
+        MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Normal)
+    } else {
+        MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold, letterSpacing = 0.3.sp)
+    }
+    val fieldShape = if (outlined) MaterialTheme.shapes.small else AuthShape
     Column(modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(Spacing.s8)) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-            Text(label, style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold, letterSpacing = 0.3.sp), color = VoraTextPrimary)
+            Text(label, style = labelStyle, color = VoraTextPrimary)
             labelAction()
         }
         BasicTextField(
@@ -127,18 +137,18 @@ fun AuthTextField(
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .background(AuthFieldBackground, AuthShape)
-                        .border(1.dp, AuthFieldBorder, AuthShape)
-                        .padding(horizontal = Spacing.s16, vertical = 15.5.dp),
+                        .background(if (outlined) VoraSurface else AuthFieldBackground, fieldShape)
+                        .border(1.dp, if (outlined) AuthOutline else AuthFieldBorder, fieldShape)
+                        .padding(horizontal = Spacing.s16, vertical = if (outlined) 13.dp else 15.5.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(Spacing.s12),
                 ) {
-                    Icon(painterResource(icon), contentDescription = null, tint = VoraTextMuted, modifier = Modifier.size(16.dp))
+                    Icon(painterResource(icon), contentDescription = null, tint = if (outlined) VoraTextPrimary else VoraTextMuted, modifier = Modifier.size(16.dp))
                     Box(Modifier.weight(1f)) {
                         if (value.isEmpty() && placeholder != null) Text(placeholder, style = textStyle, color = VoraTextMuted)
                         innerTextField()
                     }
-                    if (password) Icon(painterResource(R.drawable.ic_eye), contentDescription = null, tint = VoraTextMuted, modifier = Modifier.size(16.dp))
+                    if (password) Icon(painterResource(R.drawable.ic_eye), contentDescription = null, tint = if (outlined) VoraTextPrimary else VoraTextMuted, modifier = Modifier.size(16.dp))
                 }
             },
         )

@@ -35,8 +35,10 @@ import ar.edu.ort.vora.ui.theme.VoraBorder
 import ar.edu.ort.vora.ui.theme.VoraError
 import ar.edu.ort.vora.ui.theme.VoraGreen
 import ar.edu.ort.vora.ui.theme.VoraMintTranslucent
+import ar.edu.ort.vora.ui.theme.VoraSurface
 import ar.edu.ort.vora.ui.theme.VoraTextPrimary
 import ar.edu.ort.vora.ui.theme.VoraTextSecondary
+import ar.edu.ort.vora.ui.theme.VoraWhiteTranslucent
 
 // Pista completa y relleno superpuesto, como en Figma. Barras de 4.
 @Composable
@@ -107,16 +109,16 @@ fun ProgressRing(
     }
 }
 
-// Etiqueta compacta de disponibilidad ("ONLINE"): radio 100.
+// Etiqueta compacta de disponibilidad ("ONLINE"): radio 100. dark = sobre DarkPanel ("AI ONLINE" de Home).
 @Composable
-fun StatusTag(text: String, modifier: Modifier = Modifier) {
+fun StatusTag(text: String, modifier: Modifier = Modifier, dark: Boolean = false) {
     Text(
         text.uppercase(),
         modifier = modifier
-            .background(VoraMintTranslucent, PillShape)
+            .background(if (dark) VoraWhiteTranslucent else VoraMintTranslucent, PillShape)
             .padding(horizontal = Spacing.s10, vertical = Spacing.s4),
         style = MaterialTheme.typography.labelSmall,
-        color = VoraGreen,
+        color = if (dark) VoraSurface else VoraGreen,
     )
 }
 
