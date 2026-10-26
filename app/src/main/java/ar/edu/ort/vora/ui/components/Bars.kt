@@ -137,7 +137,7 @@ enum class TopBarBack {
 }
 
 // Encabezado de Figma: fila de 350 (margen 20), padding superior 12, chevron 20 o botón de 32, 8/12 hasta el título.
-// Con centered, el título va al centro (Workout Overview, Exercise Guide).
+// Con centered, el título va al centro (Workout Overview, Exercise Guide). titleDot: punto menta de "en línea" junto al título (chat del Coach).
 @Composable
 fun VoraTopBar(
     title: String,
@@ -146,6 +146,7 @@ fun VoraTopBar(
     onBack: () -> Unit = {},
     centered: Boolean = false,
     dark: Boolean = false,
+    titleDot: Boolean = false,
     actions: @Composable RowScope.() -> Unit = {},
 ) {
     val contentColor = if (dark) VoraSurface else VoraTextPrimary
@@ -174,7 +175,12 @@ fun VoraTopBar(
                 )
                 TopBarBack.Circle -> IconCircleButton(R.drawable.ic_chevron_left, "Volver", onBack, dark = dark)
             }
-            if (!centered) Text(title, style = titleStyle, color = contentColor)
+            if (!centered) {
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s6)) {
+                    Text(title, style = titleStyle, color = contentColor)
+                    if (titleDot) StatusDot(Modifier.size(6.dp), color = VoraMint)
+                }
+            }
         }
         if (centered) {
             Text(title, style = titleStyle, color = contentColor, modifier = Modifier.align(Alignment.Center))

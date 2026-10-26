@@ -132,7 +132,7 @@ Tomadas de la página "Elementos de interfaz" del sistema de diseño de Figma. S
 | Señal / etiqueta | Punto de 8; etiqueta con radio 100 |
 | Recomendación breve | Menta al 12,16 %, borde menta, texto verde, radio 12, padding 12 |
 | Consejo destacado | Panel verde, contenido blanco, título menta, radio 16, padding 16 |
-| Barra superior | Fila de 350 con padding 12/20. Chevron suelto de 20 a 8 del título 20 / 600 (Add Food), o botón circular de 32 blanco con borde a 12 del título 20 / 700 (Profile, Voice). Variante con título centrado (Workout Overview) y acciones a la derecha (botón "…", etiqueta de estado, X) |
+| Barra superior | Fila de 350 con padding 12/20. Chevron suelto de 20 a 8 del título 20 / 600 (Add Food), o botón circular de 32 blanco con borde a 12 del título 20 / 700 (Profile, Voice). Variante con título centrado (Workout Overview) y acciones a la derecha (botón "…", etiqueta de estado, X). `titleDot`: punto menta de 6 a 6 del título (chat del Coach) |
 | Botón circular | 32, radio 16, blanco con borde 1 `#E4E9E6`; translúcido sobre fondo oscuro |
 | Chip | Radio 100, borde 1, padding 8/14, separación 6 hasta el ícono, texto 13 / 500 (elegido 600). Variantes: blanco, menta elegido, verde elegido, con check (borde menta) y para quitar (círculo con x `#DC2626` de 12) |
 | Selector de período | Contenedor blanco tipo píldora; opción activa verde con texto blanco |
