@@ -289,7 +289,7 @@ fun CoachChatScreen(onBack: () -> Unit, onListen: () -> Unit) {
     ) {
         Surface(color = VoraSurface) {
             Column {
-                VoraTopBar("VORA Coach", onBack = onBack) { VoraOrb(size = 24.dp) }
+                VoraTopBar("VORA Coach", onBack = onBack, titleDot = true) { VoraOrb(size = 24.dp) }
                 HorizontalDivider(color = VoraBorder)
             }
         }
