@@ -59,6 +59,7 @@ import ar.edu.ort.vora.ui.components.AuthButton
 import ar.edu.ort.vora.ui.components.AuthTextField
 import ar.edu.ort.vora.ui.components.IconCircleButton
 import ar.edu.ort.vora.ui.components.InfoCard
+import ar.edu.ort.vora.ui.components.LogoStyle
 import ar.edu.ort.vora.ui.components.SocialButton
 import ar.edu.ort.vora.ui.components.VoraChip
 import ar.edu.ort.vora.ui.components.VoraLogo
@@ -127,7 +128,7 @@ fun SignUpScreen(onSignUp: () -> Unit, onSignIn: () -> Unit, onBack: () -> Unit)
     var password by rememberSaveable { mutableStateOf("") }
 
     AuthLayout(onBack = onBack, onLanguage = demo) {
-        AuthHeader()
+        AuthHeader(signUp = true)
         Spacer(Modifier.height(Spacing.s24))
         AuthCard {
             Column(verticalArrangement = Arrangement.spacedBy(Spacing.s16)) {
@@ -224,12 +225,17 @@ private fun AuthLayout(onBack: () -> Unit, onLanguage: () -> Unit, content: @Com
 }
 
 @Composable
-private fun AuthHeader(tagline: String? = null) {
-    VoraLogo()
+private fun AuthHeader(tagline: String? = null, signUp: Boolean = false) {
+    VoraLogo(style = if (signUp) LogoStyle.SignUp else LogoStyle.SignIn)
     Spacer(Modifier.height(Spacing.s16))
+    // Sign Up usa el título más grande (28 / 700) que Sign In (24 / 700).
     Text(
         "VORA Coach",
-        style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold, letterSpacing = (-0.6).sp),
+        style = if (signUp) {
+            MaterialTheme.typography.headlineLarge.copy(letterSpacing = (-0.7).sp)
+        } else {
+            MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold, letterSpacing = (-0.6).sp)
+        },
         color = LogoDark,
     )
     Spacer(Modifier.height(Spacing.s4))
