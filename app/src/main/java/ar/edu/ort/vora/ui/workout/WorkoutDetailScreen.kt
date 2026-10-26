@@ -22,11 +22,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-
+import androidx.compose.foundation.clickable
 @Composable
 fun WorkoutDetailScreen(
     workoutId: String,
     onBack: () -> Unit,
+    onStartWorkout: () -> Unit,
+    onExerciseClick: (String) -> Unit,
     viewModel: WorkoutViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -86,7 +88,9 @@ fun WorkoutDetailScreen(
                         items = workout.exercises,
                         key = { exercise -> exercise.id }
                     ) { exercise ->
-                        Card(modifier = Modifier.fillMaxWidth()) {
+                        Card(modifier = Modifier.fillMaxWidth().clickable {
+                            onExerciseClick(exercise.id)
+                        }) {
                             Column(modifier = Modifier.padding(16.dp)) {
                                 Text(
                                     text = exercise.name,
@@ -101,6 +105,9 @@ fun WorkoutDetailScreen(
                                 Text(exercise.instructions)
                                 Text("Consejo: ${exercise.tip}")
                             }
+                        }
+                        Button(onClick = onStartWorkout) {
+                            Text("Start Workout")
                         }
                     }
                 }
@@ -118,6 +125,8 @@ fun WorkoutDetailScreen(
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             }
+
         }
+
     }
 }

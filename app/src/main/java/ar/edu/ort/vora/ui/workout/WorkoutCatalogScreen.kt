@@ -28,6 +28,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 @Composable
 fun WorkoutCatalogScreen(
     onWorkoutClick: (String) -> Unit,
+    onPlanClick: () -> Unit,
     viewModel: WorkoutViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -46,6 +47,9 @@ fun WorkoutCatalogScreen(
 
         Button(onClick = viewModel::refreshWorkouts) {
             Text("Actualizar")
+        }
+        Button(onClick = onPlanClick) {
+            Text("Your Plan")
         }
 
         when {

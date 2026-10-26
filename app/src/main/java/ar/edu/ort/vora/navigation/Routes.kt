@@ -1,3 +1,4 @@
+
 package ar.edu.ort.vora.navigation
 
 object Routes {
@@ -6,12 +7,32 @@ object Routes {
     const val HOME = "home"
     const val NOTIFICATIONS = "notifications"
     const val COACH = "coach"
+
     const val WORKOUT = "workout"
+    const val WORKOUT_PLAN = "workout/plan"
     const val WORKOUT_DETAIL = "workout/{workoutId}"
+    const val WORKOUT_PREP = "workout/{workoutId}/prep"
+    const val WORKOUT_ACTIVE = "workout/{workoutId}/active"
+    const val WORKOUT_GUIDE =
+        "workout/{workoutId}/guide/{exerciseId}"
+    const val WORKOUT_DONE = "workout/{workoutId}/done"
+
     const val NUTRITION = "nutrition"
     const val PROGRESS = "progress"
     const val PROFILE = "profile"
 
-    fun workoutDetail(workoutId: String): String = "workout/$workoutId"
-}
+    fun workoutDetail(workoutId: String) =
+        "workout/$workoutId"
 
+    fun workoutPrep(workoutId: String) =
+        "workout/$workoutId/prep"
+
+    fun workoutActive(workoutId: String) =
+        "workout/$workoutId/active"
+
+    fun workoutGuide(workoutId: String, exerciseId: String) =
+        "workout/$workoutId/guide/$exerciseId"
+
+    fun workoutDone(workoutId: String) =
+        "workout/$workoutId/done"
+}
