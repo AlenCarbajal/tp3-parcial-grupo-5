@@ -7,9 +7,11 @@
 - T04 NavHost con las 7 áreas como rutas vacías.  [NAV02]
 - T05 Completar 02-screens.md con nombres reales de Figma.  [NAV01]
 
-## Tema y componentes (Alén)  [UI01, UI02, UI03]
+## Tema, componentes, Acceso y Home (Alén)  [UI01, UI02, UI03, NAV02, NAV03]
 - T10 Colores, tipografías, formas desde Figma.
 - T11 Componentes: botón, card, campo de texto, bottom bar, top bar.
+- T12 Acceso (2, demo): Sign In y Sign Up maquetados según Figma; acceso de demostración sin Firebase que entra a home con cualquier dato; enlaces cruzados login ↔ signup; los botones de Apple y Google muestran aviso "modo demostración".
+- T13 Home (2, demo): dashboard y notificaciones con datos de ejemplo; accesos principales según 02-screens (campana, coach, entrenamiento, comida, resumen del día) y bottom bar; desde home el atrás del sistema no vuelve al login.
 
 ## Workout (Joaquín)  [RF01, RF02, RF05, RF06, RF07]
 - T20 ApiService + DTOs + NetworkModule (primera llamada a /v1/workouts).
