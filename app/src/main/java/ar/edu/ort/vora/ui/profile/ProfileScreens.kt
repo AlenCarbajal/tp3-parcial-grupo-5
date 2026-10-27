@@ -5,6 +5,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,9 +30,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import ar.edu.ort.vora.ui.components.ButtonSize
+import ar.edu.ort.vora.ui.components.ChipStyle
 import ar.edu.ort.vora.ui.components.InfoCard
 import ar.edu.ort.vora.ui.components.PrimaryButton
 import ar.edu.ort.vora.ui.components.TopBarBack
+import ar.edu.ort.vora.ui.components.VoraChip
 import ar.edu.ort.vora.ui.components.VoraTextButton
 import ar.edu.ort.vora.ui.components.VoraTextField
 import ar.edu.ort.vora.ui.components.VoraTopBar
@@ -40,10 +44,7 @@ import ar.edu.ort.vora.ui.theme.VoraCoachTheme
 import ar.edu.ort.vora.ui.theme.VoraTextMuted
 import ar.edu.ort.vora.ui.theme.VoraTextPrimary
 import ar.edu.ort.vora.ui.theme.VoraTextSecondary
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
-import ar.edu.ort.vora.ui.components.ChipStyle
-import ar.edu.ort.vora.ui.components.VoraChip
+
 // Encabezado arriba y contenido con scroll. Mismo patrón que CoachLayout.
 @Composable
 private fun ProfileLayout(
@@ -69,26 +70,8 @@ private fun ProfileLayout(
     }
 }
 
-@Composable
-fun ProfileEditScreen(onBack: () -> Unit, onSave: () -> Unit) {
-    var name by rememberSaveable { mutableStateOf("") }
-    var email by rememberSaveable { mutableStateOf("") }
-    var age by rememberSaveable { mutableStateOf("") }
+// ---------- Profile ----------
 
-    ProfileLayout("Edit profile", onBack = onBack) {
-        VoraTextField(name, { name = it }, "Name", placeholder = "Your name")
-        VoraTextField(
-            email, { email = it }, "Email", placeholder = "you@example.com",
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-        )
-        VoraTextField(
-            age, { age = it }, "Age", placeholder = "30",
-            error = if (age.isNotEmpty() && age.toIntOrNull() == null) "Enter a valid number" else null,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        )
-        PrimaryButton("Save changes", onSave, Modifier.fillMaxWidth(), size = ButtonSize.Large)
-    }
-}
 // Tarjeta tocable de la lista de Profile: título, detalle y flecha.
 @Composable
 private fun ProfileRow(title: String, detail: String, onClick: () -> Unit) {
@@ -126,10 +109,42 @@ fun ProfileScreen(
         ProfileRow("Connected apps", "Manage in settings", onSettings)
     }
 }
-// Grupo de chips de opción única: el elegido se ve verde (ChipStyle.Green).
+
+// ---------- Edit profile ----------
+
+@Composable
+fun ProfileEditScreen(onBack: () -> Unit, onSave: () -> Unit) {
+    var name by rememberSaveable { mutableStateOf("") }
+    var email by rememberSaveable { mutableStateOf("") }
+    var age by rememberSaveable { mutableStateOf("") }
+
+    ProfileLayout("Edit profile", onBack = onBack) {
+        VoraTextField(name, { name = it }, "Name", placeholder = "Your name")
+        VoraTextField(
+            email, { email = it }, "Email", placeholder = "you@example.com",
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+        )
+        VoraTextField(
+            age, { age = it }, "Age", placeholder = "30",
+            error = if (age.isNotEmpty() && age.toIntOrNull() == null) "Enter a valid number" else null,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        )
+        PrimaryButton("Save changes", onSave, Modifier.fillMaxWidth(), size = ButtonSize.Large)
+    }
+}
+
+// ---------- Chips reutilizables ----------
+
+// Opción única: el elegido se ve con selectedStyle (verde por defecto).
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun SingleChoice(title: String, options: List<String>, selected: String, onSelect: (String) -> Unit) {
+private fun SingleChoice(
+    title: String,
+    options: List<String>,
+    selected: String,
+    selectedStyle: ChipStyle = ChipStyle.Green,
+    onSelect: (String) -> Unit,
+) {
     Column(verticalArrangement = Arrangement.spacedBy(Spacing.s8)) {
         Text(title.uppercase(), style = MaterialTheme.typography.labelSmall, color = VoraTextSecondary)
         FlowRow(
@@ -137,11 +152,30 @@ private fun SingleChoice(title: String, options: List<String>, selected: String,
             verticalArrangement = Arrangement.spacedBy(Spacing.s8),
         ) {
             options.forEach {
-                VoraChip(it, { onSelect(it) }, style = if (it == selected) ChipStyle.Green else ChipStyle.Default)
+                VoraChip(it, { onSelect(it) }, style = if (it == selected) selectedStyle else ChipStyle.Default)
             }
         }
     }
 }
+
+// Selección múltiple: los elegidos se ven con borde menta y check.
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun MultiChoice(title: String, options: List<String>, selected: List<String>, onToggle: (String) -> Unit) {
+    Column(verticalArrangement = Arrangement.spacedBy(Spacing.s8)) {
+        Text(title.uppercase(), style = MaterialTheme.typography.labelSmall, color = VoraTextSecondary)
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(Spacing.s8),
+            verticalArrangement = Arrangement.spacedBy(Spacing.s8),
+        ) {
+            options.forEach {
+                VoraChip(it, { onToggle(it) }, style = if (it in selected) ChipStyle.Checked else ChipStyle.Default)
+            }
+        }
+    }
+}
+
+// ---------- Your goals ----------
 
 @Composable
 fun ProfileGoalsScreen(onBack: () -> Unit, onSave: () -> Unit) {
@@ -156,18 +190,63 @@ fun ProfileGoalsScreen(onBack: () -> Unit, onSave: () -> Unit) {
         PrimaryButton("Save preferences", onSave, Modifier.fillMaxWidth(), size = ButtonSize.Large)
     }
 }
+
+// ---------- Nutrition preferences ----------
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun ProfileNutritionScreen(onBack: () -> Unit, onSave: () -> Unit) {
+    var diet by rememberSaveable { mutableStateOf("Everything") }
+    var liked by rememberSaveable { mutableStateOf(listOf("Chicken", "Rice")) }
+    var avoided by rememberSaveable { mutableStateOf(listOf("Peanuts", "Shellfish")) }
+
+    ProfileLayout("Nutrition preferences", onBack = onBack) {
+        SingleChoice(
+            "Dietary preference",
+            listOf("Everything", "Vegetarian", "Vegan", "Pescatarian"),
+            diet,
+            selectedStyle = ChipStyle.Mint,
+        ) { diet = it }
+        MultiChoice(
+            "Foods I like",
+            listOf("Chicken", "Fish", "Rice", "Eggs", "Tofu", "Vegetables"),
+            liked,
+        ) { liked = if (it in liked) liked - it else liked + it }
+        Column(verticalArrangement = Arrangement.spacedBy(Spacing.s8)) {
+            Text("ALLERGIES AND DISLIKES", style = MaterialTheme.typography.labelSmall, color = VoraTextSecondary)
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(Spacing.s8),
+                verticalArrangement = Arrangement.spacedBy(Spacing.s8),
+            ) {
+                avoided.forEach { VoraChip(it, { avoided = avoided - it }, style = ChipStyle.Removable) }
+            }
+        }
+        PrimaryButton("Save preferences", onSave, Modifier.fillMaxWidth(), size = ButtonSize.Large)
+    }
+}
+
+// ---------- Previews ----------
+
 @Preview(widthDp = 390, heightDp = 844)
 @Composable
 private fun ProfilePreview() {
     VoraCoachTheme { ProfileScreen({}, {}, {}, {}, {}) }
 }
+
 @Preview(widthDp = 390, heightDp = 844)
 @Composable
 private fun ProfileEditPreview() {
     VoraCoachTheme { ProfileEditScreen({}, {}) }
 }
+
 @Preview(widthDp = 390, heightDp = 844)
 @Composable
 private fun ProfileGoalsPreview() {
     VoraCoachTheme { ProfileGoalsScreen({}, {}) }
+}
+
+@Preview(widthDp = 390, heightDp = 844)
+@Composable
+private fun ProfileNutritionPreview() {
+    VoraCoachTheme { ProfileNutritionScreen({}, {}) }
 }
