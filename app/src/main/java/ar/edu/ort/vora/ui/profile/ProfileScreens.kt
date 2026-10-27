@@ -40,8 +40,10 @@ import ar.edu.ort.vora.ui.theme.VoraCoachTheme
 import ar.edu.ort.vora.ui.theme.VoraTextMuted
 import ar.edu.ort.vora.ui.theme.VoraTextPrimary
 import ar.edu.ort.vora.ui.theme.VoraTextSecondary
-
-
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import ar.edu.ort.vora.ui.components.ChipStyle
+import ar.edu.ort.vora.ui.components.VoraChip
 // Encabezado arriba y contenido con scroll. Mismo patrón que CoachLayout.
 @Composable
 private fun ProfileLayout(
@@ -124,7 +126,36 @@ fun ProfileScreen(
         ProfileRow("Connected apps", "Manage in settings", onSettings)
     }
 }
+// Grupo de chips de opción única: el elegido se ve verde (ChipStyle.Green).
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun SingleChoice(title: String, options: List<String>, selected: String, onSelect: (String) -> Unit) {
+    Column(verticalArrangement = Arrangement.spacedBy(Spacing.s8)) {
+        Text(title.uppercase(), style = MaterialTheme.typography.labelSmall, color = VoraTextSecondary)
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(Spacing.s8),
+            verticalArrangement = Arrangement.spacedBy(Spacing.s8),
+        ) {
+            options.forEach {
+                VoraChip(it, { onSelect(it) }, style = if (it == selected) ChipStyle.Green else ChipStyle.Default)
+            }
+        }
+    }
+}
 
+@Composable
+fun ProfileGoalsScreen(onBack: () -> Unit, onSave: () -> Unit) {
+    var goal by rememberSaveable { mutableStateOf("Build muscle") }
+    var days by rememberSaveable { mutableStateOf("3") }
+    var level by rememberSaveable { mutableStateOf("Intermediate") }
+
+    ProfileLayout("Your goals", onBack = onBack) {
+        SingleChoice("Main goal", listOf("Lose weight", "Build muscle", "Stay active", "Improve health"), goal) { goal = it }
+        SingleChoice("Workouts per week", listOf("2", "3", "4", "5", "6"), days) { days = it }
+        SingleChoice("Experience level", listOf("Beginner", "Intermediate", "Advanced"), level) { level = it }
+        PrimaryButton("Save preferences", onSave, Modifier.fillMaxWidth(), size = ButtonSize.Large)
+    }
+}
 @Preview(widthDp = 390, heightDp = 844)
 @Composable
 private fun ProfilePreview() {
@@ -134,4 +165,9 @@ private fun ProfilePreview() {
 @Composable
 private fun ProfileEditPreview() {
     VoraCoachTheme { ProfileEditScreen({}, {}) }
+}
+@Preview(widthDp = 390, heightDp = 844)
+@Composable
+private fun ProfileGoalsPreview() {
+    VoraCoachTheme { ProfileGoalsScreen({}, {}) }
 }
