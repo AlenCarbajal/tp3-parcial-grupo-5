@@ -44,6 +44,8 @@ import ar.edu.ort.vora.ui.theme.VoraCoachTheme
 import ar.edu.ort.vora.ui.theme.VoraTextMuted
 import ar.edu.ort.vora.ui.theme.VoraTextPrimary
 import ar.edu.ort.vora.ui.theme.VoraTextSecondary
+import androidx.compose.material3.Switch
+import ar.edu.ort.vora.ui.components.SecondaryButton
 
 // Encabezado arriba y contenido con scroll. Mismo patrón que CoachLayout.
 @Composable
@@ -224,7 +226,45 @@ fun ProfileNutritionScreen(onBack: () -> Unit, onSave: () -> Unit) {
         PrimaryButton("Save preferences", onSave, Modifier.fillMaxWidth(), size = ButtonSize.Large)
     }
 }
+// ---------- Voice y Settings ----------
 
+// Fila con interruptor: título, detalle y Switch de material3.
+@Composable
+private fun SwitchRow(title: String, detail: String, checked: Boolean, onChange: (Boolean) -> Unit) {
+    InfoCard {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Column(Modifier.weight(1f)) {
+                Text(title, style = MaterialTheme.typography.titleSmall, color = VoraTextPrimary)
+                Text(detail, style = MaterialTheme.typography.bodySmall, color = VoraTextSecondary)
+            }
+            Switch(checked = checked, onCheckedChange = onChange)
+        }
+    }
+}
+
+@Composable
+fun ProfileVoiceScreen(onBack: () -> Unit) {
+    var responses by rememberSaveable { mutableStateOf(true) }
+    var handsFree by rememberSaveable { mutableStateOf(false) }
+    var style by rememberSaveable { mutableStateOf("Motivating") }
+
+    ProfileLayout("VORA Coach", onBack = onBack) {
+        SwitchRow("Voice responses", "VORA answers out loud", responses) { responses = it }
+        SwitchRow("Hands-free mode", "Talk without tapping", handsFree) { handsFree = it }
+        SingleChoice("Coaching style", listOf("Motivating", "Calm", "Direct"), style, selectedStyle = ChipStyle.Mint) { style = it }
+    }
+}
+
+@Composable
+fun ProfileSettingsScreen(onBack: () -> Unit, onVoice: () -> Unit, onLogout: () -> Unit) {
+    var notifications by rememberSaveable { mutableStateOf(true) }
+
+    ProfileLayout("Settings", onBack = onBack) {
+        ProfileRow("VORA Coach", "Voice and AI", onVoice)
+        SwitchRow("Notifications", "Reminders and weekly review", notifications) { notifications = it }
+        SecondaryButton("Log out", onLogout, Modifier.fillMaxWidth(), size = ButtonSize.Large)
+    }
+}
 // ---------- Previews ----------
 
 @Preview(widthDp = 390, heightDp = 844)
@@ -249,4 +289,15 @@ private fun ProfileGoalsPreview() {
 @Composable
 private fun ProfileNutritionPreview() {
     VoraCoachTheme { ProfileNutritionScreen({}, {}) }
+}
+@Preview(widthDp = 390, heightDp = 844)
+@Composable
+private fun ProfileVoicePreview() {
+    VoraCoachTheme { ProfileVoiceScreen({}) }
+}
+
+@Preview(widthDp = 390, heightDp = 844)
+@Composable
+private fun ProfileSettingsPreview() {
+    VoraCoachTheme { ProfileSettingsScreen({}, {}, {}) }
 }
