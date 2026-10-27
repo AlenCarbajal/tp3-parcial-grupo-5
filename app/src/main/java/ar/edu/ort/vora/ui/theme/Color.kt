@@ -37,3 +37,8 @@ val LogoShadow = Color(0xFF064E3B)  // sombras del logo de Sign Up
 val OrbGlowBrush = Brush.radialGradient(listOf(VoraMint, VoraGreen))
 val OrbRingBrush = Brush.horizontalGradient(0f to VoraLime, 0.5f to VoraMint, 1f to VoraGreen)
 val OrbCoreBrush = Brush.horizontalGradient(0f to VoraMint, 1f to VoraGreen)
+
+// Orbe gris del error de micrófono (System Alert).
+val OrbMutedGlowBrush = Brush.radialGradient(listOf(VoraTextMuted, VoraTextSecondary))
+val OrbMutedRingBrush = Brush.horizontalGradient(0f to VoraBorder, 0.5f to VoraTextMuted, 1f to VoraTextSecondary)
+val OrbMutedCoreBrush = Brush.horizontalGradient(0f to VoraTextMuted, 1f to VoraTextSecondary)

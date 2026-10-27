@@ -35,6 +35,7 @@ import ar.edu.ort.vora.ui.theme.PillShape
 import ar.edu.ort.vora.ui.theme.Spacing
 import ar.edu.ort.vora.ui.theme.VoraBorder
 import ar.edu.ort.vora.ui.theme.VoraGreen
+import ar.edu.ort.vora.ui.theme.VoraMint
 import ar.edu.ort.vora.ui.theme.VoraSurface
 import ar.edu.ort.vora.ui.theme.VoraTextMuted
 import ar.edu.ort.vora.ui.theme.VoraTextPrimary
@@ -97,6 +98,7 @@ fun VoraBottomBar(
 }
 
 // Botón circular de 32 (volver, más opciones, notificaciones): blanco con borde, o translúcido sobre fondo oscuro.
+// accent: botón principal de 44 en menta (pausa del audio en VORA Speaking).
 @Composable
 fun IconCircleButton(
     @DrawableRes icon: Int,
@@ -104,17 +106,26 @@ fun IconCircleButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     dark: Boolean = false,
+    accent: Boolean = false,
 ) {
     Surface(
         onClick = onClick,
-        modifier = modifier.size(32.dp),
+        modifier = modifier.size(if (accent) 44.dp else 32.dp),
         shape = PillShape,
-        color = if (dark) VoraWhiteTranslucent else VoraSurface,
-        contentColor = if (dark) VoraSurface else VoraTextPrimary,
-        border = if (dark) null else BorderStroke(1.dp, VoraBorder),
+        color = when {
+            accent -> VoraMint
+            dark -> VoraWhiteTranslucent
+            else -> VoraSurface
+        },
+        contentColor = when {
+            accent -> VoraGreen
+            dark -> VoraSurface
+            else -> VoraTextPrimary
+        },
+        border = if (dark || accent) null else BorderStroke(1.dp, VoraBorder),
     ) {
         Box(contentAlignment = Alignment.Center) {
-            Icon(painterResource(icon), contentDescription = contentDescription, modifier = Modifier.size(16.dp))
+            Icon(painterResource(icon), contentDescription = contentDescription, modifier = Modifier.size(if (accent) 20.dp else 16.dp))
         }
     }
 }
@@ -126,7 +137,7 @@ enum class TopBarBack {
 }
 
 // Encabezado de Figma: fila de 350 (margen 20), padding superior 12, chevron 20 o botón de 32, 8/12 hasta el título.
-// Con centered, el título va al centro (Workout Overview, Exercise Guide).
+// Con centered, el título va al centro (Workout Overview, Exercise Guide). titleDot: punto menta de "en línea" junto al título (chat del Coach).
 @Composable
 fun VoraTopBar(
     title: String,
@@ -135,6 +146,7 @@ fun VoraTopBar(
     onBack: () -> Unit = {},
     centered: Boolean = false,
     dark: Boolean = false,
+    titleDot: Boolean = false,
     actions: @Composable RowScope.() -> Unit = {},
 ) {
     val contentColor = if (dark) VoraSurface else VoraTextPrimary
@@ -163,7 +175,12 @@ fun VoraTopBar(
                 )
                 TopBarBack.Circle -> IconCircleButton(R.drawable.ic_chevron_left, "Volver", onBack, dark = dark)
             }
-            if (!centered) Text(title, style = titleStyle, color = contentColor)
+            if (!centered) {
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s6)) {
+                    Text(title, style = titleStyle, color = contentColor)
+                    if (titleDot) StatusDot(Modifier.size(6.dp), color = VoraMint)
+                }
+            }
         }
         if (centered) {
             Text(title, style = titleStyle, color = contentColor, modifier = Modifier.align(Alignment.Center))

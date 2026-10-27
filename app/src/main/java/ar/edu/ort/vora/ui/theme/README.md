@@ -62,6 +62,8 @@ El orbe (`ui/components/VoraOrb.kt`) tiene tres capas centradas. Las medidas de 
 | `orb-ring` | 89 % (107/120) | Aro de 7/120 de grosor, lineal de izquierda a derecha `#C9E86A` 0 → `#65D6B0` 0,5 → `#123D35` 1 (`OrbRingBrush`) | 80 % |
 | `orb-core` | 75 % (90/120) | Lineal de izquierda a derecha `#65D6B0` → `#123D35` (`OrbCoreBrush`) | Sombra x 0, y 8, blur 24, `#65D6B0` al 14,9 %. No escala |
 
+Para el error de micrófono (System Alert) el orbe va en gris con `muted = true` (`OrbMutedGlowBrush`, `OrbMutedRingBrush` y `OrbMutedCoreBrush`, hechos con los grises del tema).
+
 Entre el aro y el núcleo queda una separación por donde se ve el fondo. Tamaños usados en Figma: 120 dp (Completed), 28 dp (panel de Nutrition) y 16 dp (VORA INSIGHT).
 
 ## Tipografía (`Type.kt`)
@@ -130,7 +132,7 @@ Tomadas de la página "Elementos de interfaz" del sistema de diseño de Figma. S
 | Señal / etiqueta | Punto de 8; etiqueta con radio 100 |
 | Recomendación breve | Menta al 12,16 %, borde menta, texto verde, radio 12, padding 12 |
 | Consejo destacado | Panel verde, contenido blanco, título menta, radio 16, padding 16 |
-| Barra superior | Fila de 350 con padding 12/20. Chevron suelto de 20 a 8 del título 20 / 600 (Add Food), o botón circular de 32 blanco con borde a 12 del título 20 / 700 (Profile, Voice). Variante con título centrado (Workout Overview) y acciones a la derecha (botón "…", etiqueta de estado, X) |
+| Barra superior | Fila de 350 con padding 12/20. Chevron suelto de 20 a 8 del título 20 / 600 (Add Food), o botón circular de 32 blanco con borde a 12 del título 20 / 700 (Profile, Voice). Variante con título centrado (Workout Overview) y acciones a la derecha (botón "…", etiqueta de estado, X). `titleDot`: punto menta de 6 a 6 del título (chat del Coach) |
 | Botón circular | 32, radio 16, blanco con borde 1 `#E4E9E6`; translúcido sobre fondo oscuro |
 | Chip | Radio 100, borde 1, padding 8/14, separación 6 hasta el ícono, texto 13 / 500 (elegido 600). Variantes: blanco, menta elegido, verde elegido, con check (borde menta) y para quitar (círculo con x `#DC2626` de 12) |
 | Selector de período | Contenedor blanco tipo píldora; opción activa verde con texto blanco |
@@ -139,6 +141,9 @@ Tomadas de la página "Elementos de interfaz" del sistema de diseño de Figma. S
 | CTA de acceso | `#CCE65E`, radio 16, alto 56, padding 16/24, sombra 0/6 blur 20 al 35 %, flecha a la derecha |
 | Acceso alternativo | Blanco con borde, radio 16, alto 46; Face ID en menta translúcida |
 | Orbe del asistente | 170, mismas proporciones que el orbe de 120; al escuchar, brillo al 45 % y aro exterior de 115 % en menta al 30 % |
+| Sobre panel oscuro (Coach) | "Cancel" con `VoraTextButton(color)`; barra de audio con `ProgressBar(trackColor = VoraWhiteTranslucent)`; pausa en `IconCircleButton(accent)` menta de 44 |
+| Botón menta | `MintButton`: "Try again" del error de micrófono |
+| Respuesta con audio | `ChatBubble(audioLabel)`: fila "Listen to response" debajo de una línea |
 | Micrófono | Verde de 72 en reposo (sombra menta 0/8 blur 24 al 15 %); menta de 80 al escuchar; ícono de 28 con trazo 2,5 |
 
 ## Íconos
@@ -165,6 +170,7 @@ Los íconos son de [Lucide](https://lucide.dev) (licencia ISC), igual que en Fig
 | `ic_scan_face` | `scan-face` | 20 | 2 | Acceso con Face ID |
 | `ic_more` / `ic_bell` / `ic_close` / `ic_plus` / `ic_send` | `ellipsis` / `bell` / `x` / `plus` / `send` | 20 | 2 | Acciones de encabezado y chat |
 | `ic_calendar` / `ic_flame` / `ic_shield_check` / `ic_chevron_down` | `calendar` / `flame` / `shield-check` / `chevron-down` | 14–16 | 2 | Entrenamiento recomendado, racha, notas de seguridad y selector de idioma |
+| `ic_play` / `ic_pause` / `ic_repeat` / `ic_circle_dot` / `ic_rotate_cw` | `play` / `pause` / `repeat-2` / `circle-dot` / `rotate-cw` | 12–28 | 2 | Respuesta hablada del Coach, reintentar en el error de micrófono |
 | `ic_audio_lines` | `audio-lines` | 32 | 2 | Centro del orbe del asistente |
 | `ic_mic_large` | `mic` | 28 | 2,5 | Botón de micrófono del asistente |
 

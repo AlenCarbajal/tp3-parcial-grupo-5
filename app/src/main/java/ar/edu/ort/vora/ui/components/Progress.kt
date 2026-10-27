@@ -40,20 +40,21 @@ import ar.edu.ort.vora.ui.theme.VoraTextPrimary
 import ar.edu.ort.vora.ui.theme.VoraTextSecondary
 import ar.edu.ort.vora.ui.theme.VoraWhiteTranslucent
 
-// Pista completa y relleno superpuesto, como en Figma. Barras de 4.
+// Pista completa y relleno superpuesto, como en Figma. Barras de 4. Sobre fondo oscuro la pista va blanca translúcida.
 @Composable
 fun ProgressBar(
     progress: Float,
     modifier: Modifier = Modifier,
     color: Color = VoraGreen,
     height: Dp = 4.dp,
+    trackColor: Color = VoraBorder,
 ) {
     val value = progress.coerceIn(0f, 1f)
     Box(
         modifier
             .fillMaxWidth()
             .height(height)
-            .background(VoraBorder, PillShape)
+            .background(trackColor, PillShape)
             .semantics { progressBarRangeInfo = ProgressBarRangeInfo(value, 0f..1f) }
     ) {
         if (value > 0f) {
