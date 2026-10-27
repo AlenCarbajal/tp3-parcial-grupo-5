@@ -20,4 +20,7 @@ object Spacing {
     val cardPadding = 16.dp
     val groupGap = 12.dp
     val titleGap = 4.dp     // título → descripción
+
+    // Ancho máximo del contenido: en tablets o apaisado se centra en lugar de estirarse.
+    val maxContentWidth = 480.dp
 }

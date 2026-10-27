@@ -24,10 +24,14 @@ val AuthLime = Color(0xFFCCE65E)
 val AuthFieldBackground = Color(0x99F3F9F5)  // #F3F9F5 al 60 %
 val AuthFieldBorder = Color(0xFFE2EDE7)
 val AuthScreenTint = Color(0xFFF3F9F5)
+val AuthTextSecondary = Color(0xFF6B8780)
+val AuthAccent = Color(0xCC065F46)  // #065F46 al 80 %
+val AuthOutline = Color(0xFF6B7280)  // borde de los campos de Sign Up
 val LogoLight = Color(0xFF86EFAC)
 val LogoMid = Color(0xFF34D399)
 val LogoDark = Color(0xFF0E382F)
 val LogoBadgeText = Color(0xFF6EE7B7)
+val LogoShadow = Color(0xFF064E3B)  // sombras del logo de Sign Up
 
 // Degradados del orbe VORA (orb-glow, orb-ring y orb-core en Figma), de izquierda a derecha.
 val OrbGlowBrush = Brush.radialGradient(listOf(VoraMint, VoraGreen))
