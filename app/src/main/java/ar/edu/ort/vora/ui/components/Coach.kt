@@ -3,6 +3,7 @@ package ar.edu.ort.vora.ui.components
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -26,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import ar.edu.ort.vora.R
@@ -37,6 +40,7 @@ import ar.edu.ort.vora.ui.theme.VoraMint
 import ar.edu.ort.vora.ui.theme.VoraSurface
 import ar.edu.ort.vora.ui.theme.VoraTextMuted
 import ar.edu.ort.vora.ui.theme.VoraTextPrimary
+import ar.edu.ort.vora.ui.theme.VoraTextSecondary
 import ar.edu.ort.vora.ui.theme.VoraWhiteTranslucent
 
 // Botón de micrófono del asistente: verde de 72 en reposo (sombra menta) y menta de 80 al escuchar. Ícono de 28.
@@ -87,8 +91,16 @@ fun DarkTranscriptCard(text: String, modifier: Modifier = Modifier, label: Strin
 }
 
 // Burbujas del chat con VORA: usuario a la derecha en verde, asistente a la izquierda en blanco con borde y orbe.
+// audioLabel agrega abajo, separada por una línea, la fila para escuchar la respuesta ("Listen to response (0:14)").
 @Composable
-fun ChatBubble(text: String, time: String, fromUser: Boolean, modifier: Modifier = Modifier) {
+fun ChatBubble(
+    text: String,
+    time: String,
+    fromUser: Boolean,
+    modifier: Modifier = Modifier,
+    audioLabel: String? = null,
+    onListen: () -> Unit = {},
+) {
     Row(
         modifier.fillMaxWidth(),
         horizontalArrangement = if (fromUser) Arrangement.End else Arrangement.spacedBy(Spacing.s8),
@@ -104,7 +116,18 @@ fun ChatBubble(text: String, time: String, fromUser: Boolean, modifier: Modifier
         ) {
             Column(Modifier.padding(Spacing.s12), verticalArrangement = Arrangement.spacedBy(Spacing.s4)) {
                 Text(text, style = MaterialTheme.typography.bodyMedium)
-                Text(
+                if (audioLabel != null) {
+                    HorizontalDivider(Modifier.padding(vertical = Spacing.s6), color = VoraBorder)
+                    Row(
+                        Modifier.clickable(role = Role.Button, onClick = onListen),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(Spacing.s8),
+                    ) {
+                        Icon(painterResource(R.drawable.ic_play), contentDescription = null, tint = VoraTextSecondary, modifier = Modifier.size(12.dp))
+                        Text(audioLabel, style = MaterialTheme.typography.bodySmall, color = VoraTextSecondary)
+                    }
+                }
+                if (audioLabel == null) Text(
                     time,
                     modifier = if (fromUser) Modifier.align(Alignment.End) else Modifier,
                     style = MaterialTheme.typography.labelSmall,

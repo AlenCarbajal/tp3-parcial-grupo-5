@@ -15,6 +15,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -25,6 +26,7 @@ import ar.edu.ort.vora.ui.theme.Spacing
 import ar.edu.ort.vora.ui.theme.VoraBorder
 import ar.edu.ort.vora.ui.theme.VoraGreen
 import ar.edu.ort.vora.ui.theme.VoraLime
+import ar.edu.ort.vora.ui.theme.VoraMint
 import ar.edu.ort.vora.ui.theme.VoraSurface
 import ar.edu.ort.vora.ui.theme.VoraTextMuted
 import ar.edu.ort.vora.ui.theme.VoraTextPrimary
@@ -71,6 +73,19 @@ fun LimeButton(
     PillButton(text, onClick, modifier, size, icon, enabled, container = VoraLime, content = VoraGreen)
 }
 
+// Menta de ancho completo: "Try again" del error de micrófono.
+@Composable
+fun MintButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    size: ButtonSize = ButtonSize.Medium,
+    @DrawableRes icon: Int? = null,
+    enabled: Boolean = true,
+) {
+    PillButton(text, onClick, modifier, size, icon, enabled, container = VoraMint, content = VoraGreen)
+}
+
 // Blanco con borde: prompts de voz y acciones secundarias sobre fondo claro.
 @Composable
 fun SecondaryButton(
@@ -109,8 +124,15 @@ fun PanelButton(
 }
 
 // Acción contextual de texto ("View History") o enlace subrayado ("Type instead").
+// color reemplaza el de Figma sobre fondos oscuros ("Cancel" en menta o blanco translúcido).
 @Composable
-fun VoraTextButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier, underline: Boolean = false) {
+fun VoraTextButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    underline: Boolean = false,
+    color: Color = Color.Unspecified,
+) {
     TextButton(onClick = onClick, modifier = modifier, contentPadding = PaddingValues(Spacing.s4)) {
         Text(
             text,
@@ -118,7 +140,7 @@ fun VoraTextButton(text: String, onClick: () -> Unit, modifier: Modifier = Modif
                 fontWeight = if (underline) FontWeight.Normal else FontWeight.SemiBold,
                 textDecoration = if (underline) TextDecoration.Underline else null,
             ),
-            color = if (underline) VoraTextSecondary else VoraGreen,
+            color = color.takeOrElse { if (underline) VoraTextSecondary else VoraGreen },
         )
     }
 }

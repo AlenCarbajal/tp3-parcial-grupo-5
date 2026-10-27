@@ -1,9 +1,11 @@
 package ar.edu.ort.vora.ui.components
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -34,7 +36,13 @@ enum class ChipStyle {
 
 // Chip de Figma: radio 100, borde 1, padding 8/14, separación 6 hasta el ícono, texto 13 (500, elegido 600).
 @Composable
-fun VoraChip(text: String, onClick: () -> Unit, modifier: Modifier = Modifier, style: ChipStyle = ChipStyle.Default) {
+fun VoraChip(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    style: ChipStyle = ChipStyle.Default,
+    @DrawableRes trailingIcon: Int? = null,
+) {
     val (container, content) = when (style) {
         ChipStyle.Mint -> VoraMint to VoraTextPrimary
         ChipStyle.Green -> VoraGreen to VoraSurface
@@ -59,7 +67,7 @@ fun VoraChip(text: String, onClick: () -> Unit, modifier: Modifier = Modifier, s
             when (style) {
                 ChipStyle.Checked -> Icon(painterResource(R.drawable.ic_check), contentDescription = null, tint = VoraGreen)
                 ChipStyle.Removable -> Icon(painterResource(R.drawable.ic_circle_x), contentDescription = "Quitar", tint = VoraDestructive)
-                else -> Unit
+                else -> if (trailingIcon != null) Icon(painterResource(trailingIcon), contentDescription = null, modifier = Modifier.size(12.dp))
             }
         }
     }
