@@ -35,6 +35,12 @@ import ar.edu.ort.vora.ui.coach.CoachSpeakingScreen
 import ar.edu.ort.vora.ui.components.VoraBottomBar
 import ar.edu.ort.vora.ui.home.HomeScreen
 import ar.edu.ort.vora.ui.home.NotificationsScreen
+import ar.edu.ort.vora.ui.profile.ProfileEditScreen
+import ar.edu.ort.vora.ui.profile.ProfileGoalsScreen
+import ar.edu.ort.vora.ui.profile.ProfileNutritionScreen
+import ar.edu.ort.vora.ui.profile.ProfileScreen
+import ar.edu.ort.vora.ui.profile.ProfileSettingsScreen
+import ar.edu.ort.vora.ui.profile.ProfileVoiceScreen
 
 // Destinos de la barra inferior, en el orden de VoraBottomBarItems (íconos y textos de Figma).
 private val bottomTabs = listOf(Routes.HOME, Routes.WORKOUT, Routes.NUTRITION, Routes.PROGRESS, Routes.PROFILE)
@@ -214,27 +220,33 @@ fun VoraNavHost(navController: NavHostController = rememberNavController()) {
 
             // Profile
             composable(Routes.PROFILE) {
-                PlaceholderScreen(
-                    "Perfil",
-                    Routes.PROFILE_EDIT to "Edit",
-                    Routes.PROFILE_GOALS to "Goals",
-                    Routes.PROFILE_NUTRITION to "Nutrition prefs",
-                    Routes.PROFILE_SETTINGS to "Settings",
-                    onNavigate = go,
+                ProfileScreen(
+                    onEdit = { go(Routes.PROFILE_EDIT) },
+                    onGoals = { go(Routes.PROFILE_GOALS) },
+                    onNutrition = { go(Routes.PROFILE_NUTRITION) },
+                    onSettings = { go(Routes.PROFILE_SETTINGS) },
                 )
             }
-            composable(Routes.PROFILE_EDIT) { PlaceholderScreen("Edit profile") {} }
-            composable(Routes.PROFILE_GOALS) { PlaceholderScreen("Your goals") {} }
-            composable(Routes.PROFILE_NUTRITION) { PlaceholderScreen("Nutrition preferences") {} }
-            composable(Routes.PROFILE_VOICE) { PlaceholderScreen("VORA Coach (Voz e IA)") {} }
+            composable(Routes.PROFILE_EDIT) {
+                ProfileEditScreen(onBack = { navController.popBackStack() }, onSave = { navController.popBackStack() })
+            }
+            composable(Routes.PROFILE_GOALS) {
+                ProfileGoalsScreen(onBack = { navController.popBackStack() }, onSave = { navController.popBackStack() })
+            }
+            composable(Routes.PROFILE_NUTRITION) {
+                ProfileNutritionScreen(onBack = { navController.popBackStack() }, onSave = { navController.popBackStack() })
+            }
+            composable(Routes.PROFILE_VOICE) {
+                ProfileVoiceScreen(onBack = { navController.popBackStack() })
+            }
             composable(Routes.PROFILE_SETTINGS) {
-                PlaceholderScreen("Settings", Routes.PROFILE_VOICE to "Voz e IA", Routes.LOGIN to "Log out") {
-                    if (it == Routes.LOGIN) {
+                ProfileSettingsScreen(
+                    onBack = { navController.popBackStack() },
+                    onVoice = { navController.navigate(Routes.PROFILE_VOICE) },
+                    onLogout = {
                         navController.navigate(Routes.LOGIN) { popUpTo(navController.graph.id) { inclusive = true } }
-                    } else {
-                        navController.navigate(it)
-                    }
-                }
+                    },
+                )
             }
         }
     }

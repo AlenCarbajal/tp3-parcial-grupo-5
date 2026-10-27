@@ -90,7 +90,7 @@ private fun ProfileRow(title: String, detail: String, onClick: () -> Unit) {
 
 @Composable
 fun ProfileScreen(
-    onBack: () -> Unit,
+
     onEdit: () -> Unit,
     onGoals: () -> Unit,
     onNutrition: () -> Unit,
@@ -98,7 +98,7 @@ fun ProfileScreen(
 ) {
     ProfileLayout(
         "Profile",
-        onBack = onBack,
+        back = TopBarBack.None,
         actions = { VoraTextButton("Settings", onSettings) },
     ) {
         InfoCard {
@@ -270,7 +270,7 @@ fun ProfileSettingsScreen(onBack: () -> Unit, onVoice: () -> Unit, onLogout: () 
 @Preview(widthDp = 390, heightDp = 844)
 @Composable
 private fun ProfilePreview() {
-    VoraCoachTheme { ProfileScreen({}, {}, {}, {}, {}) }
+    VoraCoachTheme { ProfileScreen({}, {}, {}, {}, ) }
 }
 
 @Preview(widthDp = 390, heightDp = 844)
