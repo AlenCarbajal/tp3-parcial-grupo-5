@@ -90,6 +90,11 @@ Registro del consumo de tokens del asistente de IA, actualizado por el grupo. La
 |---|---|---|---|
 | 17/10/2026 | Lectura de la consigna y armado de `specs/` | ~143.000 | Contador de la sesión |
 | 18/10/2026 | Configuración (Hilt, Room, Retrofit), NavHost, inventario de pantallas, README | [completar con Settings → Usage] | Panel de uso de la cuenta |
+| 20/10 al 22/10/2026 | Tema y componentes (T10, T11), contexto de la materia | ~24 M (con un chat por tarea: ~17 M) | Registro de la sesión, tokens efectivos |
+| 26/10/2026 | Acceso y Home (T12, T13), integración con la navegación | ~5,9 M (con un chat por tarea: ~4,1 M) | Registro de la sesión, tokens efectivos |
+| 26/10 al 27/10/2026 | Pantallas del Coach (T40) | ~4,8 M (con un chat por tarea: ~3,4 M) | Registro de la sesión, tokens efectivos |
+
+Los tokens efectivos ponderan el contexto releído a 0,1, el contexto nuevo a 2 y lo que escribe el asistente a 5. Las tres últimas filas salen de una sola sesión larga; casi dos tercios del consumo fue releer conversación vieja, y la proyección estima un 30 % menos si se hubiera abierto un chat por tarea.
 
 Estrategia para ahorrar tokens: un chat por tarea, contexto breve a partir de `specs/`, pegar solo el error o el archivo puntual, y pedir cambios acotados en lugar de reescribir archivos.
 
