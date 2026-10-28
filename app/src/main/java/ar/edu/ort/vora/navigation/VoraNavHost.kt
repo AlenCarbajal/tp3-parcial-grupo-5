@@ -1,6 +1,5 @@
 package ar.edu.ort.vora.navigation
 
-import android.R.attr.type
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.Column
@@ -37,6 +36,9 @@ import ar.edu.ort.vora.ui.workout.WorkoutDetailScreen
 import ar.edu.ort.vora.ui.workout.WorkoutPlanScreen
 import ar.edu.ort.vora.ui.workout.WorkoutPrepScreen
 import ar.edu.ort.vora.ui.workout.WorkoutViewModel
+import ar.edu.ort.vora.ui.nutrition.ManualMealScreen
+import ar.edu.ort.vora.ui.nutrition.MealDetailScreen
+import ar.edu.ort.vora.ui.nutrition.MealsScreen
 
 // Rutas quemadas como texto para evitar errores si no están en tu Routes.kt
 private const val ROUTE_COACH = "coach"
@@ -108,6 +110,8 @@ fun VoraNavHost(
             restoreState = true
         }
     }
+    val back: () -> Unit = { navController.popBackStack() }
+    val go: (String) -> Unit = { navController.navigate(it) }
 
     Scaffold(
         bottomBar = {
@@ -144,7 +148,7 @@ fun VoraNavHost(
             }
 
             // --- COACH ---
-            composable(ROUTE_COACH) { PlaceholderScreen("Asistente VORA") }
+            composable(ROUTE_COACH) { PlaceholderScreen("Asistente VORA")  }
             composable(ROUTE_COACH_LISTENING) { PlaceholderScreen("Escuchando") }
             composable(ROUTE_COACH_PROCESSING) { PlaceholderScreen("Procesando") }
             composable(ROUTE_COACH_SPEAKING) { PlaceholderScreen("Hablando") }
@@ -186,6 +190,7 @@ fun VoraNavHost(
                     onAdd = { go(Routes.NUTRITION_ADD) },
                     onMeal = { id -> go(Routes.nutritionMeal(id.toString())) },
                 )
+            }
             composable(route = Routes.WORKOUT_PREP, arguments = listOf(navArgument("workoutId") { type = NavType.StringType })) { entry ->
                 val workoutId = entry.arguments?.getString("workoutId").orEmpty()
                 val viewModel = hiltViewModel<WorkoutViewModel>(rememberWorkoutEntry(navController))
@@ -264,21 +269,45 @@ fun VoraNavHost(
             composable(ROUTE_NUTRITION_REVIEW) { PlaceholderScreen("Review") }
             composable(ROUTE_NUTRITION_MANUAL) { PlaceholderScreen("Manual") }
 
-            // --- PROGRESO ---
-            composable(ROUTE_PROGRESS) { PlaceholderScreen("Progreso") }
-            composable(ROUTE_PROGRESS_TODAY) { PlaceholderScreen("Hoy") }
-            composable(ROUTE_PROGRESS_WORKOUT) { PlaceholderScreen("Entrenamiento") }
-            composable(ROUTE_PROGRESS_NUTRITION) { PlaceholderScreen("Nutrición") }
-            composable(ROUTE_PROGRESS_HEALTH) { PlaceholderScreen("Salud") }
-            composable(ROUTE_PROGRESS_WEEKLY) { PlaceholderScreen("Semanal") }
+            // Profile
+            composable(Routes.PROFILE) {
+                PlaceholderScreen(
+                    "Perfil",
+                    Routes.PROFILE_EDIT to "Edit",
+                    Routes.PROFILE_GOALS to "Goals",
+                    Routes.PROFILE_NUTRITION to "Nutrition prefs",
+                    Routes.PROFILE_SETTINGS to "Settings",
+                    onNavigate = go,
+                )
+            }
+            composable(Routes.PROFILE_EDIT) { PlaceholderScreen("Edit profile") {} }
+            composable(Routes.PROFILE_GOALS) { PlaceholderScreen("Your goals") {} }
+            composable(Routes.PROFILE_NUTRITION) { PlaceholderScreen("Nutrition preferences") {} }
+            composable(Routes.PROFILE_VOICE) { PlaceholderScreen("VORA Coach (Voz e IA)") {} }
+            composable(Routes.PROFILE_SETTINGS) {
+                PlaceholderScreen("Settings", Routes.PROFILE_VOICE to "Voz e IA", Routes.LOGIN to "Log out") {
+                    if (it == Routes.LOGIN) {
+                        navController.navigate(Routes.LOGIN) { popUpTo(navController.graph.id) { inclusive = true } }
+                    } else {
+                        navController.navigate(it)
+                    }
+                }
+            }
+        }
+    }
+}
 
-            // --- PERFIL ---
-            composable(ROUTE_PROFILE) { PlaceholderScreen("Perfil") }
-            composable(ROUTE_PROFILE_EDIT) { PlaceholderScreen("Editar perfil") }
-            composable(ROUTE_PROFILE_GOALS) { PlaceholderScreen("Objetivos") }
-            composable(ROUTE_PROFILE_NUTRITION) { PlaceholderScreen("Preferencias nutrición") }
-            composable(ROUTE_PROFILE_VOICE) { PlaceholderScreen("Voz") }
-            composable(ROUTE_PROFILE_SETTINGS) { PlaceholderScreen("Ajustes") }
+// Pantalla temporal: se reemplaza por la real de cada área.
+@Composable
+private fun PlaceholderScreen(
+    title: String,
+    vararg links: Pair<String, String>,
+    onNavigate: (String) -> Unit = {},
+) {
+    Column(Modifier.fillMaxSize()) {
+        Text(title)
+        links.forEach { (route, label) ->
+            Button(onClick = { onNavigate(route) }) { Text(label) }
         }
     }
 }
@@ -290,21 +319,5 @@ private fun rememberWorkoutEntry(
     val entry = navController.currentBackStackEntry
     return androidx.compose.runtime.remember(entry) {
         navController.getBackStackEntry(Routes.WORKOUT)
-    }
-}
-
-@Composable
-private fun PlaceholderScreen(
-    title: String,
-    vararg links: Pair<String, String>,
-    onNavigate: (String) -> Unit = {}
-) {
-    Column(modifier = Modifier.fillMaxSize()) {
-        Text(text = title)
-        links.forEach { (route, label) ->
-            Button(onClick = { onNavigate(route) }) {
-                Text(text = label)
-            }
-        }
     }
 }
