@@ -23,18 +23,18 @@ App Android (Kotlin + Jetpack Compose) de coaching de entrenamiento y nutrición
 
 Última actualización: 18/10/2026. Estados: ✅ hecho · 🔶 en curso · ⬜ pendiente.
 
-| Requisito | Estado | Detalle |
-|---|---|---|
-| Proyecto compila, Hilt configurado | ✅ | `@HiltAndroidApp`, `@AndroidEntryPoint` |
-| Navegación entre áreas principales | 🔶 | NavHost base con pantallas temporales |
-| Tema y componentes (fidelidad Figma) | ⬜ | Tokens documentados en `specs/06-design-tokens.md` |
-| Retrofit: `GET /v1/workouts` y `/v1/workouts/{id}` (RF01) | ⬜ | |
-| Room: caché de entrenamientos (RF02) | ⬜ | |
-| Room: registro manual de comidas con validación, listado por fecha, borrado con confirmación, total diario (RF03/RF04) | ⬜ | |
-| Estados de carga / vacío / error con reintento (RF05) | ⬜ | |
-| Separación DTO / Model / Entity + Repository (RF06) | ⬜ | |
-| ViewModel con StateFlow y corrutinas (RF07) | ⬜ | |
-| Hilt para repositorios y ViewModels (RF08) | 🔶 | Aplicación y actividad listas; módulos pendientes |
+| Requisito                                                                                                              | Estado | Detalle                                                                       |
+| ---------------------------------------------------------------------------------------------------------------------- | ------ | ----------------------------------------------------------------------------- |
+| Proyecto compila, Hilt configurado                                                                                     | ✅      | `@HiltAndroidApp`, `@AndroidEntryPoint`                                       |
+| Navegación entre áreas principales                                                                                     | 🔶     | NavHost base con pantallas temporales                                         |
+| Tema y componentes (fidelidad Figma)                                                                                   | ⬜      | Tokens documentados en `specs/06-design-tokens.md`                            |
+| Retrofit: `GET /v1/workouts` y `/v1/workouts/{id}` (RF01)                                                              | ⬜      |                                                                               |
+| Room: caché de entrenamientos (RF02)                                                                                   | ⬜      |                                                                               |
+| Room: registro manual de comidas con validación, listado por fecha, borrado con confirmación, total diario (RF03/RF04) | ✅      | Formulario, lista, detalle y dashboard implementados; pendiente prueba manual |
+| Estados de carga / vacío / error con reintento (RF05)                                                                  | ⬜      |                                                                               |
+| Separación DTO / Model / Entity + Repository (RF06)                                                                    | ⬜      |                                                                               |
+| ViewModel con StateFlow y corrutinas (RF07)                                                                            | ⬜      |                                                                               |
+| Hilt para repositorios y ViewModels (RF08)                                                                             | 🔶     | Aplicación y actividad listas; módulos pendientes                             |
 
 ## Inventario de pantallas
 
