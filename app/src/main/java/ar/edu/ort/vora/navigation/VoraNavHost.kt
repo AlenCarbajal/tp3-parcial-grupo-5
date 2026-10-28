@@ -23,7 +23,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import ar.edu.ort.vora.progress.ProgressDashboardScreen
-import ar.edu.ort.vora.progress.ProgressScreen
+import ar.edu.ort.vora.progress.TodaysOverviewScreen
 import ar.edu.ort.vora.ui.auth.SignInScreen
 import ar.edu.ort.vora.ui.auth.SignUpScreen
 import ar.edu.ort.vora.ui.coach.CoachChatScreen
@@ -212,7 +212,12 @@ fun VoraNavHost(navController: NavHostController = rememberNavController()) {
 
             // Progress (pantallas reales de Lisandro)
             composable(Routes.PROGRESS) { ProgressDashboardScreen() }
-            composable(Routes.PROGRESS_TODAY) { ProgressScreen() }
+            composable(Routes.PROGRESS_TODAY) {
+                TodaysOverviewScreen(
+                    onStartWorkout = { navController.navigate(Routes.WORKOUT) },
+                    onOpenDashboard = { navController.navigate(Routes.PROGRESS_DASHBOARD) }
+                )
+            }
             composable(Routes.PROGRESS_WORKOUT) { PlaceholderScreen("Workout progress") {} }
             composable(Routes.PROGRESS_NUTRITION) { PlaceholderScreen("Nutrition progress") {} }
             composable(Routes.PROGRESS_HEALTH) { PlaceholderScreen("Health trends") {} }
