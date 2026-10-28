@@ -39,7 +39,7 @@ private fun numberError(text: String, integer: Boolean = false): String? {
 
 fun MealFormState.errors(): MealFormErrors = MealFormErrors(
     name = if (name.isBlank()) "Ingresá un nombre." else null,
-    date = if (!isValid(date.trim())) "Usá el formato AAAA-MM-DD." else null,
+    date = if (!isValidIsoDate(date.trim())) "Usá el formato AAAA-MM-DD." else null,
     kcal = numberError(kcal, integer = true),
     protein = numberError(protein),
     carbs = numberError(carbs),

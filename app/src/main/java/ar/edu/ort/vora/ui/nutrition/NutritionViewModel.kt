@@ -71,7 +71,7 @@ class NutritionViewModel @Inject constructor(
         retryTrigger.update { it + 1 }
     }
 
-    fun addMeal(meal: Meal) {
+    fun addMeal(meal: Meal, onSaved: () -> Unit = {}) {
         // Defensa mínima: el formulario (T32) valida primero, pero a Room nunca llega un dato inválido
         val problem = validate(meal)
         if (problem != null) {
@@ -80,26 +80,33 @@ class NutritionViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            try {
-                repository.addMeal(meal);true
-
+            _actionError.value = null
+            val ok = try {
+                repository.addMeal(meal)
+                true
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
                 _actionError.value = "No se pudo guardar la comida."
+                false
             }
+            if (ok) onSaved()
         }
     }
 
-    fun deleteMeal(meal: Meal) {
+    fun deleteMeal(meal: Meal, onDeleted: () -> Unit = {}) {
         viewModelScope.launch {
-            try {
-                repository.deleteMeal(meal);true
+            _actionError.value = null
+            val ok = try {
+                repository.deleteMeal(meal)
+                true
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
                 _actionError.value = "No se pudo borrar la comida."
+                false
             }
+            if (ok) onDeleted()
         }
     }
 
