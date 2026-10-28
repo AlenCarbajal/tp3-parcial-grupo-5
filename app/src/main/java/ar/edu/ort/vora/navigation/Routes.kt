@@ -1,3 +1,4 @@
+
 package ar.edu.ort.vora.navigation
 
 object Routes {
@@ -35,11 +36,19 @@ object Routes {
     const val NUTRITION_MANUAL = "nutrition/manual"
     // Progress
     const val PROGRESS = "progress"
+    const val PROGRESS_DASHBOARD = "progress/dashboard"
     const val PROGRESS_TODAY = "progress/today"
     const val PROGRESS_WORKOUT = "progress/workout"
     const val PROGRESS_NUTRITION = "progress/nutrition"
     const val PROGRESS_HEALTH = "progress/health"
     const val PROGRESS_WEEKLY = "progress/weekly"
+    const val PROFILE = "profile"
+    const val COACH_LISTENING = "coach/listening"
+    const val COACH_PROCESSING = "coach/processing"
+    const val COACH_SPEAKING = "coach/speaking"
+    const val COACH_CONVERSATION = "coach/conversation"
+    const val COACH_ERROR = "coach/error"
+}
     // Profile
     const val PROFILE = "profile"
     const val PROFILE_EDIT = "profile/edit"
