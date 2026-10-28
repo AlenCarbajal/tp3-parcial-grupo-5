@@ -35,6 +35,8 @@ import ar.edu.ort.vora.ui.coach.CoachSpeakingScreen
 import ar.edu.ort.vora.ui.components.VoraBottomBar
 import ar.edu.ort.vora.ui.home.HomeScreen
 import ar.edu.ort.vora.ui.home.NotificationsScreen
+import ar.edu.ort.vora.ui.nutrition.ManualMealScreen
+import ar.edu.ort.vora.ui.nutrition.MealsScreen
 
 // Destinos de la barra inferior, en el orden de VoraBottomBarItems (íconos y textos de Figma).
 private val bottomTabs = listOf(Routes.HOME, Routes.WORKOUT, Routes.NUTRITION, Routes.PROGRESS, Routes.PROFILE)
@@ -190,7 +192,11 @@ fun VoraNavHost(navController: NavHostController = rememberNavController()) {
                 )
             }
             composable(Routes.NUTRITION_MEALS) {
-                PlaceholderScreen("Today's Meals", Routes.NUTRITION_ADD to "Add Dinner", Routes.nutritionMeal("1") to "Detalle", onNavigate = go)
+                MealsScreen(
+                    onBack = back,
+                    onAdd = { go(Routes.NUTRITION_ADD) },
+                    onMeal = { id -> go(Routes.nutritionMeal(id.toString())) },
+                )
             }
             composable(Routes.NUTRITION_ADD) {
                 PlaceholderScreen("Add Food", Routes.NUTRITION_VOICE to "Voice", Routes.NUTRITION_PHOTO to "Photo", Routes.NUTRITION_MANUAL to "Manual", onNavigate = go)
@@ -202,7 +208,19 @@ fun VoraNavHost(navController: NavHostController = rememberNavController()) {
             composable(Routes.NUTRITION_PHOTO) { PlaceholderScreen("Analyse Meal", Routes.NUTRITION_REVIEW to "Review & Add", onNavigate = go) }
             composable(Routes.NUTRITION_REVIEW) { PlaceholderScreen("Review Meal", Routes.NUTRITION_MEALS to "Add to Lunch", onNavigate = go) }
             composable(Routes.NUTRITION_MEAL) { PlaceholderScreen("Lunch") {} }
-            composable(Routes.NUTRITION_MANUAL) { PlaceholderScreen("Registro manual", Routes.NUTRITION_MEALS to "Guardar", onNavigate = go) }
+            composable(Routes.NUTRITION_MANUAL) {
+                ManualMealScreen(
+                    onBack = back,
+                    onSaved = {
+                        // Si ya había una lista debajo se vuelve a ella; si no, el formulario se reemplaza por la lista
+                        if (!navController.popBackStack(Routes.NUTRITION_MEALS, inclusive = false)) {
+                            navController.navigate(Routes.NUTRITION_MEALS) {
+                                popUpTo(Routes.NUTRITION_MANUAL) { inclusive = true }
+                            }
+                        }
+                    },
+                )
+            }
 
             // Progress (pantallas reales de Lisandro)
             composable(Routes.PROGRESS) { ProgressDashboardScreen() }
