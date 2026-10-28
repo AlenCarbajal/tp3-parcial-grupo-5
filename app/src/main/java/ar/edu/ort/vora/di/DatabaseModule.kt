@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import ar.edu.ort.vora.data.local.AppDatabase
 import ar.edu.ort.vora.data.local.dao.WorkoutDao
+import ar.edu.ort.vora.data.local.dao.MealDao
+import ar.edu.ort.vora.data.local.MIGRATION_1_2
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,7 +26,7 @@ object DatabaseModule {
             context,
             AppDatabase::class.java,
             "vora_coach_database"
-        ).build()
+        ).addMigrations(MIGRATION_1_2).build()
     }
 
     @Provides
@@ -34,4 +36,13 @@ object DatabaseModule {
     ): WorkoutDao {
         return database.workoutDao()
     }
+
+    @Provides
+    @Singleton
+    fun provideMealDao(
+        database: AppDatabase
+    ): MealDao {
+        return database.mealDao()
+    }
 }
+

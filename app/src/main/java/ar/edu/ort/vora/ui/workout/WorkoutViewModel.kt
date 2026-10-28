@@ -42,8 +42,16 @@ class WorkoutViewModel @Inject constructor(
             try {
                 repository.refreshWorkouts()
             } catch (exception: Exception) {
+                android.util.Log.e(
+                    "WorkoutViewModel",
+                    "Error al actualizar entrenamientos",
+                    exception
+                )
+
                 _uiState.update {
-                    it.copy(error = "No se pudieron actualizar los entrenamientos.")
+                    it.copy(
+                        error = "Error: ${exception.javaClass.simpleName} - ${exception.message}"
+                    )
                 }
             } finally {
                 _uiState.update {
