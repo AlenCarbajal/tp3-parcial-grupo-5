@@ -1,16 +1,23 @@
-
 package ar.edu.ort.vora.navigation
 
+import androidx.activity.compose.LocalActivity
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -20,8 +27,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import ar.edu.ort.vora.progress.ProgressDashboardScreen
-import ar.edu.ort.vora.progress.ProgressScreen
 import ar.edu.ort.vora.ui.components.VoraBottomBar
 import ar.edu.ort.vora.ui.workout.ExerciseGuideScreen
 import ar.edu.ort.vora.ui.workout.WorkoutActiveScreen
@@ -32,34 +37,52 @@ import ar.edu.ort.vora.ui.workout.WorkoutPlanScreen
 import ar.edu.ort.vora.ui.workout.WorkoutPrepScreen
 import ar.edu.ort.vora.ui.workout.WorkoutViewModel
 
-private val tabRoutes = listOf(
-    Routes.HOME,
-    Routes.WORKOUT,
-    Routes.NUTRITION,
-    Routes.PROGRESS,
-    Routes.PROFILE,
+// Rutas quemadas como texto para evitar errores si no están en tu Routes.kt
+private const val ROUTE_COACH = "coach"
+private const val ROUTE_COACH_LISTENING = "coach_listening"
+private const val ROUTE_COACH_PROCESSING = "coach_processing"
+private const val ROUTE_COACH_SPEAKING = "coach_speaking"
+private const val ROUTE_COACH_CHAT = "coach_chat"
+private const val ROUTE_COACH_ERROR = "coach_error"
+
+private const val ROUTE_PROFILE = "profile"
+private const val ROUTE_PROFILE_EDIT = "profile_edit"
+private const val ROUTE_PROFILE_GOALS = "profile_goals"
+private const val ROUTE_PROFILE_NUTRITION = "profile_nutrition"
+private const val ROUTE_PROFILE_VOICE = "profile_voice"
+private const val ROUTE_PROFILE_SETTINGS = "profile_settings"
+
+private const val ROUTE_PROGRESS = "progress"
+private const val ROUTE_PROGRESS_TODAY = "progress_today"
+private const val ROUTE_PROGRESS_WORKOUT = "progress_workout"
+private const val ROUTE_PROGRESS_NUTRITION = "progress_nutrition"
+private const val ROUTE_PROGRESS_HEALTH = "progress_health"
+private const val ROUTE_PROGRESS_WEEKLY = "progress_weekly"
+
+private const val ROUTE_NUTRITION = "nutrition"
+private const val ROUTE_NUTRITION_MEALS = "nutrition_meals"
+private const val ROUTE_NUTRITION_ADD = "nutrition_add"
+private const val ROUTE_NUTRITION_VOICE = "nutrition_voice"
+private const val ROUTE_NUTRITION_ANALYZING = "nutrition_analyzing"
+private const val ROUTE_NUTRITION_PHOTO = "nutrition_photo"
+private const val ROUTE_NUTRITION_REVIEW = "nutrition_review"
+private const val ROUTE_NUTRITION_MANUAL = "nutrition_manual"
+
+private val bottomTabs = listOf(Routes.HOME, Routes.WORKOUT, ROUTE_NUTRITION, ROUTE_PROGRESS, ROUTE_PROFILE)
+
+private val edgeToEdgeRoutes = setOf(
+    Routes.LOGIN, Routes.SIGNUP,
+    ROUTE_COACH, ROUTE_COACH_LISTENING, ROUTE_COACH_PROCESSING, ROUTE_COACH_SPEAKING, ROUTE_COACH_CHAT, ROUTE_COACH_ERROR,
 )
 
+private val darkRoutes = setOf(ROUTE_COACH_LISTENING, ROUTE_COACH_PROCESSING, ROUTE_COACH_SPEAKING)
+
 private val routesWithBottomBar = setOf(
-    Routes.HOME,
-    Routes.WORKOUT,
-    Routes.NUTRITION,
-    Routes.PROGRESS,
-    Routes.PROFILE,
-    Routes.NOTIFICATIONS,
-    Routes.NUTRITION_MEALS,
-    Routes.NUTRITION_PHOTO,
-    Routes.NUTRITION_REVIEW,
-    Routes.NUTRITION_MEAL,
-    Routes.NUTRITION_ADD,
-    Routes.NUTRITION_VOICE,
-    Routes.NUTRITION_ANALYZING,
-    Routes.NUTRITION_MANUAL,
-    Routes.PROGRESS_TODAY,
-    Routes.PROGRESS_WORKOUT,
-    Routes.PROGRESS_NUTRITION,
-    Routes.PROGRESS_HEALTH,
-    Routes.PROGRESS_WEEKLY,
+    Routes.HOME, Routes.WORKOUT, ROUTE_NUTRITION, ROUTE_PROGRESS, ROUTE_PROFILE,
+    Routes.NOTIFICATIONS, ROUTE_NUTRITION_MEALS, ROUTE_NUTRITION_PHOTO,
+    ROUTE_NUTRITION_REVIEW, ROUTE_NUTRITION_ADD, ROUTE_NUTRITION_VOICE,
+    ROUTE_NUTRITION_ANALYZING, ROUTE_NUTRITION_MANUAL, ROUTE_PROGRESS_TODAY,
+    ROUTE_PROGRESS_WORKOUT, ROUTE_PROGRESS_NUTRITION, ROUTE_PROGRESS_HEALTH, ROUTE_PROGRESS_WEEKLY
 )
 
 @Composable
@@ -70,493 +93,163 @@ fun VoraNavHost(
     val currentRoute = backStackEntry?.destination?.route
     val showBottomBar = currentRoute in routesWithBottomBar
 
+    val window = LocalActivity.current?.window
+    val view = LocalView.current
+    val darkStatusBar = currentRoute in darkRoutes
+    SideEffect { window?.let { WindowCompat.getInsetsController(it, view).isAppearanceLightStatusBars = !darkStatusBar } }
+
+    val selectedTab = if (currentRoute == Routes.NOTIFICATIONS) 0 else bottomTabs.indexOfFirst { currentRoute?.startsWith(it) == true }
+
+    val goTab: (String) -> Unit = { route ->
+        navController.navigate(route) {
+            popUpTo(Routes.HOME) { saveState = true }
+            launchSingleTop = true
+            restoreState = true
+        }
+    }
+
     Scaffold(
         bottomBar = {
             if (showBottomBar) {
                 VoraBottomBar(
-                    selectedIndex = tabRoutes.indexOfFirst {
-                        currentRoute?.startsWith(it) == true
-                    }.coerceAtLeast(0),
-                    onSelect = { index ->
-                        navController.navigate(tabRoutes[index]) {
-                            popUpTo(Routes.HOME) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    }
+                    selectedIndex = selectedTab.coerceAtLeast(0),
+                    onSelect = { goTab(bottomTabs[it]) }
                 )
             }
-        }
+        },
+        contentWindowInsets = if (currentRoute in edgeToEdgeRoutes) WindowInsets(0) else ScaffoldDefaults.contentWindowInsets,
     ) { padding ->
         NavHost(
             navController = navController,
             startDestination = Routes.LOGIN,
-            modifier = Modifier.padding(padding)
+            modifier = Modifier
+                .padding(padding)
+                .consumeWindowInsets(padding),
         ) {
-            // Acceso
             composable(Routes.LOGIN) {
-                PlaceholderScreen(
-                    title = "Iniciar sesión",
-                    links = arrayOf(
-                        Routes.HOME to "Entrar",
-                        Routes.SIGNUP to "Crear cuenta"
-                    )
-                ) { route ->
-                    if (route == Routes.HOME) {
-                        navController.navigate(Routes.HOME) {
-                            popUpTo(Routes.LOGIN) {
-                                inclusive = true
-                            }
-                        }
-                    } else {
-                        navController.navigate(route)
-                    }
+                PlaceholderScreen("Iniciar sesión", Routes.HOME to "Entrar", Routes.SIGNUP to "Crear cuenta") { route ->
+                    if (route == Routes.HOME) navController.navigate(Routes.HOME) { popUpTo(Routes.LOGIN) { inclusive = true } }
+                    else navController.navigate(route)
                 }
             }
-
             composable(Routes.SIGNUP) {
-                PlaceholderScreen(
-                    "Crear cuenta",
-                    Routes.HOME to "Registrarme",
-                    Routes.LOGIN to "Iniciar sesión"
-                ) { route ->
-                    navController.navigate(route)
-                }
+                PlaceholderScreen("Crear cuenta", Routes.HOME to "Registrarme", Routes.LOGIN to "Iniciar sesión") { route -> navController.navigate(route) }
             }
-
-            // Inicio
             composable(Routes.HOME) {
-                PlaceholderScreen(
-                    "Inicio",
-                    Routes.NOTIFICATIONS to "Notificaciones",
-                    Routes.COACH to "Asistente VORA",
-                    Routes.WORKOUT to "Entrenamiento",
-                    Routes.NUTRITION_ADD to "Registrar comida",
-                    Routes.PROGRESS_TODAY to "Resumen de hoy"
-                ) { route ->
-                    navController.navigate(route)
-                }
+                PlaceholderScreen("Inicio", Routes.NOTIFICATIONS to "Notificaciones", ROUTE_COACH to "Asistente VORA", Routes.WORKOUT to "Entrenamiento") { route -> navController.navigate(route) }
             }
-
             composable(Routes.NOTIFICATIONS) {
-                PlaceholderScreen(
-                    "Notificaciones",
-                    Routes.PROGRESS_WEEKLY to "Resumen semanal"
-                ) { route ->
-                    navController.navigate(route)
-                }
+                PlaceholderScreen("Notificaciones")
             }
 
-            // Asistente VORA
-            composable(Routes.COACH) {
-                PlaceholderScreen(
-                    "Asistente VORA",
-                    Routes.COACH_LISTENING to "Hablar",
-                    Routes.COACH_CHAT to "Escribir"
-                ) { route ->
-                    navController.navigate(route)
-                }
-            }
+            // --- COACH ---
+            composable(ROUTE_COACH) { PlaceholderScreen("Asistente VORA") }
+            composable(ROUTE_COACH_LISTENING) { PlaceholderScreen("Escuchando") }
+            composable(ROUTE_COACH_PROCESSING) { PlaceholderScreen("Procesando") }
+            composable(ROUTE_COACH_SPEAKING) { PlaceholderScreen("Hablando") }
+            composable(ROUTE_COACH_CHAT) { PlaceholderScreen("Conversación") }
+            composable(ROUTE_COACH_ERROR) { PlaceholderScreen("Error") }
 
-            composable(Routes.COACH_LISTENING) {
-                PlaceholderScreen(
-                    "Escuchando",
-                    Routes.COACH_PROCESSING to "Continuar"
-                ) { route ->
-                    navController.navigate(route)
-                }
-            }
-
-            composable(Routes.COACH_PROCESSING) {
-                PlaceholderScreen(
-                    "Procesando",
-                    Routes.COACH_SPEAKING to "Continuar"
-                ) { route ->
-                    navController.navigate(route)
-                }
-            }
-
-            composable(Routes.COACH_SPEAKING) {
-                PlaceholderScreen(
-                    "VORA está hablando",
-                    Routes.COACH_CHAT to "Interrumpir"
-                ) { route ->
-                    navController.navigate(route)
-                }
-            }
-
-            composable(Routes.COACH_CHAT) {
-                PlaceholderScreen("Conversación") {}
-            }
-
-            composable(Routes.COACH_ERROR) {
-                PlaceholderScreen(
-                    "Error del asistente",
-                    Routes.COACH_LISTENING to "Intentar de nuevo",
-                    Routes.COACH_CHAT to "Escribir"
-                ) { route ->
-                    navController.navigate(route)
-                }
-            }
-
-            // Entrenamiento: conserva las pantallas reales de Workout.
+            // --- ENTRENAMIENTO (Tus pantallas reales) ---
             composable(Routes.WORKOUT) {
                 WorkoutCatalogScreen(
-                    onWorkoutClick = { workoutId ->
-                        navController.navigate(
-                            Routes.workoutDetail(workoutId)
-                        )
-                    },
-                    onPlanClick = {
-                        navController.navigate(Routes.WORKOUT_PLAN)
-                    }
+                    onWorkoutClick = { workoutId -> navController.navigate(Routes.workoutDetail(workoutId)) },
+                    onPlanClick = { navController.navigate(Routes.WORKOUT_PLAN) }
                 )
             }
-
             composable(Routes.WORKOUT_PLAN) {
                 val workoutEntry = rememberWorkoutEntry(navController)
                 val viewModel = hiltViewModel<WorkoutViewModel>(workoutEntry)
                 val state by viewModel.uiState.collectAsStateWithLifecycle()
-
                 WorkoutPlanScreen(
                     workouts = state.workouts,
-                    onWorkoutClick = { workoutId ->
-                        navController.navigate(
-                            Routes.workoutDetail(workoutId)
-                        )
-                    },
-                    onStartWorkout = { workoutId ->
-                        navController.navigate(
-                            Routes.workoutPrep(workoutId)
-                        )
-                    },
+                    onWorkoutClick = { workoutId -> navController.navigate(Routes.workoutDetail(workoutId)) },
+                    onStartWorkout = { workoutId -> navController.navigate(Routes.workoutPrep(workoutId)) },
                     onBack = { navController.popBackStack() }
                 )
             }
-
-            composable(
-                route = Routes.WORKOUT_DETAIL,
-                arguments = listOf(
-                    navArgument("workoutId") {
-                        type = NavType.StringType
-                    }
-                )
-            ) { entry ->
-                val workoutId =
-                    entry.arguments?.getString("workoutId").orEmpty()
-                val viewModel = hiltViewModel<WorkoutViewModel>(
-                    rememberWorkoutEntry(navController)
-                )
-
+            composable(route = Routes.WORKOUT_DETAIL, arguments = listOf(navArgument("workoutId") { type = NavType.StringType })) { entry ->
+                val workoutId = entry.arguments?.getString("workoutId").orEmpty()
+                val viewModel = hiltViewModel<WorkoutViewModel>(rememberWorkoutEntry(navController))
                 WorkoutDetailScreen(
                     workoutId = workoutId,
                     onBack = { navController.popBackStack() },
-                    onStartWorkout = {
-                        navController.navigate(
-                            Routes.workoutPrep(workoutId)
-                        )
-                    },
-                    onExerciseClick = { exerciseId ->
-                        navController.navigate(
-                            Routes.workoutGuide(workoutId, exerciseId)
-                        )
-                    },
+                    onStartWorkout = { navController.navigate(Routes.workoutPrep(workoutId)) },
+                    onExerciseClick = { exerciseId -> navController.navigate(Routes.workoutGuide(workoutId, exerciseId)) },
                     viewModel = viewModel
                 )
             }
-
-            composable(
-                route = Routes.WORKOUT_PREP,
-                arguments = listOf(
-                    navArgument("workoutId") {
-                        type = NavType.StringType
-                    }
-                )
-            ) { entry ->
-                val workoutId =
-                    entry.arguments?.getString("workoutId").orEmpty()
-                val viewModel = hiltViewModel<WorkoutViewModel>(
-                    rememberWorkoutEntry(navController)
-                )
+            composable(route = Routes.WORKOUT_PREP, arguments = listOf(navArgument("workoutId") { type = NavType.StringType })) { entry ->
+                val workoutId = entry.arguments?.getString("workoutId").orEmpty()
+                val viewModel = hiltViewModel<WorkoutViewModel>(rememberWorkoutEntry(navController))
                 val state by viewModel.uiState.collectAsStateWithLifecycle()
-
-                LaunchedEffect(workoutId) {
-                    if (state.selectedWorkout?.id != workoutId) {
-                        viewModel.loadWorkoutDetail(workoutId)
-                    }
-                }
-
+                LaunchedEffect(workoutId) { if (state.selectedWorkout?.id != workoutId) viewModel.loadWorkoutDetail(workoutId) }
                 WorkoutPrepScreen(
-                    workout = state.selectedWorkout
-                        ?.takeIf { it.id == workoutId },
-                    onStartWorkout = {
-                        navController.navigate(
-                            Routes.workoutActive(workoutId)
-                        )
-                    },
+                    workout = state.selectedWorkout?.takeIf { it.id == workoutId },
+                    onStartWorkout = { navController.navigate(Routes.workoutActive(workoutId)) },
                     onBack = { navController.popBackStack() }
                 )
             }
-
-            composable(
-                route = Routes.WORKOUT_ACTIVE,
-                arguments = listOf(
-                    navArgument("workoutId") {
-                        type = NavType.StringType
-                    }
-                )
-            ) { entry ->
-                val workoutId =
-                    entry.arguments?.getString("workoutId").orEmpty()
-                val viewModel = hiltViewModel<WorkoutViewModel>(
-                    rememberWorkoutEntry(navController)
-                )
+            composable(route = Routes.WORKOUT_ACTIVE, arguments = listOf(navArgument("workoutId") { type = NavType.StringType })) { entry ->
+                val workoutId = entry.arguments?.getString("workoutId").orEmpty()
+                val viewModel = hiltViewModel<WorkoutViewModel>(rememberWorkoutEntry(navController))
                 val state by viewModel.uiState.collectAsStateWithLifecycle()
-
-                LaunchedEffect(workoutId) {
-                    if (state.selectedWorkout?.id != workoutId) {
-                        viewModel.loadWorkoutDetail(workoutId)
-                    }
-                }
-
+                LaunchedEffect(workoutId) { if (state.selectedWorkout?.id != workoutId) viewModel.loadWorkoutDetail(workoutId) }
                 WorkoutActiveScreen(
-                    workout = state.selectedWorkout
-                        ?.takeIf { it.id == workoutId },
-                    onGuideClick = { exerciseId ->
-                        navController.navigate(
-                            Routes.workoutGuide(workoutId, exerciseId)
-                        )
-                    },
-                    onFinish = {
-                        navController.navigate(
-                            Routes.workoutDone(workoutId)
-                        )
-                    }
+                    workout = state.selectedWorkout?.takeIf { it.id == workoutId },
+                    onGuideClick = { exerciseId -> navController.navigate(Routes.workoutGuide(workoutId, exerciseId)) },
+                    onFinish = { navController.navigate(Routes.workoutDone(workoutId)) }
                 )
             }
-
-            composable(
-                route = Routes.WORKOUT_GUIDE,
-                arguments = listOf(
-                    navArgument("workoutId") {
-                        type = NavType.StringType
-                    },
-                    navArgument("exerciseId") {
-                        type = NavType.StringType
-                    }
-                )
-            ) { entry ->
-                val workoutId =
-                    entry.arguments?.getString("workoutId").orEmpty()
-                val exerciseId =
-                    entry.arguments?.getString("exerciseId").orEmpty()
-                val viewModel = hiltViewModel<WorkoutViewModel>(
-                    rememberWorkoutEntry(navController)
-                )
+            composable(route = Routes.WORKOUT_GUIDE, arguments = listOf(navArgument("workoutId") { type = NavType.StringType }, navArgument("exerciseId") { type = NavType.StringType })) { entry ->
+                val workoutId = entry.arguments?.getString("workoutId").orEmpty()
+                val exerciseId = entry.arguments?.getString("exerciseId").orEmpty()
+                val viewModel = hiltViewModel<WorkoutViewModel>(rememberWorkoutEntry(navController))
                 val state by viewModel.uiState.collectAsStateWithLifecycle()
-
-                LaunchedEffect(workoutId) {
-                    if (state.selectedWorkout?.id != workoutId) {
-                        viewModel.loadWorkoutDetail(workoutId)
-                    }
-                }
-
+                LaunchedEffect(workoutId) { if (state.selectedWorkout?.id != workoutId) viewModel.loadWorkoutDetail(workoutId) }
                 ExerciseGuideScreen(
-                    workout = state.selectedWorkout
-                        ?.takeIf { it.id == workoutId },
+                    workout = state.selectedWorkout?.takeIf { it.id == workoutId },
                     exerciseId = exerciseId,
                     onBack = { navController.popBackStack() }
                 )
             }
-
-            composable(
-                route = Routes.WORKOUT_DONE,
-                arguments = listOf(
-                    navArgument("workoutId") {
-                        type = NavType.StringType
-                    }
-                )
-            ) { entry ->
-                val workoutId =
-                    entry.arguments?.getString("workoutId").orEmpty()
-                val viewModel = hiltViewModel<WorkoutViewModel>(
-                    rememberWorkoutEntry(navController)
-                )
+            composable(route = Routes.WORKOUT_DONE, arguments = listOf(navArgument("workoutId") { type = NavType.StringType })) { entry ->
+                val workoutId = entry.arguments?.getString("workoutId").orEmpty()
+                val viewModel = hiltViewModel<WorkoutViewModel>(rememberWorkoutEntry(navController))
                 val state by viewModel.uiState.collectAsStateWithLifecycle()
-
-                LaunchedEffect(workoutId) {
-                    if (state.selectedWorkout?.id != workoutId) {
-                        viewModel.loadWorkoutDetail(workoutId)
-                    }
-                }
-
+                LaunchedEffect(workoutId) { if (state.selectedWorkout?.id != workoutId) viewModel.loadWorkoutDetail(workoutId) }
                 WorkoutCompletedScreen(
-                    workout = state.selectedWorkout
-                        ?.takeIf { it.id == workoutId },
-                    onHome = {
-                        navController.navigate(Routes.HOME) {
-                            popUpTo(Routes.HOME) {
-                                inclusive = true
-                            }
-                            launchSingleTop = true
-                        }
-                    },
-                    onBackToWorkout = {
-                        navController.navigate(
-                            Routes.workoutDetail(workoutId)
-                        ) {
-                            popUpTo(Routes.WORKOUT) {
-                                inclusive = false
-                            }
-                            launchSingleTop = true
-                        }
-                    }
+                    workout = state.selectedWorkout?.takeIf { it.id == workoutId },
+                    onHome = { navController.navigate(Routes.HOME) { popUpTo(Routes.HOME) { inclusive = true }; launchSingleTop = true } },
+                    onBackToWorkout = { navController.navigate(Routes.workoutDetail(workoutId)) { popUpTo(Routes.WORKOUT) { inclusive = false }; launchSingleTop = true } }
                 )
             }
 
-            // Nutrición
-            composable(Routes.NUTRITION) {
-                PlaceholderScreen(
-                    "Nutrición",
-                    Routes.NUTRITION_MEALS to "Comidas de hoy",
-                    Routes.NUTRITION_VOICE to "Registrar por voz",
-                    Routes.NUTRITION_PHOTO to "Registrar con foto",
-                    Routes.NUTRITION_MANUAL to "Buscar alimento"
-                ) { route ->
-                    navController.navigate(route)
-                }
-            }
+            // --- NUTRICIÓN ---
+            composable(ROUTE_NUTRITION) { PlaceholderScreen("Nutrición") }
+            composable(ROUTE_NUTRITION_MEALS) { PlaceholderScreen("Comidas") }
+            composable(ROUTE_NUTRITION_ADD) { PlaceholderScreen("Agregar") }
+            composable(ROUTE_NUTRITION_VOICE) { PlaceholderScreen("Voz") }
+            composable(ROUTE_NUTRITION_ANALYZING) { PlaceholderScreen("Analizando") }
+            composable(ROUTE_NUTRITION_PHOTO) { PlaceholderScreen("Foto") }
+            composable(ROUTE_NUTRITION_REVIEW) { PlaceholderScreen("Review") }
+            composable(ROUTE_NUTRITION_MANUAL) { PlaceholderScreen("Manual") }
 
-            composable(Routes.NUTRITION_MEALS) {
-                PlaceholderScreen(
-                    "Comidas de hoy",
-                    Routes.NUTRITION_ADD to "Agregar comida",
-                    Routes.nutritionMeal("1") to "Ver detalle"
-                ) { route ->
-                    navController.navigate(route)
-                }
-            }
+            // --- PROGRESO ---
+            composable(ROUTE_PROGRESS) { PlaceholderScreen("Progreso") }
+            composable(ROUTE_PROGRESS_TODAY) { PlaceholderScreen("Hoy") }
+            composable(ROUTE_PROGRESS_WORKOUT) { PlaceholderScreen("Entrenamiento") }
+            composable(ROUTE_PROGRESS_NUTRITION) { PlaceholderScreen("Nutrición") }
+            composable(ROUTE_PROGRESS_HEALTH) { PlaceholderScreen("Salud") }
+            composable(ROUTE_PROGRESS_WEEKLY) { PlaceholderScreen("Semanal") }
 
-            composable(Routes.NUTRITION_ADD) {
-                PlaceholderScreen("Agregar comida") {}
-            }
-
-            composable(Routes.NUTRITION_VOICE) {
-                PlaceholderScreen(
-                    "Registro por voz",
-                    Routes.NUTRITION_ANALYZING to "Continuar"
-                ) { route ->
-                    navController.navigate(route)
-                }
-            }
-
-            composable(Routes.NUTRITION_ANALYZING) {
-                PlaceholderScreen(
-                    "Analizando alimento",
-                    Routes.NUTRITION_REVIEW to "Ver resultado"
-                ) { route ->
-                    navController.navigate(route)
-                }
-            }
-
-            composable(Routes.NUTRITION_PHOTO) {
-                PlaceholderScreen(
-                    "Registrar con foto",
-                    Routes.NUTRITION_REVIEW to "Revisar"
-                ) { route ->
-                    navController.navigate(route)
-                }
-            }
-
-            composable(Routes.NUTRITION_REVIEW) {
-                PlaceholderScreen(
-                    "Revisar alimento",
-                    Routes.NUTRITION_MEALS to "Guardar"
-                ) { route ->
-                    navController.navigate(route)
-                }
-            }
-
-            composable(
-                route = Routes.NUTRITION_MEAL,
-                arguments = listOf(
-                    navArgument("id") {
-                        type = NavType.StringType
-                    }
-                )
-            ) { entry ->
-                val id = entry.arguments?.getString("id").orEmpty()
-                PlaceholderScreen("Detalle de comida $id") {}
-            }
-
-            composable(Routes.NUTRITION_MANUAL) {
-                PlaceholderScreen("Buscar alimento") {}
-            }
-
-            // Progreso
-            composable(Routes.PROGRESS) {
-                ProgressDashboardScreen()
-            }
-
-            composable(Routes.PROGRESS_TODAY) {
-                ProgressScreen()
-            }
-
-            composable(Routes.PROGRESS_WORKOUT) {
-                PlaceholderScreen("Progreso de entrenamiento") {}
-            }
-
-            composable(Routes.PROGRESS_NUTRITION) {
-                PlaceholderScreen("Progreso de nutrición") {}
-            }
-
-            composable(Routes.PROGRESS_HEALTH) {
-                PlaceholderScreen("Tendencias de salud") {}
-            }
-
-            composable(Routes.PROGRESS_WEEKLY) {
-                PlaceholderScreen(
-                    "Resumen semanal",
-                    Routes.COACH to "Consultar a VORA"
-                ) { route ->
-                    navController.navigate(route)
-                }
-            }
-
-            // Perfil
-            composable(Routes.PROFILE) {
-                PlaceholderScreen(
-                    "Perfil",
-                    Routes.PROFILE_EDIT to "Editar perfil",
-                    Routes.PROFILE_GOALS to "Objetivos",
-                    Routes.PROFILE_NUTRITION to "Preferencias de nutrición",
-                    Routes.PROFILE_SETTINGS to "Configuración"
-                ) { route ->
-                    navController.navigate(route)
-                }
-            }
-
-            composable(Routes.PROFILE_EDIT) {
-                PlaceholderScreen("Editar perfil") {}
-            }
-
-            composable(Routes.PROFILE_GOALS) {
-                PlaceholderScreen("Objetivos") {}
-            }
-
-            composable(Routes.PROFILE_NUTRITION) {
-                PlaceholderScreen("Preferencias de nutrición") {}
-            }
-
-            composable(Routes.PROFILE_VOICE) {
-                PlaceholderScreen("Preferencias de voz") {}
-            }
-
-            composable(Routes.PROFILE_SETTINGS) {
-                PlaceholderScreen("Configuración") {}
-            }
+            // --- PERFIL ---
+            composable(ROUTE_PROFILE) { PlaceholderScreen("Perfil") }
+            composable(ROUTE_PROFILE_EDIT) { PlaceholderScreen("Editar perfil") }
+            composable(ROUTE_PROFILE_GOALS) { PlaceholderScreen("Objetivos") }
+            composable(ROUTE_PROFILE_NUTRITION) { PlaceholderScreen("Preferencias nutrición") }
+            composable(ROUTE_PROFILE_VOICE) { PlaceholderScreen("Voz") }
+            composable(ROUTE_PROFILE_SETTINGS) { PlaceholderScreen("Ajustes") }
         }
     }
 }
@@ -575,14 +268,13 @@ private fun rememberWorkoutEntry(
 private fun PlaceholderScreen(
     title: String,
     vararg links: Pair<String, String>,
-    onNavigate: (String) -> Unit
+    onNavigate: (String) -> Unit = {}
 ) {
-    Column(Modifier.fillMaxSize()) {
-        Text(title)
-
+    Column(modifier = Modifier.fillMaxSize()) {
+        Text(text = title)
         links.forEach { (route, label) ->
             Button(onClick = { onNavigate(route) }) {
-                Text(label)
+                Text(text = label)
             }
         }
     }
