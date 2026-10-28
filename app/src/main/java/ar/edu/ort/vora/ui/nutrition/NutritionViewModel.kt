@@ -6,9 +6,6 @@ import ar.edu.ort.vora.data.repository.MealRepository
 import ar.edu.ort.vora.domain.model.Meal
 import ar.edu.ort.vora.domain.model.toDailyTotals
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 import javax.inject.Inject
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -34,7 +31,10 @@ class NutritionViewModel @Inject constructor(
     private val _selectedDate = MutableStateFlow(todayIso())
     val selectedDate: StateFlow<String> = _selectedDate.asStateFlow()
 
-    // Subir este contador vuelve a armar la consulta (botón Reintentar)
+    fun previousDay() = _selectedDate.update { shiftIso(it, -1) }
+
+    fun nextDay() = _selectedDate.update { shiftIso(it, 1) }
+
     private val retryTrigger = MutableStateFlow(0)
 
     // Lista y total diario salen del mismo Flow de Room: cambian solo al insertar o borrar.
@@ -81,7 +81,8 @@ class NutritionViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                repository.addMeal(meal)
+                repository.addMeal(meal);true
+
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
@@ -93,7 +94,7 @@ class NutritionViewModel @Inject constructor(
     fun deleteMeal(meal: Meal) {
         viewModelScope.launch {
             try {
-                repository.deleteMeal(meal)
+                repository.deleteMeal(meal);true
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
@@ -115,6 +116,3 @@ class NutritionViewModel @Inject constructor(
     }
 }
 
-// minSdk 24: java.time (LocalDate) pide API 26, por eso se usa SimpleDateFormat
-private fun todayIso(): String =
-    SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date())
