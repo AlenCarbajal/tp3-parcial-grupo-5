@@ -1,5 +1,6 @@
 package ar.edu.ort.vora.navigation
 
+import android.R.attr.type
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.Column
@@ -18,10 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import ar.edu.ort.vora.progress.ProgressDashboardScreen
 import ar.edu.ort.vora.progress.ProgressScreen
 import ar.edu.ort.vora.ui.auth.SignInScreen
@@ -36,6 +39,7 @@ import ar.edu.ort.vora.ui.components.VoraBottomBar
 import ar.edu.ort.vora.ui.home.HomeScreen
 import ar.edu.ort.vora.ui.home.NotificationsScreen
 import ar.edu.ort.vora.ui.nutrition.ManualMealScreen
+import ar.edu.ort.vora.ui.nutrition.MealDetailScreen
 import ar.edu.ort.vora.ui.nutrition.MealsScreen
 
 // Destinos de la barra inferior, en el orden de VoraBottomBarItems (íconos y textos de Figma).
@@ -207,7 +211,12 @@ fun VoraNavHost(navController: NavHostController = rememberNavController()) {
             composable(Routes.NUTRITION_ANALYZING) { PlaceholderScreen("Analyzing Meal", Routes.NUTRITION_REVIEW to "Siguiente", onNavigate = go) }
             composable(Routes.NUTRITION_PHOTO) { PlaceholderScreen("Analyse Meal", Routes.NUTRITION_REVIEW to "Review & Add", onNavigate = go) }
             composable(Routes.NUTRITION_REVIEW) { PlaceholderScreen("Review Meal", Routes.NUTRITION_MEALS to "Add to Lunch", onNavigate = go) }
-            composable(Routes.NUTRITION_MEAL) { PlaceholderScreen("Lunch") {} }
+            composable(
+                Routes.NUTRITION_MEAL,
+                arguments = listOf(navArgument("id") { type = NavType.IntType }),
+            ) {
+                MealDetailScreen(onBack = back)
+            }
             composable(Routes.NUTRITION_MANUAL) {
                 ManualMealScreen(
                     onBack = back,
