@@ -2,8 +2,6 @@ package ar.edu.ort.vora.data.mapper
 
 import ar.edu.ort.vora.data.local.entity.MealEntity as MealEntity
 import ar.edu.ort.vora.domain.model.Meal
-import ar.edu.ort.vora.domain.model.MealType
-import ar.edu.ort.vora.data.remote.dto.MealDto
 
 
 // Convierte de Entidad (Room) a Modelo de Dominio

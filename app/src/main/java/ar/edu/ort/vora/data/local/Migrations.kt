@@ -6,7 +6,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 
 val  MIGRATION_1_2 = object : Migration(1, 2) {
     override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL(""""
+        db.execSQL("""
             CREATE TABLE IF NOT EXISTS `meals` (
             `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             `name` TEXT NOT NULL,

@@ -6,9 +6,6 @@ import ar.edu.ort.vora.data.repository.MealRepository
 import ar.edu.ort.vora.domain.model.Meal
 import ar.edu.ort.vora.domain.model.toDailyTotals
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 import javax.inject.Inject
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -34,7 +31,10 @@ class NutritionViewModel @Inject constructor(
     private val _selectedDate = MutableStateFlow(todayIso())
     val selectedDate: StateFlow<String> = _selectedDate.asStateFlow()
 
-    // Subir este contador vuelve a armar la consulta (botón Reintentar)
+    fun previousDay() = _selectedDate.update { shiftIso(it, -1) }
+
+    fun nextDay() = _selectedDate.update { shiftIso(it, 1) }
+
     private val retryTrigger = MutableStateFlow(0)
 
     // Lista y total diario salen del mismo Flow de Room: cambian solo al insertar o borrar.
@@ -71,7 +71,7 @@ class NutritionViewModel @Inject constructor(
         retryTrigger.update { it + 1 }
     }
 
-    fun addMeal(meal: Meal) {
+    fun addMeal(meal: Meal, onSaved: () -> Unit = {}) {
         // Defensa mínima: el formulario (T32) valida primero, pero a Room nunca llega un dato inválido
         val problem = validate(meal)
         if (problem != null) {
@@ -80,25 +80,33 @@ class NutritionViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            try {
+            _actionError.value = null
+            val ok = try {
                 repository.addMeal(meal)
+                true
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
                 _actionError.value = "No se pudo guardar la comida."
+                false
             }
+            if (ok) onSaved()
         }
     }
 
-    fun deleteMeal(meal: Meal) {
+    fun deleteMeal(meal: Meal, onDeleted: () -> Unit = {}) {
         viewModelScope.launch {
-            try {
+            _actionError.value = null
+            val ok = try {
                 repository.deleteMeal(meal)
+                true
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
                 _actionError.value = "No se pudo borrar la comida."
+                false
             }
+            if (ok) onDeleted()
         }
     }
 
@@ -115,6 +123,3 @@ class NutritionViewModel @Inject constructor(
     }
 }
 
-// minSdk 24: java.time (LocalDate) pide API 26, por eso se usa SimpleDateFormat
-private fun todayIso(): String =
-    SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date())
