@@ -33,7 +33,7 @@ object Routes {
     // Nutrición
     const val NUTRITION = "nutrition"
     const val NUTRITION_MEALS = "nutrition/meals"
-    const val NUTRITION_MEAL = "nutrition/meal/{id}"
+    const val NUTRITION_MEAL = "nutrition/meal/{mealId}"
     const val NUTRITION_ADD = "nutrition/add"
     const val NUTRITION_VOICE = "nutrition/voice"
     const val NUTRITION_ANALYZING = "nutrition/analyzing"

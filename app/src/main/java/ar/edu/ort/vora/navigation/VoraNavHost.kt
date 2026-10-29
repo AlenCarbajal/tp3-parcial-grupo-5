@@ -12,18 +12,28 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import ar.edu.ort.vora.domain.model.Workout
+import ar.edu.ort.vora.progress.HealthTrendsScreen
+import ar.edu.ort.vora.progress.NutritionProgressScreen
 import ar.edu.ort.vora.progress.ProgressDashboardScreen
 import ar.edu.ort.vora.progress.TodaysOverviewScreen
+import ar.edu.ort.vora.progress.WeeklyReviewScreen
+import ar.edu.ort.vora.progress.WorkoutProgressScreen
 import ar.edu.ort.vora.ui.auth.SignInScreen
 import ar.edu.ort.vora.ui.auth.SignUpScreen
 import ar.edu.ort.vora.ui.coach.CoachChatScreen
@@ -35,12 +45,23 @@ import ar.edu.ort.vora.ui.coach.CoachSpeakingScreen
 import ar.edu.ort.vora.ui.components.VoraBottomBar
 import ar.edu.ort.vora.ui.home.HomeScreen
 import ar.edu.ort.vora.ui.home.NotificationsScreen
+import ar.edu.ort.vora.ui.nutrition.ManualMealScreen
+import ar.edu.ort.vora.ui.nutrition.MealDetailScreen
+import ar.edu.ort.vora.ui.nutrition.MealsScreen
 import ar.edu.ort.vora.ui.profile.ProfileEditScreen
 import ar.edu.ort.vora.ui.profile.ProfileGoalsScreen
 import ar.edu.ort.vora.ui.profile.ProfileNutritionScreen
 import ar.edu.ort.vora.ui.profile.ProfileScreen
 import ar.edu.ort.vora.ui.profile.ProfileSettingsScreen
 import ar.edu.ort.vora.ui.profile.ProfileVoiceScreen
+import ar.edu.ort.vora.ui.workout.ExerciseGuideScreen
+import ar.edu.ort.vora.ui.workout.WorkoutActiveScreen
+import ar.edu.ort.vora.ui.workout.WorkoutCatalogScreen
+import ar.edu.ort.vora.ui.workout.WorkoutCompletedScreen
+import ar.edu.ort.vora.ui.workout.WorkoutDetailScreen
+import ar.edu.ort.vora.ui.workout.WorkoutPlanScreen
+import ar.edu.ort.vora.ui.workout.WorkoutPrepScreen
+import ar.edu.ort.vora.ui.workout.WorkoutViewModel
 
 // Destinos de la barra inferior, en el orden de VoraBottomBarItems (íconos y textos de Figma).
 private val bottomTabs = listOf(Routes.HOME, Routes.WORKOUT, Routes.NUTRITION, Routes.PROGRESS, Routes.PROFILE)
@@ -63,6 +84,10 @@ private val routesWithBottomBar = setOf(
 
 @Composable
 fun VoraNavHost(navController: NavHostController = rememberNavController()) {
+    // Un único WorkoutViewModel para todo el flujo: el entrenamiento elegido en el detalle
+    // sigue disponible en Prep, Active, Guide y Completed (NAV04).
+    val workoutViewModel: WorkoutViewModel = hiltViewModel()
+    val workoutState by workoutViewModel.uiState.collectAsStateWithLifecycle()
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route
     val showBottomBar = currentRoute in routesWithBottomBar
@@ -126,8 +151,8 @@ fun VoraNavHost(navController: NavHostController = rememberNavController()) {
                 HomeScreen(
                     onNotifications = { go(Routes.NOTIFICATIONS) },
                     onVoiceSession = { go(Routes.COACH) },
-                    onStartWorkout = { go(Routes.workoutPrep("1")) },
-                    onLogMeal = { go(Routes.NUTRITION_ADD) },
+                    onStartWorkout = { go(Routes.workoutPrep("w01")) },
+                    onLogMeal = { go(Routes.NUTRITION_MANUAL) },
                     onTodayOverview = { go(Routes.PROGRESS_TODAY) },
                 )
             }
@@ -164,39 +189,85 @@ fun VoraNavHost(navController: NavHostController = rememberNavController()) {
                 )
             }
 
-            // Workout
+            // Workout (RF01, RF02, NAV04)
             composable(Routes.WORKOUT) {
-                PlaceholderScreen(
-                    "Workouts",
-                    Routes.WORKOUT_PLAN to "Plan",
-                    Routes.workoutPrep("1") to "Start Workout",
-                    Routes.workoutDetail("1") to "Details",
-                    Routes.PROGRESS to "View progress",
-                    onNavigate = go,
+                WorkoutCatalogScreen(
+                    onWorkoutClick = { go(Routes.workoutDetail(it)) },
+                    onPlanClick = { go(Routes.WORKOUT_PLAN) },
+                    viewModel = workoutViewModel,
                 )
             }
-            composable(Routes.WORKOUT_PLAN) { PlaceholderScreen("Your Plan", Routes.workoutDetail("1") to "Tarjeta", onNavigate = go) }
-            composable(Routes.WORKOUT_DETAIL) {
-                PlaceholderScreen("Workout Overview", Routes.workoutPrep("1") to "Start Workout", Routes.workoutGuide("1", "1") to "Ejercicio", onNavigate = go)
+            composable(Routes.WORKOUT_PLAN) {
+                WorkoutPlanScreen(
+                    workouts = workoutState.workouts,
+                    onWorkoutClick = { go(Routes.workoutDetail(it)) },
+                    onStartWorkout = { go(Routes.workoutPrep(it)) },
+                    onBack = back,
+                )
             }
-            composable(Routes.WORKOUT_PREP) { PlaceholderScreen("Get Ready", Routes.workoutActive("1") to "Start Workout", onNavigate = go) }
-            composable(Routes.WORKOUT_ACTIVE) { PlaceholderScreen("Active", Routes.workoutDone("1") to "Finish Workout", onNavigate = go) }
-            composable(Routes.WORKOUT_GUIDE) { PlaceholderScreen("Exercise Guide") {} }
-            composable(Routes.WORKOUT_DONE) { PlaceholderScreen("Completed", Routes.HOME to "Done", onNavigate = go) }
+            composable(Routes.WORKOUT_DETAIL) { entry ->
+                val id = entry.arguments?.getString("workoutId").orEmpty()
+                WorkoutDetailScreen(
+                    workoutId = id,
+                    onBack = back,
+                    onStartWorkout = { go(Routes.workoutPrep(id)) },
+                    onExerciseClick = { go(Routes.workoutGuide(id, it)) },
+                    viewModel = workoutViewModel,
+                )
+            }
+            composable(Routes.WORKOUT_PREP) { entry ->
+                val id = entry.arguments?.getString("workoutId").orEmpty()
+                WorkoutPrepScreen(
+                    workout = workoutFor(id, workoutViewModel),
+                    onStartWorkout = { go(Routes.workoutActive(id)) },
+                    onBack = back,
+                )
+            }
+            composable(Routes.WORKOUT_ACTIVE) { entry ->
+                val id = entry.arguments?.getString("workoutId").orEmpty()
+                WorkoutActiveScreen(
+                    workout = workoutFor(id, workoutViewModel),
+                    onGuideClick = { go(Routes.workoutGuide(id, it)) },
+                    onFinish = { go(Routes.workoutDone(id)) },
+                )
+            }
+            composable(Routes.WORKOUT_GUIDE) { entry ->
+                val id = entry.arguments?.getString("workoutId").orEmpty()
+                val exerciseId = entry.arguments?.getString("exerciseId").orEmpty()
+                ExerciseGuideScreen(
+                    workout = workoutFor(id, workoutViewModel),
+                    exerciseId = exerciseId,
+                    onBack = back,
+                )
+            }
+            composable(Routes.WORKOUT_DONE) { entry ->
+                val id = entry.arguments?.getString("workoutId").orEmpty()
+                WorkoutCompletedScreen(
+                    workout = workoutFor(id, workoutViewModel),
+                    onHome = { goTab(Routes.HOME) },
+                    // Si el detalle no está en la pila (se llegó desde Home), se abre.
+                    onBackToWorkout = {
+                        if (!navController.popBackStack(Routes.WORKOUT_DETAIL, inclusive = false)) {
+                            go(Routes.workoutDetail(id))
+                        }
+                    },
+                )
+            }
 
-            // Nutrition
+            // Nutrition (RF03, RF04). Las pantallas demo (voz, análisis, foto, revisión) siguen pendientes (T33).
             composable(Routes.NUTRITION) {
-                PlaceholderScreen(
-                    "Nutrition",
-                    Routes.NUTRITION_MEALS to "Comidas",
-                    Routes.NUTRITION_VOICE to "Voice",
-                    Routes.NUTRITION_PHOTO to "Photo",
-                    Routes.NUTRITION_MANUAL to "Search",
-                    onNavigate = go,
+                MealsScreen(
+                    onBack = back,
+                    onAdd = { go(Routes.NUTRITION_MANUAL) },
+                    onMeal = { go(Routes.nutritionMeal(it.toString())) },
                 )
             }
             composable(Routes.NUTRITION_MEALS) {
-                PlaceholderScreen("Today's Meals", Routes.NUTRITION_ADD to "Add Dinner", Routes.nutritionMeal("1") to "Detalle", onNavigate = go)
+                MealsScreen(
+                    onBack = back,
+                    onAdd = { go(Routes.NUTRITION_MANUAL) },
+                    onMeal = { go(Routes.nutritionMeal(it.toString())) },
+                )
             }
             composable(Routes.NUTRITION_ADD) {
                 PlaceholderScreen("Add Food", Routes.NUTRITION_VOICE to "Voice", Routes.NUTRITION_PHOTO to "Photo", Routes.NUTRITION_MANUAL to "Manual", onNavigate = go)
@@ -207,21 +278,29 @@ fun VoraNavHost(navController: NavHostController = rememberNavController()) {
             composable(Routes.NUTRITION_ANALYZING) { PlaceholderScreen("Analyzing Meal", Routes.NUTRITION_REVIEW to "Siguiente", onNavigate = go) }
             composable(Routes.NUTRITION_PHOTO) { PlaceholderScreen("Analyse Meal", Routes.NUTRITION_REVIEW to "Review & Add", onNavigate = go) }
             composable(Routes.NUTRITION_REVIEW) { PlaceholderScreen("Review Meal", Routes.NUTRITION_MEALS to "Add to Lunch", onNavigate = go) }
-            composable(Routes.NUTRITION_MEAL) { PlaceholderScreen("Lunch") {} }
-            composable(Routes.NUTRITION_MANUAL) { PlaceholderScreen("Registro manual", Routes.NUTRITION_MEALS to "Guardar", onNavigate = go) }
+            composable(
+                Routes.NUTRITION_MEAL,
+                arguments = listOf(navArgument("mealId") { type = NavType.IntType }),
+            ) {
+                MealDetailScreen(onBack = back)
+            }
+            composable(Routes.NUTRITION_MANUAL) {
+                ManualMealScreen(onBack = back, onSaved = back)
+            }
 
             // Progress (pantallas reales de Lisandro)
-            composable(Routes.PROGRESS) { ProgressDashboardScreen() }
+            composable(Routes.PROGRESS) { ProgressDashboardScreen(onNavigate = go) }
             composable(Routes.PROGRESS_TODAY) {
                 TodaysOverviewScreen(
-                    onStartWorkout = { navController.navigate(Routes.WORKOUT) },
-                    onOpenDashboard = { navController.navigate(Routes.PROGRESS_DASHBOARD) }
+                    onStartWorkout = { goTab(Routes.WORKOUT) },
+                    // El dashboard de Progress es la pestaña Progress (no existe una ruta aparte).
+                    onOpenDashboard = { goTab(Routes.PROGRESS) }
                 )
             }
-            composable(Routes.PROGRESS_WORKOUT) { PlaceholderScreen("Workout progress") {} }
-            composable(Routes.PROGRESS_NUTRITION) { PlaceholderScreen("Nutrition progress") {} }
-            composable(Routes.PROGRESS_HEALTH) { PlaceholderScreen("Health trends") {} }
-            composable(Routes.PROGRESS_WEEKLY) { PlaceholderScreen("Your weekly review", Routes.COACH to "Ask VORA", onNavigate = go) }
+            composable(Routes.PROGRESS_WORKOUT) { WorkoutProgressScreen(onBack = back) }
+            composable(Routes.PROGRESS_NUTRITION) { NutritionProgressScreen(onBack = back) }
+            composable(Routes.PROGRESS_HEALTH) { HealthTrendsScreen(onBack = back) }
+            composable(Routes.PROGRESS_WEEKLY) { WeeklyReviewScreen(onBack = back, onAskCoach = { go(Routes.COACH) }) }
 
             // Profile
             composable(Routes.PROFILE) {
@@ -255,6 +334,17 @@ fun VoraNavHost(navController: NavHostController = rememberNavController()) {
             }
         }
     }
+}
+
+// Devuelve el entrenamiento `id` y lo pide al ViewModel si todavía no es el seleccionado
+// (por ejemplo, al entrar directo desde Home sin pasar por el detalle).
+@Composable
+private fun workoutFor(id: String, viewModel: WorkoutViewModel): Workout? {
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+    LaunchedEffect(id) {
+        if (state.selectedWorkout?.id != id) viewModel.loadWorkoutDetail(id)
+    }
+    return state.selectedWorkout?.takeIf { it.id == id }
 }
 
 // Pantalla temporal: se reemplaza por la real de cada área.
