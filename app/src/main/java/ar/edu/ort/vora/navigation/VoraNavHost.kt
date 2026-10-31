@@ -62,16 +62,7 @@ private const val ROUTE_PROGRESS_NUTRITION = "progress_nutrition"
 private const val ROUTE_PROGRESS_HEALTH = "progress_health"
 private const val ROUTE_PROGRESS_WEEKLY = "progress_weekly"
 
-private const val ROUTE_NUTRITION = "nutrition"
-private const val ROUTE_NUTRITION_MEALS = "nutrition_meals"
-private const val ROUTE_NUTRITION_ADD = "nutrition_add"
-private const val ROUTE_NUTRITION_VOICE = "nutrition_voice"
-private const val ROUTE_NUTRITION_ANALYZING = "nutrition_analyzing"
-private const val ROUTE_NUTRITION_PHOTO = "nutrition_photo"
-private const val ROUTE_NUTRITION_REVIEW = "nutrition_review"
-private const val ROUTE_NUTRITION_MANUAL = "nutrition_manual"
-
-private val bottomTabs = listOf(Routes.HOME, Routes.WORKOUT, ROUTE_NUTRITION, ROUTE_PROGRESS, ROUTE_PROFILE)
+private val bottomTabs = listOf(Routes.HOME, Routes.WORKOUT, Routes.NUTRITION, ROUTE_PROGRESS, ROUTE_PROFILE)
 
 private val edgeToEdgeRoutes = setOf(
     Routes.LOGIN, Routes.SIGNUP,
@@ -81,10 +72,10 @@ private val edgeToEdgeRoutes = setOf(
 private val darkRoutes = setOf(ROUTE_COACH_LISTENING, ROUTE_COACH_PROCESSING, ROUTE_COACH_SPEAKING)
 
 private val routesWithBottomBar = setOf(
-    Routes.HOME, Routes.WORKOUT, ROUTE_NUTRITION, ROUTE_PROGRESS, ROUTE_PROFILE,
-    Routes.NOTIFICATIONS, ROUTE_NUTRITION_MEALS, ROUTE_NUTRITION_PHOTO,
-    ROUTE_NUTRITION_REVIEW, ROUTE_NUTRITION_ADD, ROUTE_NUTRITION_VOICE,
-    ROUTE_NUTRITION_ANALYZING, ROUTE_NUTRITION_MANUAL, ROUTE_PROGRESS_TODAY,
+    Routes.HOME, Routes.WORKOUT, Routes.NUTRITION, ROUTE_PROGRESS, ROUTE_PROFILE,
+    Routes.NOTIFICATIONS, Routes.NUTRITION_MEALS, Routes.NUTRITION_PHOTO,
+    Routes.NUTRITION_REVIEW, Routes.NUTRITION_ADD, Routes.NUTRITION_VOICE,
+    Routes.NUTRITION_ANALYZING, Routes.NUTRITION_MANUAL, Routes.NUTRITION_MEAL, ROUTE_PROGRESS_TODAY,
     ROUTE_PROGRESS_WORKOUT, ROUTE_PROGRESS_NUTRITION, ROUTE_PROGRESS_HEALTH, ROUTE_PROGRESS_WEEKLY
 )
 
@@ -184,13 +175,6 @@ fun VoraNavHost(
                     viewModel = viewModel
                 )
             }
-            composable(Routes.NUTRITION_MEALS) {
-                MealsScreen(
-                    onBack = back,
-                    onAdd = { go(Routes.NUTRITION_ADD) },
-                    onMeal = { id -> go(Routes.nutritionMeal(id.toString())) },
-                )
-            }
             composable(route = Routes.WORKOUT_PREP, arguments = listOf(navArgument("workoutId") { type = NavType.StringType })) { entry ->
                 val workoutId = entry.arguments?.getString("workoutId").orEmpty()
                 val viewModel = hiltViewModel<WorkoutViewModel>(rememberWorkoutEntry(navController))
@@ -225,28 +209,6 @@ fun VoraNavHost(
                     onBack = { navController.popBackStack() }
                 )
             }
-            composable(Routes.NUTRITION_ANALYZING) { PlaceholderScreen("Analyzing Meal", Routes.NUTRITION_REVIEW to "Siguiente", onNavigate = go) }
-            composable(Routes.NUTRITION_PHOTO) { PlaceholderScreen("Analyse Meal", Routes.NUTRITION_REVIEW to "Review & Add", onNavigate = go) }
-            composable(Routes.NUTRITION_REVIEW) { PlaceholderScreen("Review Meal", Routes.NUTRITION_MEALS to "Add to Lunch", onNavigate = go) }
-            composable(
-                Routes.NUTRITION_MEAL,
-                arguments = listOf(navArgument("id") { type = NavType.IntType }),
-            ) {
-                MealDetailScreen(onBack = back)
-            }
-            composable(Routes.NUTRITION_MANUAL) {
-                ManualMealScreen(
-                    onBack = back,
-                    onSaved = {
-                        // Si ya había una lista debajo se vuelve a ella; si no, el formulario se reemplaza por la lista
-                        if (!navController.popBackStack(Routes.NUTRITION_MEALS, inclusive = false)) {
-                            navController.navigate(Routes.NUTRITION_MEALS) {
-                                popUpTo(Routes.NUTRITION_MANUAL) { inclusive = true }
-                            }
-                        }
-                    },
-                )
-            }
             composable(route = Routes.WORKOUT_DONE, arguments = listOf(navArgument("workoutId") { type = NavType.StringType })) { entry ->
                 val workoutId = entry.arguments?.getString("workoutId").orEmpty()
                 val viewModel = hiltViewModel<WorkoutViewModel>(rememberWorkoutEntry(navController))
@@ -258,16 +220,55 @@ fun VoraNavHost(
                     onBackToWorkout = { navController.navigate(Routes.workoutDetail(workoutId)) { popUpTo(Routes.WORKOUT) { inclusive = false }; launchSingleTop = true } }
                 )
             }
-
-            // --- NUTRICIÓN ---
-            composable(ROUTE_NUTRITION) { PlaceholderScreen("Nutrición") }
-            composable(ROUTE_NUTRITION_MEALS) { PlaceholderScreen("Comidas") }
-            composable(ROUTE_NUTRITION_ADD) { PlaceholderScreen("Agregar") }
-            composable(ROUTE_NUTRITION_VOICE) { PlaceholderScreen("Voz") }
-            composable(ROUTE_NUTRITION_ANALYZING) { PlaceholderScreen("Analizando") }
-            composable(ROUTE_NUTRITION_PHOTO) { PlaceholderScreen("Foto") }
-            composable(ROUTE_NUTRITION_REVIEW) { PlaceholderScreen("Review") }
-            composable(ROUTE_NUTRITION_MANUAL) { PlaceholderScreen("Manual") }
+            // --- NUTRICIÓN (Pantallas reales T30, T31, T32 + Demos) ---
+            composable(Routes.NUTRITION) {
+                MealsScreen(
+                    onBack = back,
+                    onAdd = { go(Routes.NUTRITION_MANUAL) },
+                    onMeal = { id -> go(Routes.nutritionMeal(id.toString())) },
+                )
+            }
+            composable(Routes.NUTRITION_MEALS) {
+                MealsScreen(
+                    onBack = back,
+                    onAdd = { go(Routes.NUTRITION_MANUAL) },
+                    onMeal = { id -> go(Routes.nutritionMeal(id.toString())) },
+                )
+            }
+            composable(Routes.NUTRITION_ADD) {
+                PlaceholderScreen(
+                    "Add Food",
+                    Routes.NUTRITION_MANUAL to "Registro manual",
+                    Routes.NUTRITION_VOICE to "Voice (demo)",
+                    Routes.NUTRITION_PHOTO to "Photo (demo)",
+                    onNavigate = go
+                )
+            }
+            composable(Routes.NUTRITION_VOICE) {
+                PlaceholderScreen("Voice Logging", Routes.NUTRITION_ANALYZING to "Done Speaking", Routes.NUTRITION_MANUAL to "Type instead", onNavigate = go)
+            }
+            composable(Routes.NUTRITION_ANALYZING) { PlaceholderScreen("Analyzing Meal", Routes.NUTRITION_REVIEW to "Siguiente", onNavigate = go) }
+            composable(Routes.NUTRITION_PHOTO) { PlaceholderScreen("Analyse Meal", Routes.NUTRITION_REVIEW to "Review & Add", onNavigate = go) }
+            composable(Routes.NUTRITION_REVIEW) { PlaceholderScreen("Review Meal", Routes.NUTRITION_MEALS to "Add to Lunch", onNavigate = go) }
+            composable(
+                route = Routes.NUTRITION_MEAL,
+                arguments = listOf(navArgument("id") { type = NavType.IntType }),
+            ) {
+                MealDetailScreen(onBack = back)
+            }
+            composable(Routes.NUTRITION_MANUAL) {
+                ManualMealScreen(
+                    onBack = back,
+                    onSaved = {
+                        if (!navController.popBackStack(Routes.NUTRITION_MEALS, inclusive = false) &&
+                            !navController.popBackStack(Routes.NUTRITION, inclusive = false)) {
+                            navController.navigate(Routes.NUTRITION) {
+                                popUpTo(Routes.NUTRITION_MANUAL) { inclusive = true }
+                            }
+                        }
+                    },
+                )
+            }
 
             // Profile
             composable(Routes.PROFILE) {
