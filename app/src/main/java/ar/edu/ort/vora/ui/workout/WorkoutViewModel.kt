@@ -13,6 +13,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import com.google.gson.stream.MalformedJsonException
+import java.io.EOFException
 
 @HiltViewModel
 class WorkoutViewModel @Inject constructor(
@@ -115,13 +117,18 @@ class WorkoutViewModel @Inject constructor(
     }
 
     /** Traduce excepciones técnicas a un mensaje que pueda leer el usuario. */
+    /** Traduce excepciones técnicas a un mensaje que pueda leer el usuario. */
     private fun Throwable.toUserMessage(): String = when (this) {
         is HttpException ->
             "El servidor respondió con un error (${code()}). Intentá de nuevo en un rato."
-        is JsonParseException ->
+        // Antes que IOException: estos son subtipos de IOException pero indican
+        // que llegó una respuesta con JSON roto o incompleto, no un problema de red.
+        is JsonParseException, is MalformedJsonException, is EOFException ->
             "El servidor devolvió datos que la app no pudo leer."
+
         is IOException ->
             "No se pudo conectar con el servidor. Revisá tu conexión e intentá de nuevo."
+
         else ->
             "Ocurrió un error inesperado. Intentá de nuevo."
     }
