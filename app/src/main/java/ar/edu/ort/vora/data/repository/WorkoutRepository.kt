@@ -29,19 +29,15 @@ class WorkoutRepository @Inject constructor(
             dto.toDomain().toEntity()
         }
 
-        workoutDao.replaceWorkouts(workouts)
+        workoutDao.syncWorkoutSummaries(workouts)
     }
 
     suspend fun getWorkoutDetail(workoutId: String): Workout {
         val response = apiService.getWorkoutById(workoutId)
         val workout = response.data.toDomain()
 
-        workoutDao.insertWorkouts(
-            listOf(workout.toEntity())
-        )
-
-        workoutDao.replaceExercises(
-            workoutId = workout.id,
+        workoutDao.saveWorkoutDetail(
+            workout = workout.toEntity(),
             exercises = workout.exercises.map { exercise ->
                 exercise.toEntity()
             }
