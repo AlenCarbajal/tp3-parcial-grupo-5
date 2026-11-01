@@ -3,12 +3,16 @@ package ar.edu.ort.vora.ui.workout
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ar.edu.ort.vora.data.repository.WorkoutRepository
+import com.google.gson.JsonParseException
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.io.IOException
 import javax.inject.Inject
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 @HiltViewModel
 class WorkoutViewModel @Inject constructor(
@@ -41,6 +45,8 @@ class WorkoutViewModel @Inject constructor(
 
             try {
                 repository.refreshWorkouts()
+            } catch (exception: CancellationException) {
+                throw exception
             } catch (exception: Exception) {
                 android.util.Log.e(
                     "WorkoutViewModel",
@@ -49,9 +55,7 @@ class WorkoutViewModel @Inject constructor(
                 )
 
                 _uiState.update {
-                    it.copy(
-                        error = "Error: ${exception.javaClass.simpleName} - ${exception.message}"
-                    )
+                    it.copy(error = exception.toUserMessage())
                 }
             } finally {
                 _uiState.update {
@@ -72,14 +76,25 @@ class WorkoutViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(selectedWorkout = workout)
                 }
+            } catch (exception: CancellationException) {
+                throw exception
             } catch (exception: Exception) {
+                android.util.Log.e(
+                    "WorkoutViewModel",
+                    "Error al cargar el detalle $workoutId",
+                    exception
+                )
+
+                // Solo sirve como respaldo si tiene ejercicios: un workout
+                // cacheado solo con el resumen del listado no alcanza.
                 val cachedWorkout = repository.getCachedWorkout(workoutId)
+                    ?.takeIf { it.exercises.isNotEmpty() }
 
                 _uiState.update {
                     it.copy(
                         selectedWorkout = cachedWorkout,
                         detailError = if (cachedWorkout == null) {
-                            "No se pudo cargar el entrenamiento."
+                            exception.toUserMessage()
                         } else {
                             null
                         }
@@ -97,5 +112,17 @@ class WorkoutViewModel @Inject constructor(
         _uiState.update {
             it.copy(selectedWorkout = null, detailError = null)
         }
+    }
+
+    /** Traduce excepciones técnicas a un mensaje que pueda leer el usuario. */
+    private fun Throwable.toUserMessage(): String = when (this) {
+        is HttpException ->
+            "El servidor respondió con un error (${code()}). Intentá de nuevo en un rato."
+        is JsonParseException ->
+            "El servidor devolvió datos que la app no pudo leer."
+        is IOException ->
+            "No se pudo conectar con el servidor. Revisá tu conexión e intentá de nuevo."
+        else ->
+            "Ocurrió un error inesperado. Intentá de nuevo."
     }
 }

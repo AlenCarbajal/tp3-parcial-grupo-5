@@ -26,7 +26,12 @@ object DatabaseModule {
             context,
             AppDatabase::class.java,
             "vora_coach_database"
-        ).addMigrations(MIGRATION_1_2).build()
+        )
+            .addMigrations(MIGRATION_1_2)
+            // Red de seguridad: es solo un caché de la API y las comidas
+            // se pueden volver a cargar; mejor reiniciar la base que crashear.
+            .fallbackToDestructiveMigration(dropAllTables = true)
+            .build()
     }
 
     @Provides

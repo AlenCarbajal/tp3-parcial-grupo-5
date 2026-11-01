@@ -22,7 +22,7 @@ interface MealDao {
     @Query("SELECT * FROM meals WHERE id = :id")
     fun getById(id: Int): Flow<MealEntity?>
 
-    // cuando ve que un id ya existe lo actualiza (me daba error por algun motivo y se me recomendo esto, Mistral, TODO: consultar)
+    // Si ya existe una comida con ese id, la reemplaza (sirve para insertar y para editar).
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMeal(mealEntity: MealEntity)
 
