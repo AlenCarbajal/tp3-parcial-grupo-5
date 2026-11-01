@@ -2,15 +2,12 @@ package ar.edu.ort.vora.navigation
 
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
@@ -45,9 +42,14 @@ import ar.edu.ort.vora.ui.coach.CoachSpeakingScreen
 import ar.edu.ort.vora.ui.components.VoraBottomBar
 import ar.edu.ort.vora.ui.home.HomeScreen
 import ar.edu.ort.vora.ui.home.NotificationsScreen
+import ar.edu.ort.vora.ui.nutrition.AddFoodScreen
+import ar.edu.ort.vora.ui.nutrition.AnalyseMealScreen
+import ar.edu.ort.vora.ui.nutrition.AnalyzingMealScreen
 import ar.edu.ort.vora.ui.nutrition.ManualMealScreen
 import ar.edu.ort.vora.ui.nutrition.MealDetailScreen
 import ar.edu.ort.vora.ui.nutrition.MealsScreen
+import ar.edu.ort.vora.ui.nutrition.ReviewMealScreen
+import ar.edu.ort.vora.ui.nutrition.VoiceLoggingScreen
 import ar.edu.ort.vora.ui.profile.ProfileEditScreen
 import ar.edu.ort.vora.ui.profile.ProfileGoalsScreen
 import ar.edu.ort.vora.ui.profile.ProfileNutritionScreen
@@ -254,30 +256,58 @@ fun VoraNavHost(navController: NavHostController = rememberNavController()) {
                 )
             }
 
-            // Nutrition (RF03, RF04). Las pantallas demo (voz, análisis, foto, revisión) siguen pendientes (T33).
+            // Nutrition (RF03, RF04). Las pantallas demo (Add Food, voz, análisis, foto, revisión) usan datos de ejemplo (T33).
             composable(Routes.NUTRITION) {
                 MealsScreen(
                     onBack = back,
-                    onAdd = { go(Routes.NUTRITION_MANUAL) },
+                    onAdd = { go(Routes.NUTRITION_ADD) },
                     onMeal = { go(Routes.nutritionMeal(it.toString())) },
                 )
             }
             composable(Routes.NUTRITION_MEALS) {
                 MealsScreen(
                     onBack = back,
-                    onAdd = { go(Routes.NUTRITION_MANUAL) },
+                    onAdd = { go(Routes.NUTRITION_ADD) },
                     onMeal = { go(Routes.nutritionMeal(it.toString())) },
                 )
             }
             composable(Routes.NUTRITION_ADD) {
-                PlaceholderScreen("Add Food", Routes.NUTRITION_VOICE to "Voice", Routes.NUTRITION_PHOTO to "Photo", Routes.NUTRITION_MANUAL to "Manual", onNavigate = go)
+                AddFoodScreen(
+                    onBack = back,
+                    onVoice = { go(Routes.NUTRITION_VOICE) },
+                    onPhoto = { go(Routes.NUTRITION_PHOTO) },
+                    onManual = { go(Routes.NUTRITION_MANUAL) },
+                )
             }
             composable(Routes.NUTRITION_VOICE) {
-                PlaceholderScreen("Voice Logging", Routes.NUTRITION_ANALYZING to "Done Speaking", Routes.NUTRITION_MANUAL to "Type instead", onNavigate = go)
+                VoiceLoggingScreen(
+                    onBack = back,
+                    onDone = { go(Routes.NUTRITION_ANALYZING) },
+                    onTypeInstead = { go(Routes.NUTRITION_MANUAL) },
+                )
             }
-            composable(Routes.NUTRITION_ANALYZING) { PlaceholderScreen("Analyzing Meal", Routes.NUTRITION_REVIEW to "Siguiente", onNavigate = go) }
-            composable(Routes.NUTRITION_PHOTO) { PlaceholderScreen("Analyse Meal", Routes.NUTRITION_REVIEW to "Review & Add", onNavigate = go) }
-            composable(Routes.NUTRITION_REVIEW) { PlaceholderScreen("Review Meal", Routes.NUTRITION_MEALS to "Add to Lunch", onNavigate = go) }
+            composable(Routes.NUTRITION_ANALYZING) {
+                AnalyzingMealScreen(
+                    onCancel = back,
+                    // Analyzing se saca de la pila: atrás desde Review no vuelve a esperar el análisis.
+                    onFinished = {
+                        navController.navigate(Routes.NUTRITION_REVIEW) {
+                            popUpTo(Routes.NUTRITION_ANALYZING) { inclusive = true }
+                        }
+                    },
+                )
+            }
+            composable(Routes.NUTRITION_PHOTO) {
+                AnalyseMealScreen(onBack = back, onReview = { go(Routes.NUTRITION_REVIEW) })
+            }
+            composable(Routes.NUTRITION_REVIEW) {
+                val toMeals: () -> Unit = {
+                    navController.navigate(Routes.NUTRITION_MEALS) {
+                        popUpTo(Routes.NUTRITION_ADD) { inclusive = true }
+                    }
+                }
+                ReviewMealScreen(onBack = back, onAdd = toMeals, onSaveWithoutLogging = toMeals)
+            }
             composable(
                 Routes.NUTRITION_MEAL,
                 arguments = listOf(navArgument("mealId") { type = NavType.IntType }),
@@ -345,19 +375,4 @@ private fun workoutFor(id: String, viewModel: WorkoutViewModel): Workout? {
         if (state.selectedWorkout?.id != id) viewModel.loadWorkoutDetail(id)
     }
     return state.selectedWorkout?.takeIf { it.id == id }
-}
-
-// Pantalla temporal: se reemplaza por la real de cada área.
-@Composable
-private fun PlaceholderScreen(
-    title: String,
-    vararg links: Pair<String, String>,
-    onNavigate: (String) -> Unit,
-) {
-    Column(Modifier.fillMaxSize()) {
-        Text(title)
-        links.forEach { (route, label) ->
-            Button(onClick = { onNavigate(route) }) { Text(label) }
-        }
-    }
 }
