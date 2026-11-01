@@ -96,7 +96,12 @@ class WorkoutViewModel @Inject constructor(
                     it.copy(
                         selectedWorkout = cachedWorkout,
                         detailError = if (cachedWorkout == null) {
-                            exception.toUserMessage()
+                            // RF02: detalle nunca descargado y sin servidor
+                            if (exception.isConnectionProblem()) {
+                                "No disponible sin conexión."
+                            } else {
+                                exception.toUserMessage()
+                            }
                         } else {
                             null
                         }
@@ -116,7 +121,10 @@ class WorkoutViewModel @Inject constructor(
         }
     }
 
-    /** Traduce excepciones técnicas a un mensaje que pueda leer el usuario. */
+    /** Problema de red (sin conexión, timeout), no una respuesta rota del servidor. */
+    private fun Throwable.isConnectionProblem(): Boolean =
+        this is IOException && this !is MalformedJsonException && this !is EOFException
+
     /** Traduce excepciones técnicas a un mensaje que pueda leer el usuario. */
     private fun Throwable.toUserMessage(): String = when (this) {
         is HttpException ->
@@ -125,10 +133,8 @@ class WorkoutViewModel @Inject constructor(
         // que llegó una respuesta con JSON roto o incompleto, no un problema de red.
         is JsonParseException, is MalformedJsonException, is EOFException ->
             "El servidor devolvió datos que la app no pudo leer."
-
         is IOException ->
             "No se pudo conectar con el servidor. Revisá tu conexión e intentá de nuevo."
-
         else ->
             "Ocurrió un error inesperado. Intentá de nuevo."
     }
