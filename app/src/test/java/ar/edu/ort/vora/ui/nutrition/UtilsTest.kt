@@ -1,5 +1,6 @@
 package ar.edu.ort.vora.ui.nutrition
 
+import ar.edu.ort.vora.R
 import ar.edu.ort.vora.domain.model.MealType
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -37,9 +38,9 @@ class UtilsTest {
 
     @Test
     fun label_deCadaTipoDeComida() {
-        assertEquals("Desayuno", MealType.BREAKFAST.label())
-        assertEquals("Almuerzo", MealType.LUNCH.label())
-        assertEquals("Cena", MealType.DINNER.label())
-        assertEquals("Merienda", MealType.SNACK.label())
+        assertEquals(R.string.nutrition_meal_breakfast, MealType.BREAKFAST.labelRes)
+        assertEquals(R.string.nutrition_meal_lunch, MealType.LUNCH.labelRes)
+        assertEquals(R.string.nutrition_meal_dinner, MealType.DINNER.labelRes)
+        assertEquals(R.string.nutrition_meal_snack, MealType.SNACK.labelRes)
     }
 }

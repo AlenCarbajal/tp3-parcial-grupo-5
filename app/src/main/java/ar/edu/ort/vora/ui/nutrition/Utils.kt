@@ -1,5 +1,9 @@
 package ar.edu.ort.vora.ui.nutrition
 
+import androidx.annotation.StringRes
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import ar.edu.ort.vora.R
 import ar.edu.ort.vora.domain.model.MealType
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -23,18 +27,24 @@ fun isValidIsoDate(text: String): Boolean =
     Regex("""\d{4}-\d{2}-\d{2}""").matches(text) &&
             runCatching { isoFmt().parse(text) != null }.getOrDefault(false)
 
+@Composable
 fun dayLabel(date: String): String = when (date) {
-    todayIso() -> "Hoy"
-    shiftIso(todayIso(), -1) -> "Ayer"
-    shiftIso(todayIso(), 1) -> "Mañana"
+    todayIso() -> stringResource(R.string.common_today)
+    shiftIso(todayIso(), -1) -> stringResource(R.string.common_yesterday)
+    shiftIso(todayIso(), 1) -> stringResource(R.string.nutrition_day_tomorrow)
     else -> date
 }
 
 val mealTypesInOrder = listOf(MealType.BREAKFAST, MealType.LUNCH, MealType.SNACK, MealType.DINNER)
 
-fun MealType.label(): String = when (this) {
-    MealType.BREAKFAST -> "Desayuno"
-    MealType.LUNCH -> "Almuerzo"
-    MealType.DINNER -> "Cena"
-    MealType.SNACK -> "Merienda"
-}
+@get:StringRes
+val MealType.labelRes: Int
+    get() = when (this) {
+        MealType.BREAKFAST -> R.string.nutrition_meal_breakfast
+        MealType.LUNCH -> R.string.nutrition_meal_lunch
+        MealType.DINNER -> R.string.nutrition_meal_dinner
+        MealType.SNACK -> R.string.nutrition_meal_snack
+    }
+
+@Composable
+fun MealType.label(): String = stringResource(labelRes)

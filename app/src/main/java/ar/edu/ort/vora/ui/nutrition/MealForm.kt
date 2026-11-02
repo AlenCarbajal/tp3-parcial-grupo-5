@@ -1,5 +1,7 @@
 package ar.edu.ort.vora.ui.nutrition
 
+import androidx.annotation.StringRes
+import ar.edu.ort.vora.R
 import ar.edu.ort.vora.domain.model.Meal
 import ar.edu.ort.vora.domain.model.MealType
 
@@ -13,13 +15,14 @@ data class MealFormState(
     val date: String = ""
 )
 
+// Cada error es un @StringRes: la pantalla lo resuelve con stringResource.
 data class MealFormErrors(
-    val name: String? = null,
-    val kcal: String? = null,
-    val carbs: String? = null,
-    val fat: String? = null,
-    val protein: String? = null,
-    val date: String? = null
+    @StringRes val name: Int? = null,
+    @StringRes val kcal: Int? = null,
+    @StringRes val carbs: Int? = null,
+    @StringRes val fat: Int? = null,
+    @StringRes val protein: Int? = null,
+    @StringRes val date: Int? = null
 ){
     val hasErrors: Boolean get() = listOf(name, kcal, carbs, fat, protein, date).any { it != null}
 }
@@ -27,19 +30,19 @@ data class MealFormErrors(
 private fun parseDecimal(text: String): Double? =
     text.trim().replace(',', '.').toDoubleOrNull()?.takeIf { it.isFinite() }
 
-private fun numberError(text: String, integer: Boolean = false): String? {
-    if (text.isBlank()) return "Obligatorio."
+private fun numberError(text: String, integer: Boolean = false): Int? {
+    if (text.isBlank()) return R.string.nutrition_form_error_required
     val value = if (integer) text.trim().toIntOrNull()?.toDouble() else parseDecimal(text)
     return when {
-        value == null -> if (integer) "Ingresá un entero." else "Número inválido."
-        value < 0 -> "No puede ser negativo."
+        value == null -> if (integer) R.string.nutrition_form_error_integer else R.string.nutrition_form_error_number
+        value < 0 -> R.string.nutrition_form_error_negative
         else -> null
     }
 }
 
 fun MealFormState.errors(): MealFormErrors = MealFormErrors(
-    name = if (name.isBlank()) "Ingresá un nombre." else null,
-    date = if (!isValidIsoDate(date.trim())) "Usá el formato AAAA-MM-DD." else null,
+    name = if (name.isBlank()) R.string.nutrition_form_error_name else null,
+    date = if (!isValidIsoDate(date.trim())) R.string.nutrition_form_error_date else null,
     kcal = numberError(kcal, integer = true),
     protein = numberError(protein),
     carbs = numberError(carbs),
