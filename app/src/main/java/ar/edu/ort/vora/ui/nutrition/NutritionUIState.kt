@@ -3,6 +3,7 @@ package ar.edu.ort.vora.ui.nutrition
 import ar.edu.ort.vora.domain.model.Meal
 
 import ar.edu.ort.vora.domain.model.DailyTotals
+import ar.edu.ort.vora.ui.components.UiText
 sealed interface NutritionUIState  {
     data object Loading : NutritionUIState
     data object Empty : NutritionUIState
@@ -12,6 +13,6 @@ sealed interface NutritionUIState  {
     ) : NutritionUIState
 
     data class Error(
-        val message: String
+        val message: UiText
     ) : NutritionUIState
 }

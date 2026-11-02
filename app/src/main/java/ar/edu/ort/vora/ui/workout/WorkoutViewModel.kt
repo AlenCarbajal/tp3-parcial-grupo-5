@@ -2,7 +2,9 @@ package ar.edu.ort.vora.ui.workout
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ar.edu.ort.vora.R
 import ar.edu.ort.vora.data.repository.WorkoutRepository
+import ar.edu.ort.vora.ui.components.UiText
 import com.google.gson.JsonParseException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.IOException
@@ -98,7 +100,7 @@ class WorkoutViewModel @Inject constructor(
                         detailError = if (cachedWorkout == null) {
                             // RF02: detalle nunca descargado y sin servidor
                             if (exception.isConnectionProblem()) {
-                                "No disponible sin conexión."
+                                UiText(R.string.workout_error_offline_detail)
                             } else {
                                 exception.toUserMessage()
                             }
@@ -126,16 +128,16 @@ class WorkoutViewModel @Inject constructor(
         this is IOException && this !is MalformedJsonException && this !is EOFException
 
     /** Traduce excepciones técnicas a un mensaje que pueda leer el usuario. */
-    private fun Throwable.toUserMessage(): String = when (this) {
+    private fun Throwable.toUserMessage(): UiText = when (this) {
         is HttpException ->
-            "El servidor respondió con un error (${code()}). Intentá de nuevo en un rato."
+            UiText(R.string.common_error_server, listOf(code()))
         // Antes que IOException: estos son subtipos de IOException pero indican
         // que llegó una respuesta con JSON roto o incompleto, no un problema de red.
         is JsonParseException, is MalformedJsonException, is EOFException ->
-            "El servidor devolvió datos que la app no pudo leer."
+            UiText(R.string.common_error_bad_data)
         is IOException ->
-            "No se pudo conectar con el servidor. Revisá tu conexión e intentá de nuevo."
+            UiText(R.string.common_error_network)
         else ->
-            "Ocurrió un error inesperado. Intentá de nuevo."
+            UiText(R.string.common_error_unexpected)
     }
 }

@@ -27,9 +27,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import ar.edu.ort.vora.R
 import ar.edu.ort.vora.domain.model.Workout
 
 private val ActiveDarkGreen = Color(0xFF123F35)
@@ -61,7 +63,7 @@ fun WorkoutActiveScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "Cargando entrenamiento...",
+                    text = stringResource(R.string.workout_loading),
                     color = ActiveText
                 )
             }
@@ -75,7 +77,7 @@ fun WorkoutActiveScreen(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Text(
-                        text = "No hay ejercicios disponibles",
+                        text = stringResource(R.string.workout_active_no_exercises),
                         style = MaterialTheme.typography.titleLarge,
                         color = ActiveText
                     )
@@ -86,7 +88,7 @@ fun WorkoutActiveScreen(
                             containerColor = ActiveDarkGreen
                         )
                     ) {
-                        Text("Finish Workout")
+                        Text(stringResource(R.string.workout_finish))
                     }
                 }
             }
@@ -96,14 +98,14 @@ fun WorkoutActiveScreen(
             ]
 
             Text(
-                text = "YOUR WORKOUT",
+                text = stringResource(R.string.workout_your_workout),
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.Bold,
                 color = ActiveDarkGreen
             )
 
             Text(
-                text = "Active Workout",
+                text = stringResource(R.string.workout_active_title),
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold,
                 color = ActiveText
@@ -162,8 +164,11 @@ fun WorkoutActiveScreen(
                 }
 
                 Text(
-                    text = "Ejercicio ${currentIndex + 1} de " +
-                            workout.exercises.size,
+                    text = stringResource(
+                        R.string.workout_active_progress,
+                        currentIndex + 1,
+                        workout.exercises.size
+                    ),
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.Gray
                 )
@@ -194,7 +199,7 @@ fun WorkoutActiveScreen(
                             .padding(horizontal = 18.dp, vertical = 10.dp)
                     ) {
                         Text(
-                            text = "EXERCISE ${currentIndex + 1}",
+                            text = stringResource(R.string.workout_active_exercise_badge, currentIndex + 1),
                             color = ActiveMint,
                             style = MaterialTheme.typography.labelLarge,
                             fontWeight = FontWeight.Bold
@@ -228,19 +233,19 @@ fun WorkoutActiveScreen(
                     ) {
                         ActiveStat(
                             value = "${exercise.sets}",
-                            label = "SERIES",
+                            label = stringResource(R.string.workout_sets_caps),
                             modifier = Modifier.weight(1f)
                         )
 
                         ActiveStat(
                             value = "${exercise.reps}",
-                            label = "REPS",
+                            label = stringResource(R.string.workout_reps_caps),
                             modifier = Modifier.weight(1f)
                         )
 
                         ActiveStat(
-                            value = "${exercise.restSeconds}s",
-                            label = "DESCANSO",
+                            value = stringResource(R.string.workout_seconds, exercise.restSeconds),
+                            label = stringResource(R.string.workout_rest_caps),
                             modifier = Modifier.weight(1f)
                         )
                     }
@@ -253,7 +258,7 @@ fun WorkoutActiveScreen(
                         shape = RoundedCornerShape(24.dp)
                     ) {
                         Text(
-                            text = "Exercise Guide",
+                            text = stringResource(R.string.workout_guide_title),
                             color = Color.White
                         )
                     }
@@ -279,9 +284,9 @@ fun WorkoutActiveScreen(
             ) {
                 Text(
                     text = if (currentIndex < workout.exercises.lastIndex) {
-                        "Next Exercise  →"
+                        stringResource(R.string.workout_next_exercise)
                     } else {
-                        "Finish Workout  ✓"
+                        stringResource(R.string.workout_finish_check)
                     },
                     fontWeight = FontWeight.Bold
                 )

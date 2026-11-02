@@ -27,10 +27,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import ar.edu.ort.vora.R
+import ar.edu.ort.vora.ui.components.asString
 
 private val WorkoutBackground = Color(0xFFF5F7F4)
 private val WorkoutDarkGreen = Color(0xFF123F35)
@@ -54,7 +58,7 @@ fun WorkoutCatalogScreen(
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         Text(
-            text = "Workouts",
+            text = stringResource(R.string.workout_catalog_title),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             color = WorkoutText
@@ -72,14 +76,14 @@ fun WorkoutCatalogScreen(
                 ),
                 shape = RoundedCornerShape(24.dp)
             ) {
-                Text("Actualizar")
+                Text(stringResource(R.string.workout_refresh))
             }
 
             OutlinedButton(
                 onClick = onPlanClick,
                 shape = RoundedCornerShape(24.dp)
             ) {
-                Text("Your Plan")
+                Text(stringResource(R.string.workout_your_plan))
             }
         }
 
@@ -93,7 +97,7 @@ fun WorkoutCatalogScreen(
 
             state.error != null && state.workouts.isEmpty() -> {
                 Text(
-                    text = state.error ?: "Ocurrió un error.",
+                    text = state.error?.asString() ?: stringResource(R.string.common_error_unexpected),
                     color = MaterialTheme.colorScheme.error
                 )
 
@@ -103,13 +107,13 @@ fun WorkoutCatalogScreen(
                         containerColor = WorkoutDarkGreen
                     )
                 ) {
-                    Text("Reintentar")
+                    Text(stringResource(R.string.common_retry))
                 }
             }
 
             state.workouts.isEmpty() -> {
                 Text(
-                    text = "Todavía no hay entrenamientos disponibles.",
+                    text = stringResource(R.string.workout_catalog_empty),
                     color = WorkoutText
                 )
             }
@@ -117,7 +121,7 @@ fun WorkoutCatalogScreen(
             else -> {
                 if (state.error != null) {
                     Text(
-                        text = state.error!!,
+                        text = state.error!!.asString(),
                         color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.bodySmall
                     )
@@ -130,7 +134,7 @@ fun WorkoutCatalogScreen(
                 ) {
                     item {
                         Text(
-                            text = "READY FOR TODAY?",
+                            text = stringResource(R.string.workout_ready_for_today),
                             style = MaterialTheme.typography.labelSmall,
                             color = WorkoutDarkGreen
                         )
@@ -163,9 +167,12 @@ fun WorkoutCatalogScreen(
                                 )
 
                                 Text(
-                                    text = "${workout.durationMinutes} min • " +
-                                            "${workout.exerciseCount} ejercicios • " +
-                                            "${workout.level}",
+                                    text = stringResource(
+                                        R.string.common_workout_meta,
+                                        workout.durationMinutes,
+                                        pluralStringResource(R.plurals.common_exercise_count, workout.exerciseCount, workout.exerciseCount),
+                                        workout.level
+                                    ),
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = WorkoutMint
                                 )
@@ -184,7 +191,7 @@ fun WorkoutCatalogScreen(
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
                                     Text(
-                                        text = "Ver entrenamiento",
+                                        text = stringResource(R.string.workout_view_workout),
                                         fontWeight = FontWeight.Bold
                                     )
                                 }

@@ -1,6 +1,7 @@
 package ar.edu.ort.vora.ui.components
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -42,14 +44,14 @@ import ar.edu.ort.vora.ui.theme.VoraTextPrimary
 import ar.edu.ort.vora.ui.theme.VoraTextSecondary
 import ar.edu.ort.vora.ui.theme.VoraWhiteTranslucent
 
-data class BottomBarItem(val label: String, @DrawableRes val icon: Int)
+data class BottomBarItem(@StringRes val label: Int, @DrawableRes val icon: Int)
 
 val VoraBottomBarItems = listOf(
-    BottomBarItem("Home", R.drawable.ic_nav_home),
-    BottomBarItem("Workout", R.drawable.ic_nav_workout),
-    BottomBarItem("Nutrition", R.drawable.ic_nav_nutrition),
-    BottomBarItem("Progress", R.drawable.ic_nav_progress),
-    BottomBarItem("Profile", R.drawable.ic_nav_profile),
+    BottomBarItem(R.string.common_nav_home, R.drawable.ic_nav_home),
+    BottomBarItem(R.string.common_nav_workout, R.drawable.ic_nav_workout),
+    BottomBarItem(R.string.common_nav_nutrition, R.drawable.ic_nav_nutrition),
+    BottomBarItem(R.string.common_nav_progress, R.drawable.ic_nav_progress),
+    BottomBarItem(R.string.common_nav_profile, R.drawable.ic_nav_profile),
 )
 
 @Composable
@@ -81,7 +83,7 @@ fun VoraBottomBar(
                         Icon(painterResource(item.icon), contentDescription = null, tint = color, modifier = Modifier.size(20.dp))
                         // Una sola línea: con letra grande o pantallas angostas achica en vez de cortarse.
                         BasicText(
-                            item.label,
+                            stringResource(item.label),
                             style = MaterialTheme.typography.labelMedium.copy(
                                 fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium,
                                 color = color,
@@ -169,11 +171,11 @@ fun VoraTopBar(
                 TopBarBack.None -> Unit
                 TopBarBack.Plain -> Icon(
                     painterResource(R.drawable.ic_chevron_left),
-                    contentDescription = "Volver",
+                    contentDescription = stringResource(R.string.common_back),
                     tint = contentColor,
                     modifier = Modifier.clickable(role = Role.Button, onClick = onBack),
                 )
-                TopBarBack.Circle -> IconCircleButton(R.drawable.ic_chevron_left, "Volver", onBack, dark = dark)
+                TopBarBack.Circle -> IconCircleButton(R.drawable.ic_chevron_left, stringResource(R.string.common_back), onBack, dark = dark)
             }
             if (!centered) {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s6)) {

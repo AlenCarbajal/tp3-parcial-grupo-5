@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,21 +54,21 @@ fun NotificationsScreen(
 ) {
     var allRead by rememberSaveable { mutableStateOf(false) }
     val today = listOf(
-        Notice("VORA Coach", "Your weekly health review is ready.", "We noticed your training consistency improved by 14% over the last week.", "2h ago", R.drawable.ic_sparkles, true, onWeeklyReview),
-        Notice("Workout Plan", "Upper Body Strength is ready.", "Equipped for home/gym. Approx. 42 minutes.", "4h ago", R.drawable.ic_nav_workout, true, onWorkout),
-        Notice("Nutrition Goal", "Protein target milestone alert.", "You require 36g more of protein to hit today's UK performance baseline.", "6h ago", R.drawable.ic_nav_nutrition, false, onNutrition),
+        Notice(stringResource(R.string.coach_title), stringResource(R.string.home_notice_review_title), stringResource(R.string.home_notice_review_body), stringResource(R.string.home_hours_ago, 2), R.drawable.ic_sparkles, true, onWeeklyReview),
+        Notice(stringResource(R.string.home_notice_workout_source), stringResource(R.string.home_notice_workout_title), stringResource(R.string.home_notice_workout_body), stringResource(R.string.home_hours_ago, 4), R.drawable.ic_nav_workout, true, onWorkout),
+        Notice(stringResource(R.string.home_notice_nutrition_source), stringResource(R.string.home_notice_nutrition_title), stringResource(R.string.home_notice_nutrition_body), stringResource(R.string.home_hours_ago, 6), R.drawable.ic_nav_nutrition, false, onNutrition),
     )
     val yesterday = listOf(
-        Notice("Milestone Reached", "4-day workout streak logged!", "Outstanding work, Alex. Let's make it 5 today.", "1d ago", R.drawable.ic_flame, false, onProgress),
+        Notice(stringResource(R.string.home_notice_streak_source), stringResource(R.string.home_notice_streak_title), stringResource(R.string.home_notice_streak_body), stringResource(R.string.home_days_ago, 1), R.drawable.ic_flame, false, onProgress),
     )
 
     TabScreen {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text("Notifications", Modifier.weight(1f), style = MaterialTheme.typography.headlineMedium, color = VoraTextPrimary)
-            VoraTextButton("Mark all as read", onClick = { allRead = true })
+            Text(stringResource(R.string.common_notifications), Modifier.weight(1f), style = MaterialTheme.typography.headlineMedium, color = VoraTextPrimary)
+            VoraTextButton(stringResource(R.string.home_mark_all_read), onClick = { allRead = true })
         }
-        Section("Today", today, allRead)
-        Section("Yesterday", yesterday, allRead)
+        Section(stringResource(R.string.common_today), today, allRead)
+        Section(stringResource(R.string.common_yesterday), yesterday, allRead)
     }
 }
 

@@ -25,9 +25,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import ar.edu.ort.vora.R
 import ar.edu.ort.vora.domain.model.Workout
 
 private val PrepDarkGreen = Color(0xFF123F35)
@@ -50,7 +52,7 @@ fun WorkoutPrepScreen(
         verticalArrangement = Arrangement.spacedBy(18.dp)
     ) {
         Text(
-            text = "‹  Volver al entrenamiento",
+            text = stringResource(R.string.workout_back_to_workout_link),
             color = PrepDarkGreen,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
@@ -74,7 +76,7 @@ fun WorkoutPrepScreen(
                 ) {
                     CircularProgressIndicator(color = PrepMint)
                     Text(
-                        text = "Cargando entrenamiento...",
+                        text = stringResource(R.string.workout_loading),
                         color = PrepText
                     )
                 }
@@ -83,21 +85,21 @@ fun WorkoutPrepScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "WORKOUT PREPARATION",
+                text = stringResource(R.string.workout_prep_label),
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.Bold,
                 color = PrepDarkGreen
             )
 
             Text(
-                text = "Get Ready",
+                text = stringResource(R.string.workout_prep_title),
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold,
                 color = PrepText
             )
 
             Text(
-                text = "Prepará tu espacio. Tu próximo entrenamiento está por comenzar.",
+                text = stringResource(R.string.workout_prep_subtitle),
                 style = MaterialTheme.typography.bodyLarge,
                 color = Color(0xFF64746D)
             )
@@ -119,7 +121,7 @@ fun WorkoutPrepScreen(
                             .padding(horizontal = 12.dp, vertical = 7.dp)
                     ) {
                         Text(
-                            text = "YOUR NEXT WORKOUT",
+                            text = stringResource(R.string.workout_prep_next),
                             color = PrepDarkGreen,
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold
@@ -134,7 +136,7 @@ fun WorkoutPrepScreen(
                     )
 
                     Text(
-                        text = "Nivel ${workout.level}",
+                        text = stringResource(R.string.workout_level, workout.level),
                         style = MaterialTheme.typography.bodyMedium,
                         color = PrepMint
                     )
@@ -145,13 +147,13 @@ fun WorkoutPrepScreen(
                     ) {
                         PrepStat(
                             value = "${workout.durationMinutes}",
-                            label = "MINUTOS",
+                            label = stringResource(R.string.workout_minutes_caps),
                             modifier = Modifier.weight(1f)
                         )
 
                         PrepStat(
                             value = "${workout.exercises.size}",
-                            label = "EJERCICIOS",
+                            label = stringResource(R.string.workout_exercises_header),
                             modifier = Modifier.weight(1f)
                         )
                     }
@@ -170,24 +172,24 @@ fun WorkoutPrepScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "Antes de empezar",
+                        text = stringResource(R.string.workout_prep_before),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = PrepDarkGreen
                     )
 
                     Text(
-                        text = "✓  Prepará el espacio y el equipo",
+                        text = stringResource(R.string.workout_prep_check_space),
                         color = PrepText
                     )
 
                     Text(
-                        text = "✓  Tené agua a mano",
+                        text = stringResource(R.string.workout_prep_check_water),
                         color = PrepText
                     )
 
                     Text(
-                        text = "✓  Priorizá la técnica en cada repetición",
+                        text = stringResource(R.string.workout_prep_check_technique),
                         color = PrepText
                     )
                 }
@@ -207,7 +209,7 @@ fun WorkoutPrepScreen(
                 )
             ) {
                 Text(
-                    text = "Start Workout  →",
+                    text = stringResource(R.string.workout_start_arrow),
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -220,7 +222,7 @@ fun WorkoutPrepScreen(
                 shape = RoundedCornerShape(28.dp)
             ) {
                 Text(
-                    text = "Cancelar",
+                    text = stringResource(R.string.common_cancel),
                     color = PrepDarkGreen
                 )
             }

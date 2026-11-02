@@ -10,8 +10,10 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import ar.edu.ort.vora.R
 import ar.edu.ort.vora.domain.model.Meal
 import ar.edu.ort.vora.ui.components.ConfirmDialog
 import ar.edu.ort.vora.ui.components.DarkPanel
@@ -28,7 +30,6 @@ import ar.edu.ort.vora.ui.theme.VoraError
 import ar.edu.ort.vora.ui.theme.VoraMint
 import ar.edu.ort.vora.ui.theme.VoraTextPrimary
 import ar.edu.ort.vora.ui.theme.VoraTextSecondary
-import java.util.Locale
 
 @Composable
 fun MealDetailScreen(
@@ -43,9 +44,9 @@ fun MealDetailScreen(
 
     if (confirmDelete && meal != null) {
         ConfirmDialog(
-            title = "Borrar comida",
-            message = "¿Borrar “${meal.name}”? No se puede deshacer.",
-            confirmText = "Borrar",
+            title = stringResource(R.string.nutrition_delete_title),
+            message = stringResource(R.string.nutrition_delete_message, meal.name),
+            confirmText = stringResource(R.string.common_delete),
             onConfirm = {
                 confirmDelete = false
                 nutritionViewModel.deleteMeal(meal, onBack)
@@ -55,7 +56,7 @@ fun MealDetailScreen(
     }
 
     Column(Modifier.fillMaxSize().background(VoraBackground)) {
-        VoraTopBar(title = meal?.type?.label() ?: "Comida", back = TopBarBack.Plain, onBack = onBack)
+        VoraTopBar(title = meal?.type?.label() ?: stringResource(R.string.nutrition_meal), back = TopBarBack.Plain, onBack = onBack)
         Box(
             Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()),
             contentAlignment = Alignment.TopCenter,
@@ -70,15 +71,15 @@ fun MealDetailScreen(
                 when (val s = state) {
                     MealDetailUiState.Loading -> Unit
                     MealDetailUiState.NotFound -> Text(
-                        "Esta comida ya no existe.",
+                        stringResource(R.string.nutrition_meal_not_found),
                         style = MaterialTheme.typography.bodyMedium,
                         color = VoraTextSecondary,
                     )
                     is MealDetailUiState.Found -> {
                         MealSummary(s.meal)
-                        SecondaryButton("Edit Meal", demo, Modifier.fillMaxWidth())
-                        SecondaryButton("Duplicate Meal", demo, Modifier.fillMaxWidth())
-                        VoraTextButton("Borrar comida", { confirmDelete = true }, Modifier.fillMaxWidth(), color = VoraError)
+                        SecondaryButton(stringResource(R.string.nutrition_edit_meal), demo, Modifier.fillMaxWidth())
+                        SecondaryButton(stringResource(R.string.nutrition_duplicate_meal), demo, Modifier.fillMaxWidth())
+                        VoraTextButton(stringResource(R.string.nutrition_delete_title), { confirmDelete = true }, Modifier.fillMaxWidth(), color = VoraError)
                     }
                 }
             }
@@ -97,22 +98,20 @@ private fun MealSummary(meal: Meal) {
         )
     }
     DarkPanel(padding = Spacing.s16, verticalArrangement = Arrangement.spacedBy(Spacing.s12)) {
-        Text("${meal.kcal} kcal", style = PanelTitleStyle)
+        Text(stringResource(R.string.nutrition_kcal, meal.kcal), style = PanelTitleStyle)
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Column {
-                Text("Proteínas", style = MaterialTheme.typography.bodySmall, color = VoraMint)
-                Text(grams(meal.protein))
+                Text(stringResource(R.string.common_protein), style = MaterialTheme.typography.bodySmall, color = VoraMint)
+                Text(stringResource(R.string.nutrition_grams, meal.protein))
             }
             Column {
-                Text("Carbos", style = MaterialTheme.typography.bodySmall, color = VoraMint)
-                Text(grams(meal.carbs))
+                Text(stringResource(R.string.common_carbs), style = MaterialTheme.typography.bodySmall, color = VoraMint)
+                Text(stringResource(R.string.nutrition_grams, meal.carbs))
             }
             Column {
-                Text("Grasas", style = MaterialTheme.typography.bodySmall, color = VoraMint)
-                Text(grams(meal.fat))
+                Text(stringResource(R.string.common_fat), style = MaterialTheme.typography.bodySmall, color = VoraMint)
+                Text(stringResource(R.string.nutrition_grams, meal.fat))
             }
         }
     }
 }
-
-private fun grams(value: Double) = String.format(Locale.getDefault(), "%.1f g", value)

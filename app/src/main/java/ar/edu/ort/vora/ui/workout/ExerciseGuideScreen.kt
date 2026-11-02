@@ -19,8 +19,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import ar.edu.ort.vora.R
 import ar.edu.ort.vora.domain.model.Workout
 
 private val GuideDarkGreen = Color(0xFF123F35)
@@ -45,7 +47,7 @@ fun ExerciseGuideScreen(
         verticalArrangement = Arrangement.spacedBy(18.dp)
     ) {
         Text(
-            text = "‹  Volver al entrenamiento",
+            text = stringResource(R.string.workout_back_to_workout_link),
             color = GuideDarkGreen,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
@@ -57,14 +59,14 @@ fun ExerciseGuideScreen(
         )
 
         Text(
-            text = "EXERCISE GUIDE",
+            text = stringResource(R.string.workout_guide_label),
             color = GuideDarkGreen,
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold
         )
 
         Text(
-            text = "Exercise Guide",
+            text = stringResource(R.string.workout_guide_title),
             color = GuideText,
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold
@@ -73,7 +75,7 @@ fun ExerciseGuideScreen(
         when {
             workout == null -> {
                 Text(
-                    text = "Cargando entrenamiento...",
+                    text = stringResource(R.string.workout_loading),
                     color = GuideText
                 )
             }
@@ -90,12 +92,12 @@ fun ExerciseGuideScreen(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
-                            text = "Ejercicio no encontrado",
+                            text = stringResource(R.string.workout_guide_not_found_title),
                             color = GuideDarkGreen,
                             style = MaterialTheme.typography.titleLarge
                         )
                         Text(
-                            text = "No se encontró este ejercicio en el entrenamiento seleccionado.",
+                            text = stringResource(R.string.workout_guide_not_found_body),
                             color = GuideText
                         )
                     }
@@ -122,14 +124,14 @@ fun ExerciseGuideScreen(
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         Text(
-                            text = "DATOS DEL EJERCICIO",
+                            text = stringResource(R.string.workout_guide_details),
                             color = GuideMint,
                             style = MaterialTheme.typography.labelLarge,
                             fontWeight = FontWeight.Bold
                         )
 
                         Text(
-                            text = "Grupo muscular",
+                            text = stringResource(R.string.workout_guide_muscle_group),
                             color = GuideMint,
                             style = MaterialTheme.typography.bodyMedium
                         )
@@ -145,18 +147,18 @@ fun ExerciseGuideScreen(
                             horizontalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
                             GuideStat(
-                                label = "Series",
+                                label = stringResource(R.string.workout_sets),
                                 value = exercise.sets.toString(),
                                 modifier = Modifier.weight(1f)
                             )
                             GuideStat(
-                                label = "Repeticiones",
+                                label = stringResource(R.string.workout_reps),
                                 value = exercise.reps.toString(),
                                 modifier = Modifier.weight(1f)
                             )
                             GuideStat(
-                                label = "Descanso",
-                                value = "${exercise.restSeconds}s",
+                                label = stringResource(R.string.workout_rest),
+                                value = stringResource(R.string.workout_seconds, exercise.restSeconds),
                                 modifier = Modifier.weight(1f)
                             )
                         }
@@ -175,7 +177,7 @@ fun ExerciseGuideScreen(
                         verticalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
                         Text(
-                            text = "Cómo realizarlo",
+                            text = stringResource(R.string.workout_guide_how_to),
                             color = GuideDarkGreen,
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold
@@ -200,7 +202,7 @@ fun ExerciseGuideScreen(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
-                            text = "TIP VORA",
+                            text = stringResource(R.string.workout_guide_tip),
                             color = GuideDarkGreen,
                             style = MaterialTheme.typography.labelLarge,
                             fontWeight = FontWeight.Bold
@@ -227,7 +229,7 @@ fun ExerciseGuideScreen(
             )
         ) {
             Text(
-                text = "Volver al entrenamiento",
+                text = stringResource(R.string.workout_back_to_workout),
                 modifier = Modifier.padding(vertical = 6.dp)
             )
         }

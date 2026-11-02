@@ -1,5 +1,6 @@
 package ar.edu.ort.vora.ui.nutrition
 
+import ar.edu.ort.vora.R
 import ar.edu.ort.vora.domain.model.MealType
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -65,7 +66,7 @@ class MealFormTest {
     fun caloriasNegativas_sonInvalidas() {
         val errors = validForm().copy(kcal = "-5").errors()
 
-        assertEquals("No puede ser negativo.", errors.kcal)
+        assertEquals(R.string.nutrition_form_error_negative, errors.kcal)
         assertTrue(errors.hasErrors)
     }
 
@@ -73,34 +74,34 @@ class MealFormTest {
     fun caloriasConDecimales_sonInvalidas() {
         val errors = validForm().copy(kcal = "12.5").errors()
 
-        assertEquals("Ingresá un entero.", errors.kcal)
+        assertEquals(R.string.nutrition_form_error_integer, errors.kcal)
     }
 
     @Test
     fun campoVacio_esObligatorio() {
         val errors = validForm().copy(kcal = "", protein = "", carbs = "", fat = "").errors()
 
-        assertEquals("Obligatorio.", errors.kcal)
-        assertEquals("Obligatorio.", errors.protein)
-        assertEquals("Obligatorio.", errors.carbs)
-        assertEquals("Obligatorio.", errors.fat)
+        assertEquals(R.string.nutrition_form_error_required, errors.kcal)
+        assertEquals(R.string.nutrition_form_error_required, errors.protein)
+        assertEquals(R.string.nutrition_form_error_required, errors.carbs)
+        assertEquals(R.string.nutrition_form_error_required, errors.fat)
     }
 
     @Test
     fun macrosNegativos_sonInvalidos() {
         val errors = validForm().copy(carbs = "-1", fat = "-0.5", protein = "-3").errors()
 
-        assertEquals("No puede ser negativo.", errors.carbs)
-        assertEquals("No puede ser negativo.", errors.fat)
-        assertEquals("No puede ser negativo.", errors.protein)
+        assertEquals(R.string.nutrition_form_error_negative, errors.carbs)
+        assertEquals(R.string.nutrition_form_error_negative, errors.fat)
+        assertEquals(R.string.nutrition_form_error_negative, errors.protein)
     }
 
     @Test
     fun macroConTexto_oInfinito_esNumeroInvalido() {
         val errors = validForm().copy(carbs = "abc", fat = "Infinity").errors()
 
-        assertEquals("Número inválido.", errors.carbs)
-        assertEquals("Número inválido.", errors.fat)
+        assertEquals(R.string.nutrition_form_error_number, errors.carbs)
+        assertEquals(R.string.nutrition_form_error_number, errors.fat)
     }
 
     @Test

@@ -4,6 +4,8 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import ar.edu.ort.vora.R
 import ar.edu.ort.vora.ui.theme.VoraError
 import ar.edu.ort.vora.ui.theme.VoraSurface
 import ar.edu.ort.vora.ui.theme.VoraTextPrimary
@@ -16,7 +18,7 @@ fun ConfirmDialog(
     confirmText: String,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
-    dismissText: String = "Cancelar",
+    dismissText: String = stringResource(R.string.common_cancel),
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
