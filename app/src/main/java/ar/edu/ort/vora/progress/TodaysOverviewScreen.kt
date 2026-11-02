@@ -22,9 +22,12 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ar.edu.ort.vora.R
 import ar.edu.ort.vora.ui.theme.VoraBackground
 import ar.edu.ort.vora.ui.theme.VoraBorder
 import ar.edu.ort.vora.ui.theme.VoraError
@@ -33,6 +36,7 @@ import ar.edu.ort.vora.ui.theme.VoraLime
 import ar.edu.ort.vora.ui.theme.VoraMint
 import ar.edu.ort.vora.ui.theme.VoraTextPrimary
 import ar.edu.ort.vora.ui.theme.VoraTextSecondary
+
 
 @Composable
 fun TodaysOverviewScreen(
@@ -52,14 +56,14 @@ fun TodaysOverviewScreen(
             verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             Text(
-                text = "TUESDAY, 8 SEPTEMBER",
+                text = stringResource(R.string.progress_today_date),
                 fontSize = 12.sp,
                 color = VoraTextSecondary,
                 fontWeight = FontWeight.Medium
             )
 
             Text(
-                text = "Today's Overview",
+                text = stringResource(R.string.common_todays_overview),
                 fontSize = 27.sp,
                 lineHeight = 32.sp,
                 fontWeight = FontWeight.SemiBold,
@@ -92,7 +96,7 @@ fun TodaysOverviewScreen(
                         verticalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
                         Text(
-                            text = "DAILY COMPLETION",
+                            text = stringResource(R.string.progress_daily_completion),
                             fontSize = 11.sp,
                             color = VoraTextSecondary
                         )
@@ -120,29 +124,29 @@ fun TodaysOverviewScreen(
 
                 CompletionRow(
                     color = VoraError,
-                    title = "Workout Progress",
-                    detail = "Not started",
+                    title = stringResource(R.string.progress_workout_progress),
+                    detail = stringResource(R.string.progress_not_started),
                     percent = "0%"
                 )
 
                 CompletionRow(
                     color = VoraMint,
-                    title = "Nutrition Target",
-                    detail = "1,420 / 2,100 kcal",
+                    title = stringResource(R.string.progress_nutrition_target),
+                    detail = stringResource(R.string.common_value_kcal_of, 1420, 2100),
                     percent = "78%"
                 )
 
                 CompletionRow(
                     color = VoraGreen,
-                    title = "Activity Target",
-                    detail = "7,842 steps",
+                    title = stringResource(R.string.progress_activity_target),
+                    detail = pluralStringResource(R.plurals.progress_steps_count, 7842, stringResource(R.string.common_number, 7842)),
                     percent = "84%"
                 )
 
                 CompletionRow(
                     color = VoraLime,
-                    title = "Hydration Intake",
-                    detail = "1.6 / 2.5 Litres",
+                    title = stringResource(R.string.progress_hydration_intake),
+                    detail = stringResource(R.string.progress_hydration_detail),
                     percent = "65%"
                 )
             }
@@ -161,15 +165,14 @@ fun TodaysOverviewScreen(
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 Text(
-                    text = "✣  VORA ADVICE",
+                    text = "✣  " + stringResource(R.string.progress_vora_advice),
                     color = VoraMint,
                     fontSize = 13.sp,
                     fontWeight = FontWeight.SemiBold
                 )
 
                 Text(
-                    text = "\"Completing today's intermediate workout and a " +
-                            "protein-rich dinner will secure your optimal target recovery.\"",
+                    text = stringResource(R.string.progress_today_advice),
                     color = Color.White,
                     fontSize = 13.sp,
                     lineHeight = 20.sp
@@ -179,7 +182,7 @@ fun TodaysOverviewScreen(
 
         // Desglose por categorías
         Text(
-            text = "Category Breakdowns",
+            text = stringResource(R.string.progress_category_breakdowns),
             fontSize = 19.sp,
             fontWeight = FontWeight.SemiBold,
             color = VoraTextPrimary
@@ -205,13 +208,13 @@ fun TodaysOverviewScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "WORKOUT",
+                        text = stringResource(R.string.progress_workout_caps),
                         color = VoraTextSecondary,
                         fontSize = 10.sp
                     )
 
                     Text(
-                        text = "NOT STARTED",
+                        text = stringResource(R.string.progress_not_started_caps),
                         color = VoraError,
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Medium
@@ -219,14 +222,19 @@ fun TodaysOverviewScreen(
                 }
 
                 Text(
-                    text = "Upper Body Strength",
+                    text = stringResource(R.string.common_upper_body_strength),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
                     color = VoraTextPrimary
                 )
 
                 Text(
-                    text = "42 min • 5 exercises • Intermediate",
+                    text = stringResource(
+                        R.string.common_workout_meta,
+                        42,
+                        pluralStringResource(R.plurals.common_exercise_count, 5, 5),
+                        stringResource(R.string.common_level_intermediate),
+                    ),
                     fontSize = 11.sp,
                     color = VoraTextSecondary
                 )
@@ -243,7 +251,7 @@ fun TodaysOverviewScreen(
                     )
                 ) {
                     Text(
-                        text = "Start Workout",
+                        text = stringResource(R.string.common_start_workout),
                         fontSize = 13.sp
                     )
                 }
@@ -273,13 +281,13 @@ fun TodaysOverviewScreen(
                     verticalArrangement = Arrangement.spacedBy(5.dp)
                 ) {
                     Text(
-                        text = "CURRENT GOAL",
+                        text = stringResource(R.string.progress_current_goal),
                         fontSize = 9.sp,
                         color = VoraTextSecondary
                     )
 
                     Text(
-                        text = "Build strength",
+                        text = stringResource(R.string.common_goal_strength),
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Medium,
                         color = VoraTextPrimary
@@ -300,13 +308,13 @@ fun TodaysOverviewScreen(
                     verticalArrangement = Arrangement.spacedBy(5.dp)
                 ) {
                     Text(
-                        text = "WEEKLY TARGET",
+                        text = stringResource(R.string.progress_weekly_target),
                         fontSize = 9.sp,
                         color = VoraTextSecondary
                     )
 
                     Text(
-                        text = "4 / 5 Workouts",
+                        text = stringResource(R.string.progress_weekly_target_value),
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Medium,
                         color = VoraTextPrimary
@@ -328,7 +336,7 @@ fun TodaysOverviewScreen(
             )
         ) {
             Text(
-                text = "View Your Progress Dashboard  →",
+                text = stringResource(R.string.progress_view_dashboard),
                 fontWeight = FontWeight.SemiBold
             )
         }

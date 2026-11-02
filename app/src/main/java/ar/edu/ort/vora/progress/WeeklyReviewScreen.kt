@@ -19,9 +19,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ar.edu.ort.vora.R
 import ar.edu.ort.vora.ui.theme.VoraBorder
 import ar.edu.ort.vora.ui.theme.VoraGreen
 import ar.edu.ort.vora.ui.theme.VoraGreenAccent
@@ -30,6 +33,7 @@ import ar.edu.ort.vora.ui.theme.VoraGreenRaised
 import ar.edu.ort.vora.ui.theme.VoraLime
 import ar.edu.ort.vora.ui.theme.VoraOnGreenMuted
 import ar.edu.ort.vora.ui.theme.VoraTextPrimary
+
 
 @Composable
 fun WeeklyReviewScreen(
@@ -78,14 +82,14 @@ fun WeeklyReviewScreen(
                         verticalArrangement = Arrangement.spacedBy(2.dp)
                     ) {
                         Text(
-                            text = "Your weekly review",
+                            text = stringResource(R.string.progress_weekly_title),
                             fontSize = 17.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = Color.White
                         )
 
                         Text(
-                            text = "Here's what changed this week.",
+                            text = stringResource(R.string.progress_weekly_subtitle),
                             fontSize = 10.sp,
                             color = VoraOnGreenMuted
                         )
@@ -126,7 +130,7 @@ fun WeeklyReviewScreen(
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         Text(
-                            text = "\"You had a strong week.\"",
+                            text = stringResource(R.string.progress_weekly_headline),
                             fontSize = 14.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = VoraLime
@@ -137,20 +141,20 @@ fun WeeklyReviewScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             WeeklySummaryMetric(
-                                title = "WORKOUTS",
-                                value = "4 sessions",
+                                title = stringResource(R.string.progress_workouts_caps),
+                                value = pluralStringResource(R.plurals.progress_sessions_count, 4, 4),
                                 modifier = Modifier.weight(1f)
                             )
 
                             WeeklySummaryMetric(
-                                title = "AVG STEPS",
-                                value = "7,842 steps",
+                                title = stringResource(R.string.progress_avg_steps),
+                                value = pluralStringResource(R.plurals.progress_steps_count, 7842, stringResource(R.string.common_number, 7842)),
                                 modifier = Modifier.weight(1f)
                             )
 
                             WeeklySummaryMetric(
-                                title = "PROTEIN",
-                                value = "132g daily",
+                                title = stringResource(R.string.progress_protein_caps),
+                                value = stringResource(R.string.progress_protein_daily, stringResource(R.string.common_value_g, 132)),
                                 modifier = Modifier.weight(1f)
                             )
                         }
@@ -161,7 +165,7 @@ fun WeeklyReviewScreen(
             // Lo que salió bien
             item {
                 Text(
-                    text = "WHAT WENT WELL",
+                    text = stringResource(R.string.progress_went_well),
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
                     color = VoraLime
@@ -170,22 +174,22 @@ fun WeeklyReviewScreen(
 
             item {
                 WeeklyAchievement(
-                    title = "You stayed consistent",
-                    detail = "Four completed workouts helped you maintain your weekly training rhythm."
+                    title = stringResource(R.string.progress_well_consistent_title),
+                    detail = stringResource(R.string.progress_well_consistent_detail)
                 )
             }
 
             item {
                 WeeklyAchievement(
-                    title = "Your protein improved",
-                    detail = "You reached your protein target on 5 of 7 days."
+                    title = stringResource(R.string.progress_well_protein_title),
+                    detail = stringResource(R.string.progress_well_protein_detail)
                 )
             }
 
             item {
                 WeeklyAchievement(
-                    title = "Your training volume increased",
-                    detail = "You completed 8% more volume than last week."
+                    title = stringResource(R.string.progress_well_volume_title),
+                    detail = stringResource(R.string.progress_well_volume_detail)
                 )
             }
 
@@ -194,7 +198,7 @@ fun WeeklyReviewScreen(
                 Spacer(Modifier.height(2.dp))
 
                 Text(
-                    text = "WHAT TO IMPROVE",
+                    text = stringResource(R.string.progress_to_improve),
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
                     color = VoraLime
@@ -229,7 +233,7 @@ fun WeeklyReviewScreen(
                             Spacer(Modifier.width(7.dp))
 
                             Text(
-                                text = "Dinner consistency",
+                                text = stringResource(R.string.progress_improve_dinner_title),
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.SemiBold,
                                 color = Color.White
@@ -237,15 +241,14 @@ fun WeeklyReviewScreen(
                         }
 
                         Text(
-                            text = "Your protein intake tends to drop at dinner. " +
-                                    "Try planning a protein-rich dinner before the evening.",
+                            text = stringResource(R.string.progress_improve_dinner_detail),
                             fontSize = 10.sp,
                             lineHeight = 15.sp,
                             color = VoraOnGreenMuted
                         )
 
                         Text(
-                            text = "Get dinner ideas  →",
+                            text = stringResource(R.string.progress_dinner_ideas),
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Medium,
                             color = VoraLime
@@ -268,22 +271,22 @@ fun WeeklyReviewScreen(
                         verticalArrangement = Arrangement.spacedBy(9.dp)
                     ) {
                         Text(
-                            text = "NEXT WEEK'S RECOMMENDATIONS",
+                            text = stringResource(R.string.progress_next_week_recommendations),
                             fontSize = 9.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = VoraOnGreenMuted
                         )
 
                         WeeklyRecommendation(
-                            text = "Keep your current workout schedule."
+                            text = stringResource(R.string.progress_reco_schedule)
                         )
 
                         WeeklyRecommendation(
-                            text = "Try to reach 140g protein on at least 6 days."
+                            text = stringResource(R.string.progress_reco_protein)
                         )
 
                         WeeklyRecommendation(
-                            text = "Aim for 8,000+ steps on non-training days."
+                            text = stringResource(R.string.progress_reco_steps)
                         )
 
                         Spacer(
@@ -298,7 +301,7 @@ fun WeeklyReviewScreen(
                             contentPadding = PaddingValues(0.dp)
                         ) {
                             Text(
-                                text = "View next week's plan  →",
+                                text = stringResource(R.string.progress_next_week_plan),
                                 fontSize = 10.sp,
                                 color = VoraGreen
                             )
@@ -321,7 +324,7 @@ fun WeeklyReviewScreen(
                     )
                 ) {
                     Text(
-                        text = "🎙  Ask VORA",
+                        text = "🎙  " + stringResource(R.string.progress_ask_vora),
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Medium
                     )
@@ -346,7 +349,7 @@ fun WeeklyReviewScreen(
                     )
                 ) {
                     Text(
-                        text = "Done",
+                        text = stringResource(R.string.common_done),
                         fontSize = 11.sp
                     )
                 }

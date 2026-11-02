@@ -22,9 +22,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ar.edu.ort.vora.R
 import ar.edu.ort.vora.ui.theme.VoraBackground
 import ar.edu.ort.vora.ui.theme.VoraBorder
 import ar.edu.ort.vora.ui.theme.VoraGreen
@@ -39,6 +42,25 @@ import ar.edu.ort.vora.ui.theme.VoraSurfaceMuted
 import ar.edu.ort.vora.ui.theme.VoraTextPrimary
 import ar.edu.ort.vora.ui.theme.VoraTextSecondary
 
+
+// Clave interna del período y su texto visible (compartido por las pantallas de progreso)
+internal val ProgressPeriods = listOf(
+    "Week" to R.string.progress_period_week,
+    "Month" to R.string.progress_period_month,
+    "3 Months" to R.string.progress_period_3_months
+)
+
+// Iniciales de lunes a domingo para los gráficos
+internal val WeekDayInitials = listOf(
+    R.string.progress_day_initial_mon,
+    R.string.progress_day_initial_tue,
+    R.string.progress_day_initial_wed,
+    R.string.progress_day_initial_thu,
+    R.string.progress_day_initial_fri,
+    R.string.progress_day_initial_sat,
+    R.string.progress_day_initial_sun
+)
+
 @Composable
 fun ProgressDashboardScreen(
     onNavigate: (String) -> Unit = {}
@@ -46,27 +68,27 @@ fun ProgressDashboardScreen(
     var period by remember { mutableStateOf("Week") }
 
     val workouts = when (period) {
-        "Month" -> "16"
-        "3 Months" -> "42"
-        else -> "4"
+        "Month" -> 16
+        "3 Months" -> 42
+        else -> 4
     }
 
     val steps = when (period) {
-        "Month" -> "8,120"
-        "3 Months" -> "7,650"
-        else -> "7,842"
+        "Month" -> stringResource(R.string.common_number, 8120)
+        "3 Months" -> stringResource(R.string.common_number, 7650)
+        else -> stringResource(R.string.common_number, 7842)
     }
 
     val protein = when (period) {
-        "Month" -> "101g"
-        "3 Months" -> "98g"
-        else -> "104g"
+        "Month" -> stringResource(R.string.common_value_g, 101)
+        "3 Months" -> stringResource(R.string.common_value_g, 98)
+        else -> stringResource(R.string.common_value_g, 104)
     }
 
     val streak = when (period) {
-        "Month" -> "12 days 🔥"
-        "3 Months" -> "18 days 🔥"
-        else -> "4 days 🔥"
+        "Month" -> 12
+        "3 Months" -> 18
+        else -> 4
     }
 
     Column(
@@ -82,14 +104,14 @@ fun ProgressDashboardScreen(
             verticalArrangement = Arrangement.spacedBy(3.dp)
         ) {
             Text(
-                text = "Your progress",
+                text = stringResource(R.string.progress_dashboard_title),
                 fontSize = 25.sp,
                 fontWeight = FontWeight.Bold,
                 color = VoraTextPrimary
             )
 
             Text(
-                text = "Small improvements add up.",
+                text = stringResource(R.string.progress_dashboard_subtitle),
                 fontSize = 13.sp,
                 color = VoraTextSecondary
             )
@@ -99,8 +121,8 @@ fun ProgressDashboardScreen(
         SingleChoiceSegmentedButtonRow(
             modifier = Modifier.fillMaxWidth()
         ) {
-            listOf("Week", "Month", "3 Months")
-                .forEachIndexed { index, option ->
+            ProgressPeriods
+                .forEachIndexed { index, (option, label) ->
                     SegmentedButton(
                         selected = period == option,
                         onClick = { period = option },
@@ -118,7 +140,7 @@ fun ProgressDashboardScreen(
                         )
                     ) {
                         Text(
-                            text = option,
+                            text = stringResource(label),
                             fontSize = 11.sp,
                             maxLines = 1
                         )
@@ -143,11 +165,13 @@ fun ProgressDashboardScreen(
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 Text(
-                    text = if (period == "Week") {
-                        "THIS WEEK OVERVIEW"
-                    } else {
-                        "${period.uppercase()} OVERVIEW"
-                    },
+                    text = stringResource(
+                        when (period) {
+                            "Month" -> R.string.progress_overview_month
+                            "3 Months" -> R.string.progress_overview_3_months
+                            else -> R.string.progress_overview_week
+                        }
+                    ),
                     fontSize = 11.sp,
                     color = VoraTextSecondary,
                     fontWeight = FontWeight.Medium
@@ -158,14 +182,14 @@ fun ProgressDashboardScreen(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     OverviewMetric(
-                        title = "Workouts completed",
-                        value = "$workouts workouts",
+                        title = stringResource(R.string.progress_workouts_completed),
+                        value = pluralStringResource(R.plurals.progress_workouts_count, workouts, workouts),
                         change = "↑ 1",
                         modifier = Modifier.weight(1f)
                     )
 
                     OverviewMetric(
-                        title = "Avg Daily Steps",
+                        title = stringResource(R.string.progress_avg_daily_steps),
                         value = steps,
                         change = "↑ 6%",
                         modifier = Modifier.weight(1f)
@@ -177,15 +201,15 @@ fun ProgressDashboardScreen(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     OverviewMetric(
-                        title = "Daily Avg Protein",
+                        title = stringResource(R.string.progress_daily_avg_protein),
                         value = protein,
                         change = "↑ 9%",
                         modifier = Modifier.weight(1f)
                     )
 
                     OverviewMetric(
-                        title = "Active Streak",
-                        value = streak,
+                        title = stringResource(R.string.progress_active_streak),
+                        value = pluralStringResource(R.plurals.progress_streak_days, streak, streak),
                         change = "",
                         modifier = Modifier.weight(1f)
                     )
@@ -234,7 +258,7 @@ fun ProgressDashboardScreen(
                     Spacer(Modifier.width(10.dp))
 
                     Text(
-                        text = "VORA Insight",
+                        text = stringResource(R.string.progress_vora_insight),
                         color = VoraMint,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Medium,
@@ -242,7 +266,7 @@ fun ProgressDashboardScreen(
                     )
 
                     Text(
-                        text = "CONSISTENT",
+                        text = stringResource(R.string.progress_consistent_badge),
                         color = VoraLime,
                         fontSize = 9.sp,
                         fontWeight = FontWeight.Bold,
@@ -259,9 +283,7 @@ fun ProgressDashboardScreen(
                 }
 
                 Text(
-                    text = "\"You've completed $workouts workouts this " +
-                            "period. Keep building your routine and your " +
-                            "consistency is trending in the right direction.\"",
+                    text = pluralStringResource(R.plurals.progress_dashboard_insight, workouts, workouts),
                     color = Color.White,
                     fontSize = 13.sp,
                     lineHeight = 20.sp
@@ -277,7 +299,7 @@ fun ProgressDashboardScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "See weekly review",
+                        text = stringResource(R.string.progress_see_weekly_review),
                         color = VoraLime,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Medium
@@ -297,8 +319,8 @@ fun ProgressDashboardScreen(
         // Acceso a Workout
         ProgressNavigationCard(
             icon = "♧",
-            title = "Workout",
-            subtitle = "3 sessions • 2,340 kg volume",
+            title = stringResource(R.string.common_nav_workout),
+            subtitle = stringResource(R.string.progress_workout_card_subtitle),
             onClick = {
                 onNavigate("progress/workout")
             }
@@ -307,8 +329,8 @@ fun ProgressDashboardScreen(
         // Acceso a Nutrition
         ProgressNavigationCard(
             icon = "◉",
-            title = "Nutrition",
-            subtitle = "$protein protein • 74% avg target",
+            title = stringResource(R.string.common_nav_nutrition),
+            subtitle = stringResource(R.string.progress_nutrition_card_subtitle, protein),
             onClick = {
                 onNavigate("progress/nutrition")
             }
@@ -317,8 +339,8 @@ fun ProgressDashboardScreen(
         // Acceso a Activity
         ProgressNavigationCard(
             icon = "↗",
-            title = "Activity",
-            subtitle = "$steps steps • 5.6 km daily avg",
+            title = stringResource(R.string.progress_activity),
+            subtitle = stringResource(R.string.progress_activity_card_subtitle, steps),
             onClick = {
                 onNavigate("progress/health")
             }
@@ -352,7 +374,7 @@ fun ProgressDashboardScreen(
                     Spacer(Modifier.width(6.dp))
 
                     Text(
-                        text = "ACTIVE GOAL",
+                        text = stringResource(R.string.progress_active_goal),
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Bold,
                         color = VoraGreen,
@@ -360,7 +382,7 @@ fun ProgressDashboardScreen(
                     )
 
                     Text(
-                        text = "68% complete",
+                        text = stringResource(R.string.progress_goal_complete, 68),
                         fontSize = 10.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = VoraGreen
@@ -377,15 +399,14 @@ fun ProgressDashboardScreen(
                 )
 
                 Text(
-                    text = "Build strength & improve fitness",
+                    text = stringResource(R.string.common_goal_strength_fitness),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,
                     color = VoraTextPrimary
                 )
 
                 Text(
-                    text = "You're building consistency across workouts " +
-                            "and nutrition.",
+                    text = stringResource(R.string.progress_goal_description),
                     fontSize = 12.sp,
                     lineHeight = 17.sp,
                     color = VoraTextSecondary
@@ -506,7 +527,7 @@ private fun ProgressNavigationCard(
             }
 
             Text(
-                text = "View  ›",
+                text = stringResource(R.string.progress_view_arrow),
                 fontSize = 11.sp,
                 fontWeight = FontWeight.Medium,
                 color = VoraGreen

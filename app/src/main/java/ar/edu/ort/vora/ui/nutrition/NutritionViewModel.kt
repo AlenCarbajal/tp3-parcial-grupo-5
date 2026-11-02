@@ -2,9 +2,11 @@ package ar.edu.ort.vora.ui.nutrition
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ar.edu.ort.vora.R
 import ar.edu.ort.vora.data.repository.MealRepository
 import ar.edu.ort.vora.domain.model.Meal
 import ar.edu.ort.vora.domain.model.toDailyTotals
+import ar.edu.ort.vora.ui.components.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.CancellationException
@@ -51,7 +53,7 @@ class NutritionViewModel @Inject constructor(
                         }
                     }
                     .onStart { emit(NutritionUIState.Loading) }
-                    .catch { emit(NutritionUIState.Error("No se pudieron cargar las comidas.")) }
+                    .catch { emit(NutritionUIState.Error(UiText(R.string.nutrition_error_load))) }
             }
             .stateIn(
                 scope = viewModelScope,
@@ -60,8 +62,8 @@ class NutritionViewModel @Inject constructor(
             )
 
     // Errores de guardar o borrar (no reemplazan la lista que ya se ve)
-    private val _actionError = MutableStateFlow<String?>(null)
-    val actionError: StateFlow<String?> = _actionError.asStateFlow()
+    private val _actionError = MutableStateFlow<UiText?>(null)
+    val actionError: StateFlow<UiText?> = _actionError.asStateFlow()
 
     fun selectDate(date: String) {
         _selectedDate.value = date
@@ -87,7 +89,7 @@ class NutritionViewModel @Inject constructor(
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
-                _actionError.value = "No se pudo guardar la comida."
+                _actionError.value = UiText(R.string.nutrition_error_save)
                 false
             }
             if (ok) onSaved()
@@ -103,7 +105,7 @@ class NutritionViewModel @Inject constructor(
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
-                _actionError.value = "No se pudo borrar la comida."
+                _actionError.value = UiText(R.string.nutrition_error_delete)
                 false
             }
             if (ok) onDeleted()
@@ -115,10 +117,10 @@ class NutritionViewModel @Inject constructor(
     }
 
     // RF03: nombre no vacío y valores >= 0
-    private fun validate(meal: Meal): String? = when {
-        meal.name.isBlank() -> "El nombre no puede estar vacío."
+    private fun validate(meal: Meal): UiText? = when {
+        meal.name.isBlank() -> UiText(R.string.nutrition_error_name_empty)
         meal.kcal < 0 || meal.protein < 0 || meal.carbs < 0 || meal.fat < 0 ->
-            "Los valores no pueden ser negativos."
+            UiText(R.string.nutrition_error_negative_values)
         else -> null
     }
 }

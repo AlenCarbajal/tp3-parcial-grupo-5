@@ -21,9 +21,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ar.edu.ort.vora.R
 import ar.edu.ort.vora.ui.theme.VoraBackground
 import ar.edu.ort.vora.ui.theme.VoraBorder
 import ar.edu.ort.vora.ui.theme.VoraGreen
@@ -34,6 +37,7 @@ import ar.edu.ort.vora.ui.theme.VoraSurfaceMuted
 import ar.edu.ort.vora.ui.theme.VoraTextPrimary
 import ar.edu.ort.vora.ui.theme.VoraTextSecondary
 
+
 @Composable
 fun NutritionProgressScreen(
     onBack: () -> Unit = {}
@@ -42,28 +46,28 @@ fun NutritionProgressScreen(
     var selectedNutrient by remember { mutableStateOf("Protein") }
 
     val calories = when (period) {
-        "Month" -> "1,920"
-        "3 Months" -> "1,870"
-        else -> "1,980"
+        "Month" -> stringResource(R.string.common_number, 1920)
+        "3 Months" -> stringResource(R.string.common_number, 1870)
+        else -> stringResource(R.string.common_number, 1980)
     }
 
     val protein = when (period) {
-        "Month" -> "128g"
-        "3 Months" -> "124g"
-        else -> "132g"
+        "Month" -> stringResource(R.string.common_value_g, 128)
+        "3 Months" -> stringResource(R.string.common_value_g, 124)
+        else -> stringResource(R.string.common_value_g, 132)
     }
 
-    val daysHit = when (period) {
-        "Month" -> "22 / 30 days"
-        "3 Months" -> "65 / 90 days"
-        else -> "5 / 7 days"
+    val (hitDays, totalDays) = when (period) {
+        "Month" -> 22 to 30
+        "3 Months" -> 65 to 90
+        else -> 5 to 7
     }
 
     val target = when (selectedNutrient) {
-        "Calories" -> "2,100 kcal"
-        "Protein" -> "140g"
-        "Carbs" -> "210g"
-        else -> "70g"
+        "Calories" -> stringResource(R.string.common_value_kcal, 2100)
+        "Protein" -> stringResource(R.string.common_value_g, 140)
+        "Carbs" -> stringResource(R.string.common_value_g, 210)
+        else -> stringResource(R.string.common_value_g, 70)
     }
 
     val dailyValues = when (selectedNutrient) {
@@ -111,7 +115,7 @@ fun NutritionProgressScreen(
                     }
 
                     Text(
-                        text = "Nutrition progress",
+                        text = stringResource(R.string.progress_nutrition_title),
                         fontSize = 19.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = VoraTextPrimary
@@ -132,8 +136,8 @@ fun NutritionProgressScreen(
                 SingleChoiceSegmentedButtonRow(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    listOf("Week", "Month", "3 Months")
-                        .forEachIndexed { index, option ->
+                    ProgressPeriods
+                        .forEachIndexed { index, (option, label) ->
                             SegmentedButton(
                                 selected = period == option,
                                 onClick = { period = option },
@@ -151,7 +155,7 @@ fun NutritionProgressScreen(
                                 )
                             ) {
                                 Text(
-                                    text = option,
+                                    text = stringResource(label),
                                     fontSize = 10.sp,
                                     maxLines = 1
                                 )
@@ -180,7 +184,7 @@ fun NutritionProgressScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         NutritionSummaryMetric(
-                            title = "AVG CALORIES",
+                            title = stringResource(R.string.progress_avg_calories),
                             value = "$calories kcal",
                             modifier = Modifier.weight(1f)
                         )
@@ -188,7 +192,7 @@ fun NutritionProgressScreen(
                         SummaryDivider()
 
                         NutritionSummaryMetric(
-                            title = "AVG PROTEIN",
+                            title = stringResource(R.string.progress_avg_protein),
                             value = protein,
                             modifier = Modifier.weight(1f)
                         )
@@ -196,8 +200,13 @@ fun NutritionProgressScreen(
                         SummaryDivider()
 
                         NutritionSummaryMetric(
-                            title = "TARGET HIT",
-                            value = daysHit,
+                            title = stringResource(R.string.progress_target_hit),
+                            value = pluralStringResource(
+                                R.plurals.progress_days_ratio,
+                                totalDays,
+                                hitDays,
+                                totalDays
+                            ),
                             modifier = Modifier.weight(1f)
                         )
                     }
@@ -231,8 +240,13 @@ fun NutritionProgressScreen(
                                 .padding(3.dp),
                             horizontalArrangement = Arrangement.spacedBy(3.dp)
                         ) {
-                            listOf("Calories", "Protein", "Carbs", "Fat")
-                                .forEach { nutrient ->
+                            listOf(
+                                "Calories" to R.string.progress_nutrient_calories,
+                                "Protein" to R.string.common_protein,
+                                "Carbs" to R.string.common_carbs,
+                                "Fat" to R.string.common_fat
+                            )
+                                .forEach { (nutrient, label) ->
                                     val selected = selectedNutrient == nutrient
 
                                     Box(
@@ -256,7 +270,7 @@ fun NutritionProgressScreen(
                                         contentAlignment = Alignment.Center
                                     ) {
                                         Text(
-                                            text = nutrient,
+                                            text = stringResource(label),
                                             color = if (selected) {
                                                 Color.White
                                             } else {
@@ -275,12 +289,15 @@ fun NutritionProgressScreen(
                         }
 
                         Text(
-                            text = when (selectedNutrient) {
-                                "Calories" -> "DAILY CALORIE TARGET ($target)"
-                                "Protein" -> "DAILY AVG PROTEIN TARGET ($target)"
-                                "Carbs" -> "DAILY CARBS TARGET ($target)"
-                                else -> "DAILY FAT TARGET ($target)"
-                            },
+                            text = stringResource(
+                                when (selectedNutrient) {
+                                    "Calories" -> R.string.progress_target_calories
+                                    "Protein" -> R.string.progress_target_protein
+                                    "Carbs" -> R.string.progress_target_carbs
+                                    else -> R.string.progress_target_fat
+                                },
+                                target
+                            ),
                             fontSize = 9.sp,
                             color = VoraTextSecondary
                         )
@@ -289,7 +306,7 @@ fun NutritionProgressScreen(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            val days = listOf("M", "T", "W", "T", "F", "S", "S")
+                            val days = WeekDayInitials.map { stringResource(it) }
 
                             days.forEachIndexed { index, day ->
                                 val hit = dailyValues[index] >= 80
@@ -332,7 +349,9 @@ fun NutritionProgressScreen(
                                     }
 
                                     Text(
-                                        text = if (hit) "HIT" else "MISS",
+                                        text = stringResource(
+                                            if (hit) R.string.progress_hit else R.string.progress_miss
+                                        ),
                                         fontSize = 7.sp,
                                         color = if (hit) {
                                             VoraGreen
@@ -380,7 +399,7 @@ fun NutritionProgressScreen(
                             Spacer(Modifier.width(9.dp))
 
                             Text(
-                                text = "Nutrition Analysis",
+                                text = stringResource(R.string.progress_nutrition_analysis),
                                 fontSize = 13.sp,
                                 color = VoraMintSoft,
                                 fontWeight = FontWeight.Medium
@@ -388,9 +407,7 @@ fun NutritionProgressScreen(
                         }
 
                         Text(
-                            text = "\"Your protein intake has improved this week, " +
-                                    "especially on workout days. Keeping this consistent " +
-                                    "will better support your strength goal.\"",
+                            text = stringResource(R.string.progress_nutrition_insight),
                             fontSize = 11.sp,
                             lineHeight = 16.sp,
                             color = Color.White
@@ -402,7 +419,7 @@ fun NutritionProgressScreen(
             // Hábitos alimentarios
             item {
                 Text(
-                    text = "FOOD HABITS & PATTERNS",
+                    text = stringResource(R.string.progress_food_habits),
                     fontSize = 10.sp,
                     color = VoraTextSecondary,
                     fontWeight = FontWeight.SemiBold
@@ -415,14 +432,14 @@ fun NutritionProgressScreen(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     FoodHabitCard(
-                        title = "Frequent lunch",
-                        value = "Chicken & Rice Bowl",
+                        title = stringResource(R.string.progress_food_frequent_lunch),
+                        value = stringResource(R.string.progress_food_chicken_rice_bowl),
                         modifier = Modifier.weight(1f)
                     )
 
                     FoodHabitCard(
-                        title = "Top protein source",
-                        value = "Whey & Chicken Breast",
+                        title = stringResource(R.string.progress_food_top_protein),
+                        value = stringResource(R.string.progress_food_whey_chicken),
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -434,14 +451,14 @@ fun NutritionProgressScreen(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     FoodHabitCard(
-                        title = "Avg breakfast",
-                        value = "420 kcal",
+                        title = stringResource(R.string.progress_food_avg_breakfast),
+                        value = stringResource(R.string.common_value_kcal, 420),
                         modifier = Modifier.weight(1f)
                     )
 
                     FoodHabitCard(
-                        title = "Avg dinner",
-                        value = "610 kcal",
+                        title = stringResource(R.string.progress_food_avg_dinner),
+                        value = stringResource(R.string.common_value_kcal, 610),
                         modifier = Modifier.weight(1f)
                     )
                 }

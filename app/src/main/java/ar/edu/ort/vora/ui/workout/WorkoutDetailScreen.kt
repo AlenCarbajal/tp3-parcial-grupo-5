@@ -26,16 +26,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import ar.edu.ort.vora.R
+import ar.edu.ort.vora.ui.components.asString
 import ar.edu.ort.vora.ui.theme.VoraBackground
 import ar.edu.ort.vora.ui.theme.VoraGreen
 import ar.edu.ort.vora.ui.theme.VoraLime
 import ar.edu.ort.vora.ui.theme.VoraMint
 import ar.edu.ort.vora.ui.theme.VoraMintLight
 import ar.edu.ort.vora.ui.theme.VoraTextPrimary
+
 
 @Composable
 fun WorkoutDetailScreen(
@@ -58,7 +63,7 @@ fun WorkoutDetailScreen(
             .padding(top = 12.dp, bottom = 8.dp)
     ) {
         Text(
-            text = "‹  Volver",
+            text = stringResource(R.string.workout_back_link),
             style = MaterialTheme.typography.bodyMedium,
             color = VoraGreen,
             modifier = Modifier
@@ -84,7 +89,7 @@ fun WorkoutDetailScreen(
                 ) {
                     item {
                         Text(
-                            text = "Workout Overview",
+                            text = stringResource(R.string.workout_overview),
                             style = MaterialTheme.typography.titleMedium,
                             color = VoraGreen,
                             modifier = Modifier.fillMaxWidth()
@@ -102,9 +107,12 @@ fun WorkoutDetailScreen(
                         Spacer(modifier = Modifier.height(6.dp))
 
                         Text(
-                            text = "${workout.durationMinutes} min  •  " +
-                                    "${workout.level}  •  " +
-                                    "${workout.exerciseCount} ejercicios",
+                            text = stringResource(
+                                R.string.workout_detail_meta,
+                                workout.durationMinutes,
+                                workout.level,
+                                pluralStringResource(R.plurals.common_exercise_count, workout.exerciseCount, workout.exerciseCount)
+                            ),
                             style = MaterialTheme.typography.bodyMedium,
                             color = Color.Gray
                         )
@@ -123,7 +131,7 @@ fun WorkoutDetailScreen(
                                 verticalArrangement = Arrangement.spacedBy(6.dp)
                             ) {
                                 Text(
-                                    text = "●  VORA COACH NOTE",
+                                    text = stringResource(R.string.workout_coach_note),
                                     style = MaterialTheme.typography.labelMedium,
                                     fontWeight = FontWeight.Bold,
                                     color = VoraGreen
@@ -132,8 +140,7 @@ fun WorkoutDetailScreen(
                                 Text(
                                     text = workout.description
                                         ?.takeIf { it.isNotBlank() }
-                                        ?: "Mantené una técnica controlada y priorizá " +
-                                        "la calidad de cada repetición.",
+                                        ?: stringResource(R.string.workout_coach_note_default),
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = VoraTextPrimary
                                 )
@@ -143,7 +150,7 @@ fun WorkoutDetailScreen(
                         Spacer(modifier = Modifier.height(8.dp))
 
                         Text(
-                            text = "EJERCICIOS",
+                            text = stringResource(R.string.workout_exercises_header),
                             style = MaterialTheme.typography.labelLarge,
                             fontWeight = FontWeight.Bold,
                             color = VoraGreen
@@ -197,8 +204,12 @@ fun WorkoutDetailScreen(
                                     )
 
                                     Text(
-                                        text = "${exercise.sets} × ${exercise.reps} " +
-                                                "• Descanso ${exercise.restSeconds}s",
+                                        text = stringResource(
+                                            R.string.workout_sets_reps_rest,
+                                            exercise.sets,
+                                            exercise.reps,
+                                            exercise.restSeconds
+                                        ),
                                         style = MaterialTheme.typography.bodySmall,
                                         color = Color.Gray
                                     )
@@ -219,7 +230,7 @@ fun WorkoutDetailScreen(
                                         vertical = 0.dp
                                     )
                                 ) {
-                                    Text("Ver")
+                                    Text(stringResource(R.string.common_view))
                                 }
                             }
                         }
@@ -228,7 +239,7 @@ fun WorkoutDetailScreen(
                     if (state.detailError != null) {
                         item {
                             Text(
-                                text = state.detailError!!,
+                                text = state.detailError!!.asString(),
                                 color = MaterialTheme.colorScheme.error
                             )
                         }
@@ -250,7 +261,7 @@ fun WorkoutDetailScreen(
                             contentColor = Color.White
                         )
                     ) {
-                        Text("Start Workout")
+                        Text(stringResource(R.string.common_start_workout))
                     }
 
                     OutlinedButton(
@@ -259,7 +270,7 @@ fun WorkoutDetailScreen(
                         shape = RoundedCornerShape(24.dp)
                     ) {
                         Text(
-                            text = "Volver al catálogo",
+                            text = stringResource(R.string.workout_back_to_catalog),
                             color = VoraGreen
                         )
                     }
@@ -268,14 +279,14 @@ fun WorkoutDetailScreen(
 
             state.detailError != null -> {
                 Text(
-                    text = state.detailError!!,
+                    text = state.detailError!!.asString(),
                     color = MaterialTheme.colorScheme.error
                 )
 
                 Button(
                     onClick = { viewModel.loadWorkoutDetail(workoutId) }
                 ) {
-                    Text("Reintentar")
+                    Text(stringResource(R.string.common_retry))
                 }
             }
 
@@ -288,4 +299,5 @@ fun WorkoutDetailScreen(
         }
     }
 }
+
 

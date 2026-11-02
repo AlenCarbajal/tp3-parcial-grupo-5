@@ -13,6 +13,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -28,6 +29,7 @@ import ar.edu.ort.vora.ui.components.PrimaryButton
 import ar.edu.ort.vora.ui.components.SecondaryButton
 import ar.edu.ort.vora.ui.components.TopBarBack
 import ar.edu.ort.vora.ui.components.VoraTopBar
+import ar.edu.ort.vora.ui.components.asString
 import ar.edu.ort.vora.ui.theme.PanelTitleStyle
 import ar.edu.ort.vora.ui.theme.Spacing
 import ar.edu.ort.vora.ui.theme.VoraBackground
@@ -36,7 +38,6 @@ import ar.edu.ort.vora.ui.theme.VoraGreen
 import ar.edu.ort.vora.ui.theme.VoraMint
 import ar.edu.ort.vora.ui.theme.VoraTextPrimary
 import ar.edu.ort.vora.ui.theme.VoraTextSecondary
-import java.util.Locale
 
 @Composable
 fun MealsScreen(
@@ -53,9 +54,9 @@ fun MealsScreen(
     val success = state as? NutritionUIState.Success
     success?.meals?.firstOrNull { it.id == pendingDeleteId }?.let { meal ->
         ConfirmDialog(
-            title = "Borrar comida",
-            message = "¿Borrar “${meal.name}”? No se puede deshacer.",
-            confirmText = "Borrar",
+            title = stringResource(R.string.nutrition_delete_title),
+            message = stringResource(R.string.nutrition_delete_message, meal.name),
+            confirmText = stringResource(R.string.common_delete),
             onConfirm = {
                 viewModel.deleteMeal(meal)
                 pendingDeleteId = null
@@ -65,7 +66,7 @@ fun MealsScreen(
     }
 
     Column(Modifier.fillMaxSize().background(VoraBackground)) {
-        VoraTopBar(title = "Today's Meals", back = TopBarBack.Plain, onBack = onBack)
+        VoraTopBar(title = stringResource(R.string.nutrition_meals_title), back = TopBarBack.Plain, onBack = onBack)
         Box(
             Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()),
             contentAlignment = Alignment.TopCenter,
@@ -88,7 +89,7 @@ fun MealsScreen(
 
                     NutritionUIState.Empty -> InfoCard {
                         Text(
-                            "No hay comidas registradas este día.",
+                            stringResource(R.string.nutrition_meals_empty),
                             style = MaterialTheme.typography.bodyMedium,
                             color = VoraTextSecondary,
                         )
@@ -103,13 +104,13 @@ fun MealsScreen(
                     }
 
                     is NutritionUIState.Error -> InfoCard {
-                        Text(s.message, style = MaterialTheme.typography.bodyMedium, color = VoraError)
-                        SecondaryButton("Reintentar", viewModel::retry, Modifier.fillMaxWidth())
+                        Text(s.message.asString(), style = MaterialTheme.typography.bodyMedium, color = VoraError)
+                        SecondaryButton(stringResource(R.string.common_retry), viewModel::retry, Modifier.fillMaxWidth())
                     }
                 }
 
                 PrimaryButton(
-                    text = "Agregar comida",
+                    text = stringResource(R.string.nutrition_add_meal),
                     onClick = onAdd,
                     modifier = Modifier.fillMaxWidth(),
                     size = ButtonSize.Large,
@@ -127,11 +128,11 @@ private fun DaySelector(label: String, onPrevious: () -> Unit, onNext: () -> Uni
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-        IconCircleButton(R.drawable.ic_chevron_left, "Día anterior", onPrevious)
+        IconCircleButton(R.drawable.ic_chevron_left, stringResource(R.string.nutrition_previous_day), onPrevious)
         Text(label, style = MaterialTheme.typography.titleMedium, color = VoraTextPrimary)
         IconCircleButton(
             icon = R.drawable.ic_chevron_left,
-            contentDescription = "Día siguiente",
+            contentDescription = stringResource(R.string.nutrition_next_day),
             onClick = onNext,
             modifier = Modifier.rotate(180f),
         )
@@ -141,12 +142,12 @@ private fun DaySelector(label: String, onPrevious: () -> Unit, onNext: () -> Uni
 @Composable
 private fun TotalsPanel(totals: DailyTotals) {
     DarkPanel(padding = Spacing.s16, verticalArrangement = Arrangement.spacedBy(Spacing.s12)) {
-        Text("TOTAL DEL DÍA", style = MaterialTheme.typography.labelSmall, color = VoraMint)
-        Text("${totals.kcal} kcal", style = PanelTitleStyle)
+        Text(stringResource(R.string.nutrition_daily_total), style = MaterialTheme.typography.labelSmall, color = VoraMint)
+        Text(stringResource(R.string.nutrition_kcal, totals.kcal), style = PanelTitleStyle)
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            MacroText("Proteínas", totals.protein)
-            MacroText("Carbos", totals.carbs)
-            MacroText("Grasas", totals.fat)
+            MacroText(stringResource(R.string.common_protein), totals.protein)
+            MacroText(stringResource(R.string.common_carbs), totals.carbs)
+            MacroText(stringResource(R.string.common_fat), totals.fat)
         }
     }
 }
@@ -156,7 +157,7 @@ private fun MacroText(label: String, grams: Double) {
     Column {
         Text(label, style = MaterialTheme.typography.bodySmall, color = VoraMint)
         Text(
-            String.format(Locale.getDefault(), "%.1f g", grams),
+            stringResource(R.string.nutrition_grams, grams),
             style = MaterialTheme.typography.bodyMedium,
         )
     }
@@ -179,12 +180,12 @@ private fun MealRow(meal: Meal, onClick: () -> Unit, onDelete: () -> Unit) {
                     overflow = TextOverflow.Ellipsis,
                 )
                 Text(
-                    "${meal.type.label()} · ${meal.kcal} kcal",
+                    stringResource(R.string.nutrition_meal_row_subtitle, meal.type.label(), meal.kcal),
                     style = MaterialTheme.typography.bodyMedium,
                     color = VoraTextSecondary,
                 )
             }
-            IconCircleButton(R.drawable.ic_close, "Borrar ${meal.name}", onDelete)
+            IconCircleButton(R.drawable.ic_close, stringResource(R.string.nutrition_delete_meal_named, meal.name), onDelete)
         }
     }
 }

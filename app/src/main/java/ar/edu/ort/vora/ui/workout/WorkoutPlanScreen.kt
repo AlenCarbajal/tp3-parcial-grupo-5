@@ -20,14 +20,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import ar.edu.ort.vora.R
 import ar.edu.ort.vora.domain.model.Workout
 import ar.edu.ort.vora.ui.theme.VoraBackground
 import ar.edu.ort.vora.ui.theme.VoraGreen
 import ar.edu.ort.vora.ui.theme.VoraLime
 import ar.edu.ort.vora.ui.theme.VoraMint
 import ar.edu.ort.vora.ui.theme.VoraTextPrimary
+
 
 @Composable
 fun WorkoutPlanScreen(
@@ -43,14 +47,14 @@ fun WorkoutPlanScreen(
             .padding(24.dp)
     ) {
         Text(
-            text = "YOUR PLAN",
+            text = stringResource(R.string.workout_plan_label),
             color = VoraGreen,
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold
         )
 
         Text(
-            text = "Tu plan semanal",
+            text = stringResource(R.string.workout_plan_title),
             color = VoraTextPrimary,
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
@@ -58,7 +62,7 @@ fun WorkoutPlanScreen(
         )
 
         Text(
-            text = "Elegí un entrenamiento para consultar sus detalles o comenzar.",
+            text = stringResource(R.string.workout_plan_subtitle),
             color = VoraTextPrimary,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(bottom = 20.dp)
@@ -77,13 +81,13 @@ fun WorkoutPlanScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "Todavía no hay entrenamientos",
+                        text = stringResource(R.string.workout_plan_empty_title),
                         color = VoraGreen,
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = "Cuando haya entrenamientos disponibles, aparecerán acá.",
+                        text = stringResource(R.string.workout_plan_empty_body),
                         color = VoraTextPrimary
                     )
                 }
@@ -116,13 +120,17 @@ fun WorkoutPlanScreen(
                             )
 
                             Text(
-                                text = "Nivel: ${workout.level}",
+                                text = stringResource(R.string.workout_level, workout.level),
                                 color = VoraMint,
                                 style = MaterialTheme.typography.bodyMedium
                             )
 
                             Text(
-                                text = "${workout.durationMinutes} minutos  •  ${workout.exerciseCount} ejercicios",
+                                text = stringResource(
+                                    R.string.workout_plan_meta,
+                                    pluralStringResource(R.plurals.workout_minutes_count, workout.durationMinutes, workout.durationMinutes),
+                                    pluralStringResource(R.plurals.common_exercise_count, workout.exerciseCount, workout.exerciseCount)
+                                ),
                                 color = Color.White,
                                 style = MaterialTheme.typography.bodyMedium
                             )
@@ -137,7 +145,7 @@ fun WorkoutPlanScreen(
                                 )
                             ) {
                                 Text(
-                                    text = "Ver entrenamiento",
+                                    text = stringResource(R.string.workout_view_workout),
                                     fontWeight = FontWeight.SemiBold
                                 )
                             }
@@ -152,7 +160,7 @@ fun WorkoutPlanScreen(
                                 )
                             ) {
                                 Text(
-                                    text = "Comenzar entrenamiento",
+                                    text = stringResource(R.string.common_start_workout),
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -174,7 +182,7 @@ fun WorkoutPlanScreen(
             )
         ) {
             Text(
-                text = "Volver",
+                text = stringResource(R.string.common_back),
                 modifier = Modifier.padding(vertical = 5.dp)
             )
         }

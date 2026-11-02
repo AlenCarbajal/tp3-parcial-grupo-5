@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
@@ -60,7 +61,7 @@ fun MicButton(onClick: () -> Unit, modifier: Modifier = Modifier, listening: Boo
         contentColor = if (listening) VoraGreen else VoraSurface,
     ) {
         Box(contentAlignment = Alignment.Center) {
-            Icon(painterResource(R.drawable.ic_mic_large), contentDescription = if (listening) "Detener" else "Hablar")
+            Icon(painterResource(R.drawable.ic_mic_large), contentDescription = stringResource(if (listening) R.string.coach_mic_stop else R.string.coach_mic_speak))
         }
     }
 }
@@ -150,7 +151,7 @@ fun ChatInputBar(value: String, onValueChange: (String) -> Unit, onSend: () -> U
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(Spacing.s8),
     ) {
-        IconCircleButton(R.drawable.ic_plus, "Agregar", onClick = {})
+        IconCircleButton(R.drawable.ic_plus, stringResource(R.string.common_add), onClick = {})
         Row(
             Modifier
                 .weight(1f)
@@ -160,7 +161,7 @@ fun ChatInputBar(value: String, onValueChange: (String) -> Unit, onSend: () -> U
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Box(Modifier.weight(1f)) {
-                if (value.isEmpty()) Text("Ask VORA anything...", style = MaterialTheme.typography.bodyMedium, color = VoraTextMuted)
+                if (value.isEmpty()) Text(stringResource(R.string.coach_input_placeholder), style = MaterialTheme.typography.bodyMedium, color = VoraTextMuted)
                 BasicTextField(
                     value,
                     onValueChange,
@@ -169,11 +170,11 @@ fun ChatInputBar(value: String, onValueChange: (String) -> Unit, onSend: () -> U
                     cursorBrush = SolidColor(VoraGreen),
                 )
             }
-            Icon(painterResource(R.drawable.ic_mic), contentDescription = "Dictar", tint = VoraTextMuted)
+            Icon(painterResource(R.drawable.ic_mic), contentDescription = stringResource(R.string.coach_dictate), tint = VoraTextMuted)
         }
         Surface(onClick = onSend, modifier = Modifier.size(32.dp), shape = PillShape, color = VoraGreen, contentColor = VoraSurface) {
             Box(contentAlignment = Alignment.Center) {
-                Icon(painterResource(R.drawable.ic_send), contentDescription = "Enviar", modifier = Modifier.size(16.dp))
+                Icon(painterResource(R.drawable.ic_send), contentDescription = stringResource(R.string.coach_send), modifier = Modifier.size(16.dp))
             }
         }
     }
