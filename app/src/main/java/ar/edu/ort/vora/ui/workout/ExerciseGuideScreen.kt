@@ -22,12 +22,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import ar.edu.ort.vora.domain.model.Workout
-
-private val GuideDarkGreen = Color(0xFF123F35)
-private val GuideMint = Color(0xFF60D5B1)
-private val GuideLime = Color(0xFFD0EE69)
-private val GuideBackground = Color(0xFFF5F7F4)
-private val GuideText = Color(0xFF18352E)
+import ar.edu.ort.vora.ui.theme.VoraBackground
+import ar.edu.ort.vora.ui.theme.VoraGreen
+import ar.edu.ort.vora.ui.theme.VoraLime
+import ar.edu.ort.vora.ui.theme.VoraMint
+import ar.edu.ort.vora.ui.theme.VoraTextPrimary
 
 @Composable
 fun ExerciseGuideScreen(
@@ -40,13 +39,13 @@ fun ExerciseGuideScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(GuideBackground)
+            .background(VoraBackground)
             .padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(18.dp)
     ) {
         Text(
             text = "‹  Volver al entrenamiento",
-            color = GuideDarkGreen,
+            color = VoraGreen,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .background(
@@ -58,14 +57,14 @@ fun ExerciseGuideScreen(
 
         Text(
             text = "EXERCISE GUIDE",
-            color = GuideDarkGreen,
+            color = VoraGreen,
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold
         )
 
         Text(
             text = "Exercise Guide",
-            color = GuideText,
+            color = VoraTextPrimary,
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold
         )
@@ -74,7 +73,7 @@ fun ExerciseGuideScreen(
             workout == null -> {
                 Text(
                     text = "Cargando entrenamiento...",
-                    color = GuideText
+                    color = VoraTextPrimary
                 )
             }
 
@@ -91,12 +90,12 @@ fun ExerciseGuideScreen(
                     ) {
                         Text(
                             text = "Ejercicio no encontrado",
-                            color = GuideDarkGreen,
+                            color = VoraGreen,
                             style = MaterialTheme.typography.titleLarge
                         )
                         Text(
                             text = "No se encontró este ejercicio en el entrenamiento seleccionado.",
-                            color = GuideText
+                            color = VoraTextPrimary
                         )
                     }
                 }
@@ -105,7 +104,7 @@ fun ExerciseGuideScreen(
             else -> {
                 Text(
                     text = exercise.name,
-                    color = GuideDarkGreen,
+                    color = VoraGreen,
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold
                 )
@@ -114,7 +113,7 @@ fun ExerciseGuideScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(24.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = GuideDarkGreen
+                        containerColor = VoraGreen
                     )
                 ) {
                     Column(
@@ -123,14 +122,14 @@ fun ExerciseGuideScreen(
                     ) {
                         Text(
                             text = "DATOS DEL EJERCICIO",
-                            color = GuideMint,
+                            color = VoraMint,
                             style = MaterialTheme.typography.labelLarge,
                             fontWeight = FontWeight.Bold
                         )
 
                         Text(
                             text = "Grupo muscular",
-                            color = GuideMint,
+                            color = VoraMint,
                             style = MaterialTheme.typography.bodyMedium
                         )
                         Text(
@@ -176,13 +175,13 @@ fun ExerciseGuideScreen(
                     ) {
                         Text(
                             text = "Cómo realizarlo",
-                            color = GuideDarkGreen,
+                            color = VoraGreen,
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold
                         )
                         Text(
                             text = exercise.instructions,
-                            color = GuideText,
+                            color = VoraTextPrimary,
                             style = MaterialTheme.typography.bodyLarge
                         )
                     }
@@ -192,7 +191,7 @@ fun ExerciseGuideScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(20.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = GuideLime
+                        containerColor = VoraLime
                     )
                 ) {
                     Column(
@@ -201,13 +200,13 @@ fun ExerciseGuideScreen(
                     ) {
                         Text(
                             text = "TIP VORA",
-                            color = GuideDarkGreen,
+                            color = VoraGreen,
                             style = MaterialTheme.typography.labelLarge,
                             fontWeight = FontWeight.Bold
                         )
                         Text(
                             text = exercise.tip,
-                            color = GuideDarkGreen,
+                            color = VoraGreen,
                             style = MaterialTheme.typography.bodyLarge
                         )
                     }
@@ -222,7 +221,7 @@ fun ExerciseGuideScreen(
                 .padding(top = 4.dp),
             shape = RoundedCornerShape(16.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = GuideDarkGreen,
+                containerColor = VoraGreen,
                 contentColor = Color.White
             )
         ) {
@@ -251,7 +250,7 @@ private fun GuideStat(
     ) {
         Text(
             text = label,
-            color = GuideMint,
+            color = VoraMint,
             style = MaterialTheme.typography.labelSmall
         )
         Text(

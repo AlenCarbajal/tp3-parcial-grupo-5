@@ -25,14 +25,14 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
-private val TodayGreen = Color(0xFF123F35)
-private val TodayMint = Color(0xFF65D6B0)
-private val TodayBackground = Color(0xFFF7F8F5)
-private val TodayGray = Color(0xFF6B7773)
-private val TodayBorder = Color(0xFFE2E8E4)
-private val TodayRed = Color(0xFFE35D60)
-private val TodayLime = Color(0xFFC7E95B)
+import ar.edu.ort.vora.ui.theme.VoraBackground
+import ar.edu.ort.vora.ui.theme.VoraBorder
+import ar.edu.ort.vora.ui.theme.VoraError
+import ar.edu.ort.vora.ui.theme.VoraGreen
+import ar.edu.ort.vora.ui.theme.VoraLime
+import ar.edu.ort.vora.ui.theme.VoraMint
+import ar.edu.ort.vora.ui.theme.VoraTextPrimary
+import ar.edu.ort.vora.ui.theme.VoraTextSecondary
 
 @Composable
 fun TodaysOverviewScreen(
@@ -42,7 +42,7 @@ fun TodaysOverviewScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(TodayBackground)
+            .background(VoraBackground)
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 20.dp, vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -54,7 +54,7 @@ fun TodaysOverviewScreen(
             Text(
                 text = "TUESDAY, 8 SEPTEMBER",
                 fontSize = 12.sp,
-                color = TodayGray,
+                color = VoraTextSecondary,
                 fontWeight = FontWeight.Medium
             )
 
@@ -63,7 +63,7 @@ fun TodaysOverviewScreen(
                 fontSize = 27.sp,
                 lineHeight = 32.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = Color(0xFF18231F)
+                color = VoraTextPrimary
             )
         }
 
@@ -76,7 +76,7 @@ fun TodaysOverviewScreen(
             ),
             border = androidx.compose.foundation.BorderStroke(
                 1.dp,
-                TodayBorder
+                VoraBorder
             )
         ) {
             Column(
@@ -94,14 +94,14 @@ fun TodaysOverviewScreen(
                         Text(
                             text = "DAILY COMPLETION",
                             fontSize = 11.sp,
-                            color = TodayGray
+                            color = VoraTextSecondary
                         )
 
                         Text(
                             text = "72%",
                             fontSize = 30.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color(0xFF18231F)
+                            color = VoraTextPrimary
                         )
                     }
 
@@ -115,32 +115,32 @@ fun TodaysOverviewScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(1.dp)
-                        .background(TodayBorder)
+                        .background(VoraBorder)
                 )
 
                 CompletionRow(
-                    color = TodayRed,
+                    color = VoraError,
                     title = "Workout Progress",
                     detail = "Not started",
                     percent = "0%"
                 )
 
                 CompletionRow(
-                    color = TodayMint,
+                    color = VoraMint,
                     title = "Nutrition Target",
                     detail = "1,420 / 2,100 kcal",
                     percent = "78%"
                 )
 
                 CompletionRow(
-                    color = TodayGreen,
+                    color = VoraGreen,
                     title = "Activity Target",
                     detail = "7,842 steps",
                     percent = "84%"
                 )
 
                 CompletionRow(
-                    color = TodayLime,
+                    color = VoraLime,
                     title = "Hydration Intake",
                     detail = "1.6 / 2.5 Litres",
                     percent = "65%"
@@ -153,7 +153,7 @@ fun TodaysOverviewScreen(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
             colors = CardDefaults.cardColors(
-                containerColor = TodayGreen
+                containerColor = VoraGreen
             )
         ) {
             Column(
@@ -162,7 +162,7 @@ fun TodaysOverviewScreen(
             ) {
                 Text(
                     text = "✣  VORA ADVICE",
-                    color = TodayMint,
+                    color = VoraMint,
                     fontSize = 13.sp,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -182,7 +182,7 @@ fun TodaysOverviewScreen(
             text = "Category Breakdowns",
             fontSize = 19.sp,
             fontWeight = FontWeight.SemiBold,
-            color = Color(0xFF18231F)
+            color = VoraTextPrimary
         )
 
         Card(
@@ -193,7 +193,7 @@ fun TodaysOverviewScreen(
             ),
             border = androidx.compose.foundation.BorderStroke(
                 1.dp,
-                TodayBorder
+                VoraBorder
             )
         ) {
             Column(
@@ -206,13 +206,13 @@ fun TodaysOverviewScreen(
                 ) {
                     Text(
                         text = "WORKOUT",
-                        color = TodayGray,
+                        color = VoraTextSecondary,
                         fontSize = 10.sp
                     )
 
                     Text(
                         text = "NOT STARTED",
-                        color = TodayRed,
+                        color = VoraError,
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Medium
                     )
@@ -222,13 +222,13 @@ fun TodaysOverviewScreen(
                     text = "Upper Body Strength",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
-                    color = Color(0xFF18231F)
+                    color = VoraTextPrimary
                 )
 
                 Text(
                     text = "42 min • 5 exercises • Intermediate",
                     fontSize = 11.sp,
-                    color = TodayGray
+                    color = VoraTextSecondary
                 )
 
                 Button(
@@ -238,7 +238,7 @@ fun TodaysOverviewScreen(
                         .height(44.dp),
                     shape = RoundedCornerShape(50),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = TodayGreen,
+                        containerColor = VoraGreen,
                         contentColor = Color.White
                     )
                 ) {
@@ -259,7 +259,7 @@ fun TodaysOverviewScreen(
             ),
             border = androidx.compose.foundation.BorderStroke(
                 1.dp,
-                TodayBorder
+                VoraBorder
             )
         ) {
             Row(
@@ -275,14 +275,14 @@ fun TodaysOverviewScreen(
                     Text(
                         text = "CURRENT GOAL",
                         fontSize = 9.sp,
-                        color = TodayGray
+                        color = VoraTextSecondary
                     )
 
                     Text(
                         text = "Build strength",
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Medium,
-                        color = Color(0xFF18231F)
+                        color = VoraTextPrimary
                     )
                 }
 
@@ -290,7 +290,7 @@ fun TodaysOverviewScreen(
                     modifier = Modifier
                         .width(1.dp)
                         .height(40.dp)
-                        .background(TodayBorder)
+                        .background(VoraBorder)
                 )
 
                 Column(
@@ -302,14 +302,14 @@ fun TodaysOverviewScreen(
                     Text(
                         text = "WEEKLY TARGET",
                         fontSize = 9.sp,
-                        color = TodayGray
+                        color = VoraTextSecondary
                     )
 
                     Text(
                         text = "4 / 5 Workouts",
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Medium,
-                        color = Color(0xFF18231F)
+                        color = VoraTextPrimary
                     )
                 }
             }
@@ -323,7 +323,7 @@ fun TodaysOverviewScreen(
                 .height(48.dp),
             shape = RoundedCornerShape(14.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = TodayGreen,
+                containerColor = VoraGreen,
                 contentColor = Color.White
             )
         ) {
@@ -359,14 +359,14 @@ private fun CompletionRow(
         Text(
             text = title,
             fontSize = 11.sp,
-            color = Color(0xFF18231F),
+            color = VoraTextPrimary,
             modifier = Modifier.weight(1f)
         )
 
         Text(
             text = detail,
             fontSize = 10.sp,
-            color = TodayGray
+            color = VoraTextSecondary
         )
 
         Spacer(Modifier.width(4.dp))
@@ -375,7 +375,7 @@ private fun CompletionRow(
             text = percent,
             fontSize = 10.sp,
             fontWeight = FontWeight.SemiBold,
-            color = Color(0xFF18231F)
+            color = VoraTextPrimary
         )
     }
 }
@@ -396,7 +396,7 @@ private fun CircularCompletion(
             )
 
             drawArc(
-                color = TodayBackground,
+                color = VoraBackground,
                 startAngle = 0f,
                 sweepAngle = 360f,
                 useCenter = false,
@@ -409,7 +409,7 @@ private fun CircularCompletion(
             )
 
             drawArc(
-                color = TodayGreen,
+                color = VoraGreen,
                 startAngle = -90f,
                 sweepAngle = 360f * progress.coerceIn(0f, 1f),
                 useCenter = false,

@@ -31,12 +31,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-
-private val WorkoutBackground = Color(0xFFF5F7F4)
-private val WorkoutDarkGreen = Color(0xFF123F35)
-private val WorkoutMint = Color(0xFF60D5B1)
-private val WorkoutLime = Color(0xFFD0EE69)
-private val WorkoutText = Color(0xFF18352E)
+import ar.edu.ort.vora.ui.theme.VoraBackground
+import ar.edu.ort.vora.ui.theme.VoraGreen
+import ar.edu.ort.vora.ui.theme.VoraLime
+import ar.edu.ort.vora.ui.theme.VoraMint
+import ar.edu.ort.vora.ui.theme.VoraTextPrimary
 
 @Composable
 fun WorkoutCatalogScreen(
@@ -57,7 +56,7 @@ fun WorkoutCatalogScreen(
             text = "Workouts",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
-            color = WorkoutText
+            color = VoraTextPrimary
         )
 
         Row(
@@ -67,7 +66,7 @@ fun WorkoutCatalogScreen(
             Button(
                 onClick = viewModel::refreshWorkouts,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = WorkoutDarkGreen,
+                    containerColor = VoraGreen,
                     contentColor = Color.White
                 ),
                 shape = RoundedCornerShape(24.dp)
@@ -87,7 +86,7 @@ fun WorkoutCatalogScreen(
             state.isLoading && state.workouts.isEmpty() -> {
                 CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
-                    color = WorkoutMint
+                    color = VoraMint
                 )
             }
 
@@ -100,7 +99,7 @@ fun WorkoutCatalogScreen(
                 Button(
                     onClick = viewModel::refreshWorkouts,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = WorkoutDarkGreen
+                        containerColor = VoraGreen
                     )
                 ) {
                     Text("Reintentar")
@@ -110,7 +109,7 @@ fun WorkoutCatalogScreen(
             state.workouts.isEmpty() -> {
                 Text(
                     text = "Todavía no hay entrenamientos disponibles.",
-                    color = WorkoutText
+                    color = VoraTextPrimary
                 )
             }
 
@@ -132,7 +131,7 @@ fun WorkoutCatalogScreen(
                         Text(
                             text = "READY FOR TODAY?",
                             style = MaterialTheme.typography.labelSmall,
-                            color = WorkoutDarkGreen
+                            color = VoraGreen
                         )
                     }
 
@@ -148,7 +147,7 @@ fun WorkoutCatalogScreen(
                                 },
                             shape = RoundedCornerShape(18.dp),
                             colors = CardDefaults.cardColors(
-                                containerColor = WorkoutDarkGreen
+                                containerColor = VoraGreen
                             )
                         ) {
                             Column(
@@ -167,7 +166,7 @@ fun WorkoutCatalogScreen(
                                             "${workout.exerciseCount} ejercicios • " +
                                             "${workout.level}",
                                     style = MaterialTheme.typography.bodyMedium,
-                                    color = WorkoutMint
+                                    color = VoraMint
                                 )
 
                                 Spacer(modifier = Modifier.height(2.dp))
@@ -177,8 +176,8 @@ fun WorkoutCatalogScreen(
                                         onWorkoutClick(workout.id)
                                     },
                                     colors = ButtonDefaults.buttonColors(
-                                        containerColor = WorkoutLime,
-                                        contentColor = WorkoutDarkGreen
+                                        containerColor = VoraLime,
+                                        contentColor = VoraGreen
                                     ),
                                     shape = RoundedCornerShape(24.dp),
                                     modifier = Modifier.fillMaxWidth()
@@ -198,7 +197,7 @@ fun WorkoutCatalogScreen(
                                 modifier = Modifier.align(
                                     Alignment.CenterHorizontally
                                 ),
-                                color = WorkoutMint
+                                color = VoraMint
                             )
                         }
                     }

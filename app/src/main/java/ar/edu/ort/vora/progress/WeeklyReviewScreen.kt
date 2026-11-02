@@ -22,13 +22,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
-private val WeeklyGreen = Color(0xFF103F35)
-private val WeeklyBackground = Color(0xFF103F35)
-private val WeeklyCardGreen = Color(0xFF204D43)
-private val WeeklyMuted = Color(0xFFA6C2B8)
-private val WeeklyMint = Color(0xFFBDEB70)
-private val WeeklyBorder = Color(0xFF38675B)
+import ar.edu.ort.vora.ui.theme.VoraBorder
+import ar.edu.ort.vora.ui.theme.VoraGreen
+import ar.edu.ort.vora.ui.theme.VoraGreenAccent
+import ar.edu.ort.vora.ui.theme.VoraGreenBorder
+import ar.edu.ort.vora.ui.theme.VoraGreenRaised
+import ar.edu.ort.vora.ui.theme.VoraLime
+import ar.edu.ort.vora.ui.theme.VoraOnGreenMuted
+import ar.edu.ort.vora.ui.theme.VoraTextPrimary
 
 @Composable
 fun WeeklyReviewScreen(
@@ -36,12 +37,12 @@ fun WeeklyReviewScreen(
     onAskCoach: () -> Unit = {}
 ) {
     Scaffold(
-        containerColor = WeeklyBackground
+        containerColor = VoraGreen
     ) { padding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .background(WeeklyBackground)
+                .background(VoraGreen)
                 .padding(padding)
                 .padding(horizontal = 16.dp),
             contentPadding = PaddingValues(
@@ -68,7 +69,7 @@ fun WeeklyReviewScreen(
                         Text(
                             text = "‹",
                             fontSize = 25.sp,
-                            color = WeeklyMuted
+                            color = VoraOnGreenMuted
                         )
                     }
 
@@ -86,7 +87,7 @@ fun WeeklyReviewScreen(
                         Text(
                             text = "Here's what changed this week.",
                             fontSize = 10.sp,
-                            color = WeeklyMuted
+                            color = VoraOnGreenMuted
                         )
                     }
 
@@ -95,12 +96,12 @@ fun WeeklyReviewScreen(
                         modifier = Modifier
                             .size(25.dp)
                             .background(
-                                color = Color(0xFF286B58),
+                                color = VoraGreenAccent,
                                 shape = CircleShape
                             )
                             .border(
                                 width = 1.dp,
-                                color = WeeklyMint,
+                                color = VoraLime,
                                 shape = CircleShape
                             )
                     )
@@ -113,11 +114,11 @@ fun WeeklyReviewScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(17.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = WeeklyCardGreen
+                        containerColor = VoraGreenRaised
                     ),
                     border = androidx.compose.foundation.BorderStroke(
                         1.dp,
-                        WeeklyBorder
+                        VoraGreenBorder
                     )
                 ) {
                     Column(
@@ -128,7 +129,7 @@ fun WeeklyReviewScreen(
                             text = "\"You had a strong week.\"",
                             fontSize = 14.sp,
                             fontWeight = FontWeight.SemiBold,
-                            color = WeeklyMint
+                            color = VoraLime
                         )
 
                         Row(
@@ -163,7 +164,7 @@ fun WeeklyReviewScreen(
                     text = "WHAT WENT WELL",
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
-                    color = WeeklyMint
+                    color = VoraLime
                 )
             }
 
@@ -196,7 +197,7 @@ fun WeeklyReviewScreen(
                     text = "WHAT TO IMPROVE",
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
-                    color = WeeklyMint
+                    color = VoraLime
                 )
             }
 
@@ -205,11 +206,11 @@ fun WeeklyReviewScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(14.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = WeeklyCardGreen
+                        containerColor = VoraGreenRaised
                     ),
                     border = androidx.compose.foundation.BorderStroke(
                         1.dp,
-                        WeeklyBorder
+                        VoraGreenBorder
                     )
                 ) {
                     Column(
@@ -222,7 +223,7 @@ fun WeeklyReviewScreen(
                             Text(
                                 text = "ⓘ",
                                 fontSize = 15.sp,
-                                color = WeeklyMint
+                                color = VoraLime
                             )
 
                             Spacer(Modifier.width(7.dp))
@@ -240,14 +241,14 @@ fun WeeklyReviewScreen(
                                     "Try planning a protein-rich dinner before the evening.",
                             fontSize = 10.sp,
                             lineHeight = 15.sp,
-                            color = WeeklyMuted
+                            color = VoraOnGreenMuted
                         )
 
                         Text(
                             text = "Get dinner ideas  →",
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Medium,
-                            color = WeeklyMint
+                            color = VoraLime
                         )
                     }
                 }
@@ -270,7 +271,7 @@ fun WeeklyReviewScreen(
                             text = "NEXT WEEK'S RECOMMENDATIONS",
                             fontSize = 9.sp,
                             fontWeight = FontWeight.SemiBold,
-                            color = WeeklyMuted
+                            color = VoraOnGreenMuted
                         )
 
                         WeeklyRecommendation(
@@ -289,7 +290,7 @@ fun WeeklyReviewScreen(
                             Modifier
                                 .fillMaxWidth()
                                 .height(1.dp)
-                                .background(Color(0xFFE7ECE8))
+                                .background(VoraBorder)
                         )
 
                         TextButton(
@@ -299,7 +300,7 @@ fun WeeklyReviewScreen(
                             Text(
                                 text = "View next week's plan  →",
                                 fontSize = 10.sp,
-                                color = WeeklyGreen
+                                color = VoraGreen
                             )
                         }
                     }
@@ -315,8 +316,8 @@ fun WeeklyReviewScreen(
                         .height(43.dp),
                     shape = RoundedCornerShape(50),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = WeeklyMint,
-                        contentColor = WeeklyGreen
+                        containerColor = VoraLime,
+                        contentColor = VoraGreen
                     )
                 ) {
                     Text(
@@ -336,12 +337,12 @@ fun WeeklyReviewScreen(
                         .height(40.dp),
                     shape = RoundedCornerShape(50),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = WeeklyCardGreen,
+                        containerColor = VoraGreenRaised,
                         contentColor = Color.White
                     ),
                     border = androidx.compose.foundation.BorderStroke(
                         1.dp,
-                        WeeklyBorder
+                        VoraGreenBorder
                     )
                 ) {
                     Text(
@@ -367,7 +368,7 @@ private fun WeeklySummaryMetric(
         Text(
             text = title,
             fontSize = 8.sp,
-            color = WeeklyMuted,
+            color = VoraOnGreenMuted,
             maxLines = 1
         )
 
@@ -395,7 +396,7 @@ private fun WeeklyAchievement(
                 .padding(top = 1.dp)
                 .size(18.dp)
                 .background(
-                    color = Color(0xFF286B58),
+                    color = VoraGreenAccent,
                     shape = CircleShape
                 ),
             contentAlignment = Alignment.Center
@@ -404,7 +405,7 @@ private fun WeeklyAchievement(
                 text = "✓",
                 fontSize = 11.sp,
                 fontWeight = FontWeight.Bold,
-                color = WeeklyMint
+                color = VoraLime
             )
         }
 
@@ -424,7 +425,7 @@ private fun WeeklyAchievement(
                 text = detail,
                 fontSize = 10.sp,
                 lineHeight = 14.sp,
-                color = WeeklyMuted
+                color = VoraOnGreenMuted
             )
         }
     }
@@ -441,7 +442,7 @@ private fun WeeklyRecommendation(
         Text(
             text = "•",
             fontSize = 13.sp,
-            color = WeeklyGreen
+            color = VoraGreen
         )
 
         Spacer(Modifier.width(7.dp))
@@ -450,7 +451,7 @@ private fun WeeklyRecommendation(
             text = text,
             fontSize = 10.sp,
             lineHeight = 14.sp,
-            color = Color(0xFF26332D)
+            color = VoraTextPrimary
         )
     }
 }

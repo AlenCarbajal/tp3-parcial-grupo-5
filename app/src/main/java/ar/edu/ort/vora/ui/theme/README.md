@@ -36,6 +36,20 @@ Para revisarlo contra Figma, abrí `ThemePreview.kt` en Android Studio con la vi
 | `VoraWhiteTranslucent` | `#FFFFFF` al 12 % | | Botones secundarios sobre panel oscuro (Photo, Search) |
 | `VoraDestructive` | `#DC2626` | | Ícono para quitar un ítem ("Foods to avoid") |
 
+### Tonos intermedios (Progress y Workout)
+
+Tonos que esas pantallas usaban a mano y no tenían token:
+
+| Token | Valor | Uso |
+|---|---|---|
+| `VoraMintLight` | `#E3F5EC` | Fondos de chips, íconos y tarjetas menta |
+| `VoraMintSoft` | `#B9E8D0` | Círculos, bordes y pistas de progreso menta |
+| `VoraSurfaceMuted` | `#F2F5F2` | Fondos grises claros dentro de tarjetas |
+| `VoraGreenRaised` | `#205347` | Tarjetas y chips sobre fondo verde |
+| `VoraGreenAccent` | `#286B58` | Círculos de íconos sobre fondo verde |
+| `VoraGreenBorder` | `#38675B` | Bordes sobre fondo verde |
+| `VoraOnGreenMuted` | `#A6C2B8` | Texto secundario sobre fondo verde |
+
 ### Pantallas de acceso (Sign In / Sign Up)
 
 Figma usa una paleta propia en Login, distinta de la del resto de la app:

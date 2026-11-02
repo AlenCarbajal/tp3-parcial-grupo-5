@@ -29,12 +29,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import ar.edu.ort.vora.domain.model.Workout
-
-private val PrepDarkGreen = Color(0xFF123F35)
-private val PrepMint = Color(0xFF60D5B1)
-private val PrepLime = Color(0xFFD0EE69)
-private val PrepBackground = Color(0xFFF5F7F4)
-private val PrepText = Color(0xFF18352E)
+import ar.edu.ort.vora.ui.theme.VoraBackground
+import ar.edu.ort.vora.ui.theme.VoraGreen
+import ar.edu.ort.vora.ui.theme.VoraGreenRaised
+import ar.edu.ort.vora.ui.theme.VoraLime
+import ar.edu.ort.vora.ui.theme.VoraMint
+import ar.edu.ort.vora.ui.theme.VoraTextPrimary
+import ar.edu.ort.vora.ui.theme.VoraTextSecondary
 
 @Composable
 fun WorkoutPrepScreen(
@@ -45,13 +46,13 @@ fun WorkoutPrepScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(PrepBackground)
+            .background(VoraBackground)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(18.dp)
     ) {
         Text(
             text = "‹  Volver al entrenamiento",
-            color = PrepDarkGreen,
+            color = VoraGreen,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .align(Alignment.Start)
@@ -72,10 +73,10 @@ fun WorkoutPrepScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    CircularProgressIndicator(color = PrepMint)
+                    CircularProgressIndicator(color = VoraMint)
                     Text(
                         text = "Cargando entrenamiento...",
-                        color = PrepText
+                        color = VoraTextPrimary
                     )
                 }
             }
@@ -86,27 +87,27 @@ fun WorkoutPrepScreen(
                 text = "WORKOUT PREPARATION",
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.Bold,
-                color = PrepDarkGreen
+                color = VoraGreen
             )
 
             Text(
                 text = "Get Ready",
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold,
-                color = PrepText
+                color = VoraTextPrimary
             )
 
             Text(
                 text = "Prepará tu espacio. Tu próximo entrenamiento está por comenzar.",
                 style = MaterialTheme.typography.bodyLarge,
-                color = Color(0xFF64746D)
+                color = VoraTextSecondary
             )
 
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(24.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = PrepDarkGreen
+                    containerColor = VoraGreen
                 )
             ) {
                 Column(
@@ -115,12 +116,12 @@ fun WorkoutPrepScreen(
                 ) {
                     Box(
                         modifier = Modifier
-                            .background(PrepLime, CircleShape)
+                            .background(VoraLime, CircleShape)
                             .padding(horizontal = 12.dp, vertical = 7.dp)
                     ) {
                         Text(
                             text = "YOUR NEXT WORKOUT",
-                            color = PrepDarkGreen,
+                            color = VoraGreen,
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold
                         )
@@ -136,7 +137,7 @@ fun WorkoutPrepScreen(
                     Text(
                         text = "Nivel ${workout.level}",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = PrepMint
+                        color = VoraMint
                     )
 
                     Row(
@@ -173,22 +174,22 @@ fun WorkoutPrepScreen(
                         text = "Antes de empezar",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color = PrepDarkGreen
+                        color = VoraGreen
                     )
 
                     Text(
                         text = "✓  Prepará el espacio y el equipo",
-                        color = PrepText
+                        color = VoraTextPrimary
                     )
 
                     Text(
                         text = "✓  Tené agua a mano",
-                        color = PrepText
+                        color = VoraTextPrimary
                     )
 
                     Text(
                         text = "✓  Priorizá la técnica en cada repetición",
-                        color = PrepText
+                        color = VoraTextPrimary
                     )
                 }
             }
@@ -202,8 +203,8 @@ fun WorkoutPrepScreen(
                     .height(54.dp),
                 shape = RoundedCornerShape(28.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = PrepLime,
-                    contentColor = PrepDarkGreen
+                    containerColor = VoraLime,
+                    contentColor = VoraGreen
                 )
             ) {
                 Text(
@@ -221,7 +222,7 @@ fun WorkoutPrepScreen(
             ) {
                 Text(
                     text = "Cancelar",
-                    color = PrepDarkGreen
+                    color = VoraGreen
                 )
             }
         }
@@ -237,7 +238,7 @@ private fun PrepStat(
     Column(
         modifier = modifier
             .background(
-                color = Color(0xFF205347),
+                color = VoraGreenRaised,
                 shape = RoundedCornerShape(14.dp)
             )
             .padding(12.dp),
@@ -253,7 +254,7 @@ private fun PrepStat(
         Text(
             text = label,
             style = MaterialTheme.typography.labelSmall,
-            color = PrepMint
+            color = VoraMint
         )
     }
 }
