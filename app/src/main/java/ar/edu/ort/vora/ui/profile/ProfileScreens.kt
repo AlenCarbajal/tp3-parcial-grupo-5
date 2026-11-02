@@ -30,9 +30,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import ar.edu.ort.vora.R
 import ar.edu.ort.vora.ui.components.ButtonSize
 import ar.edu.ort.vora.ui.components.ChipStyle
 import ar.edu.ort.vora.ui.components.CoachNote
@@ -145,14 +148,14 @@ private fun SwitchRow(title: String, detail: String?, checked: Boolean, onChange
     }
 }
 
-// Opción única: el elegido se ve con selectedStyle (verde por defecto).
+// Opción única: el elegido se ve con selectedStyle (verde por defecto). Las opciones son ids de string.
 @Composable
 private fun SingleChoice(
     title: String,
-    options: List<String>,
-    selected: String,
+    options: List<Int>,
+    selected: Int,
     selectedStyle: ChipStyle = ChipStyle.Green,
-    onSelect: (String) -> Unit,
+    onSelect: (Int) -> Unit,
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(Spacing.s8)) {
         SectionLabel(title)
@@ -161,15 +164,15 @@ private fun SingleChoice(
             verticalArrangement = Arrangement.spacedBy(Spacing.s8),
         ) {
             options.forEach {
-                VoraChip(it, { onSelect(it) }, style = if (it == selected) selectedStyle else ChipStyle.Default)
+                VoraChip(stringResource(it), { onSelect(it) }, style = if (it == selected) selectedStyle else ChipStyle.Default)
             }
         }
     }
 }
 
-// Selección múltiple: los elegidos se ven con borde menta y check.
+// Selección múltiple: los elegidos se ven con borde menta y check. Las opciones son ids de string.
 @Composable
-private fun MultiChoice(title: String, options: List<String>, selected: List<String>, onToggle: (String) -> Unit) {
+private fun MultiChoice(title: String, options: List<Int>, selected: List<Int>, onToggle: (Int) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(Spacing.s8)) {
         SectionLabel(title)
         FlowRow(
@@ -177,7 +180,7 @@ private fun MultiChoice(title: String, options: List<String>, selected: List<Str
             verticalArrangement = Arrangement.spacedBy(Spacing.s8),
         ) {
             options.forEach {
-                VoraChip(it, { onToggle(it) }, style = if (it in selected) ChipStyle.Checked else ChipStyle.Default)
+                VoraChip(stringResource(it), { onToggle(it) }, style = if (it in selected) ChipStyle.Checked else ChipStyle.Default)
             }
         }
     }
@@ -193,35 +196,35 @@ fun ProfileScreen(
     onSettings: () -> Unit,
 ) {
     ProfileLayout(
-        "Profile",
+        stringResource(R.string.common_nav_profile),
         back = TopBarBack.None,
-        actions = { VoraTextButton("Settings", onSettings) },
+        actions = { VoraTextButton(stringResource(R.string.profile_settings), onSettings) },
     ) {
         InfoCard {
-            Text("Alex Morgan", style = MaterialTheme.typography.titleLarge, color = VoraTextPrimary)
-            Text("Building strength & improving fitness", style = MaterialTheme.typography.bodySmall, color = VoraTextSecondary)
-            SecondaryButton("Edit profile", onEdit, Modifier.padding(top = Spacing.s12), size = ButtonSize.Small)
+            Text(stringResource(R.string.common_demo_user_name), style = MaterialTheme.typography.titleLarge, color = VoraTextPrimary)
+            Text(stringResource(R.string.profile_tagline), style = MaterialTheme.typography.bodySmall, color = VoraTextSecondary)
+            SecondaryButton(stringResource(R.string.profile_edit), onEdit, Modifier.padding(top = Spacing.s12), size = ButtonSize.Small)
         }
         InfoCard {
-            SectionLabel("My snapshot")
-            DataRow("Goal", "Build strength & improve fitness")
-            DataRow("Experience", "Intermediate")
-            DataRow("Training", "4 days/week")
-            DataRow("Preferred workout", "Strength training")
+            SectionLabel(stringResource(R.string.profile_snapshot))
+            DataRow(stringResource(R.string.profile_goal), stringResource(R.string.common_goal_strength_fitness))
+            DataRow(stringResource(R.string.profile_experience), stringResource(R.string.common_level_intermediate))
+            DataRow(stringResource(R.string.profile_training), pluralStringResource(R.plurals.profile_days_per_week, 4, 4))
+            DataRow(stringResource(R.string.profile_preferred_workout), stringResource(R.string.profile_preferred_workout_value))
         }
         DarkPanel {
-            Text("VORA Personalisation", style = MaterialTheme.typography.labelSmall)
-            Text("VORA knows your goals", style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.profile_personalisation_label), style = MaterialTheme.typography.labelSmall)
+            Text(stringResource(R.string.profile_personalisation_title), style = MaterialTheme.typography.titleMedium)
             Text(
-                "Your coaching adapts to your training, nutrition and activity preferences.",
+                stringResource(R.string.profile_personalisation_body),
                 style = MaterialTheme.typography.bodySmall,
             )
-            LimeButton("Review preferences", onGoals, size = ButtonSize.Small)
+            LimeButton(stringResource(R.string.profile_review_preferences), onGoals, size = ButtonSize.Small)
         }
-        ProfileRow("Your Goals", "Build strength & improve fitness", onGoals)
-        ProfileRow("Your Preferences", "Training, nutrition and coaching", onNutrition)
-        ProfileRow("Connected Data", "Health & activity data", onSettings)
-        ProfileRow("Account", "Subscription, notifications & privacy", onSettings)
+        ProfileRow(stringResource(R.string.profile_row_goals), stringResource(R.string.common_goal_strength_fitness), onGoals)
+        ProfileRow(stringResource(R.string.profile_row_preferences), stringResource(R.string.profile_row_preferences_detail), onNutrition)
+        ProfileRow(stringResource(R.string.profile_connected_data), stringResource(R.string.profile_connected_data_detail), onSettings)
+        ProfileRow(stringResource(R.string.profile_account), stringResource(R.string.profile_account_detail), onSettings)
     }
 }
 
@@ -229,32 +232,45 @@ fun ProfileScreen(
 
 @Composable
 fun ProfileEditScreen(onBack: () -> Unit, onSave: () -> Unit) {
-    var first by rememberSaveable { mutableStateOf("Alex") }
-    var last by rememberSaveable { mutableStateOf("Morgan") }
-    var birth by rememberSaveable { mutableStateOf("14 March 1995") }
+    val demoFirst = stringResource(R.string.profile_demo_first_name)
+    val demoLast = stringResource(R.string.profile_demo_last_name)
+    val demoBirth = stringResource(R.string.profile_demo_birth)
+    val numberError = stringResource(R.string.profile_error_number)
+    var first by rememberSaveable { mutableStateOf(demoFirst) }
+    var last by rememberSaveable { mutableStateOf(demoLast) }
+    var birth by rememberSaveable { mutableStateOf(demoBirth) }
     var height by rememberSaveable { mutableStateOf("178") }
     var weight by rememberSaveable { mutableStateOf("76") }
-    var gender by rememberSaveable { mutableStateOf("Prefer not to say") }
+    var gender by rememberSaveable { mutableStateOf(R.string.profile_gender_prefer_not) }
 
-    ProfileLayout("Edit profile", onBack = onBack) {
-        VoraTextField(first, { first = it }, "First name")
-        VoraTextField(last, { last = it }, "Last name")
-        VoraTextField(birth, { birth = it }, "Date of birth")
+    ProfileLayout(stringResource(R.string.profile_edit), onBack = onBack) {
+        VoraTextField(first, { first = it }, stringResource(R.string.profile_first_name))
+        VoraTextField(last, { last = it }, stringResource(R.string.profile_last_name))
+        VoraTextField(birth, { birth = it }, stringResource(R.string.profile_birth))
         VoraTextField(
-            height, { height = it }, "Height (cm)",
-            error = if (height.isNotEmpty() && height.toIntOrNull() == null) "Enter a valid number" else null,
+            height, { height = it }, stringResource(R.string.profile_height),
+            error = if (height.isNotEmpty() && height.toIntOrNull() == null) numberError else null,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         )
         VoraTextField(
-            weight, { weight = it }, "Weight (kg)",
-            error = if (weight.isNotEmpty() && weight.toIntOrNull() == null) "Enter a valid number" else null,
+            weight, { weight = it }, stringResource(R.string.profile_weight),
+            error = if (weight.isNotEmpty() && weight.toIntOrNull() == null) numberError else null,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         )
-        SingleChoice("Gender", listOf("Female", "Male", "Non-binary", "Prefer not to say"), gender) { gender = it }
-        CoachNote("Used to personalise your recommendations.")
-        PrimaryButton("Save changes", onSave, Modifier.fillMaxWidth(), size = ButtonSize.Large)
+        SingleChoice(
+            stringResource(R.string.profile_gender),
+            listOf(
+                R.string.profile_gender_female,
+                R.string.profile_gender_male,
+                R.string.profile_gender_non_binary,
+                R.string.profile_gender_prefer_not,
+            ),
+            gender,
+        ) { gender = it }
+        CoachNote(stringResource(R.string.profile_edit_note))
+        PrimaryButton(stringResource(R.string.profile_save_changes), onSave, Modifier.fillMaxWidth(), size = ButtonSize.Large)
         Text(
-            "Your information is used to personalise your VORA experience.",
+            stringResource(R.string.profile_edit_footer),
             Modifier.fillMaxWidth(),
             style = MaterialTheme.typography.bodySmall,
             color = VoraTextMuted,
@@ -267,27 +283,44 @@ fun ProfileEditScreen(onBack: () -> Unit, onSave: () -> Unit) {
 
 @Composable
 fun ProfileGoalsScreen(onBack: () -> Unit, onSave: () -> Unit) {
-    var goal by rememberSaveable { mutableStateOf("Build strength") }
-    var days by rememberSaveable { mutableStateOf("4 days") }
-    var workout by rememberSaveable { mutableStateOf("Strength") }
+    var goal by rememberSaveable { mutableStateOf(R.string.common_goal_strength) }
+    var days by rememberSaveable { mutableStateOf(R.string.profile_freq_4) }
+    var workout by rememberSaveable { mutableStateOf(R.string.profile_workout_strength) }
 
-    ProfileLayout("Your goals", onBack = onBack) {
-        Subtitle("Tell VORA what you're working towards. Your coaching adapts around this.")
-        SectionLabel("Primary goal — what's your main goal?")
-        OptionCard("Build strength", "Focus on weight training & mechanical load", goal == "Build strength") { goal = "Build strength" }
-        OptionCard("Improve fitness", "Condition cardiovascular & energy systems", goal == "Improve fitness") { goal = "Improve fitness" }
-        OptionCard("Lose body fat", "Reduce body fat with training and nutrition", goal == "Lose body fat") { goal = "Lose body fat" }
-        OptionCard("Build healthy habits", "Stay consistent with a sustainable routine", goal == "Build healthy habits") { goal = "Build healthy habits" }
-        SingleChoice("Training frequency", listOf("3 days", "4 days", "5 days", "6+ days"), days) { days = it }
+    // Objetivo (título) -> detalle
+    val goals = listOf(
+        R.string.common_goal_strength to R.string.profile_goal_strength_detail,
+        R.string.profile_goal_fitness to R.string.profile_goal_fitness_detail,
+        R.string.profile_goal_fat to R.string.profile_goal_fat_detail,
+        R.string.profile_goal_habits to R.string.profile_goal_habits_detail,
+    )
+
+    ProfileLayout(stringResource(R.string.profile_goals_title), onBack = onBack) {
+        Subtitle(stringResource(R.string.profile_goals_subtitle))
+        SectionLabel(stringResource(R.string.profile_primary_goal))
+        goals.forEach { (title, detail) ->
+            OptionCard(stringResource(title), stringResource(detail), goal == title) { goal = title }
+        }
         SingleChoice(
-            "Workout preference",
-            listOf("Strength", "Cardio", "HIIT", "Mobility", "Mixed"),
+            stringResource(R.string.profile_training_frequency),
+            listOf(R.string.profile_freq_3, R.string.profile_freq_4, R.string.profile_freq_5, R.string.profile_freq_6_plus),
+            days,
+        ) { days = it }
+        SingleChoice(
+            stringResource(R.string.profile_workout_preference),
+            listOf(
+                R.string.profile_workout_strength,
+                R.string.profile_workout_cardio,
+                R.string.profile_workout_hiit,
+                R.string.profile_workout_mobility,
+                R.string.profile_workout_mixed,
+            ),
             workout,
             selectedStyle = ChipStyle.Mint,
         ) { workout = it }
-        SectionLabel("Coaching style — how should VORA coach you?")
-        OptionCard("Balanced", "Practical guidance with gentle motivation", true) {}
-        PrimaryButton("Save preferences", onSave, Modifier.fillMaxWidth(), size = ButtonSize.Large)
+        SectionLabel(stringResource(R.string.profile_coaching_style_question))
+        OptionCard(stringResource(R.string.profile_balanced), stringResource(R.string.profile_balanced_coaching_detail), true) {}
+        PrimaryButton(stringResource(R.string.profile_save_preferences), onSave, Modifier.fillMaxWidth(), size = ButtonSize.Large)
     }
 }
 
@@ -295,32 +328,56 @@ fun ProfileGoalsScreen(onBack: () -> Unit, onSave: () -> Unit) {
 
 @Composable
 fun ProfileNutritionScreen(onBack: () -> Unit, onSave: () -> Unit) {
-    var diet by rememberSaveable { mutableStateOf("Everything") }
-    var liked by rememberSaveable {
-        mutableStateOf(listOf("Chicken", "Eggs", "Fish", "Rice", "Pasta", "Greek yoghurt", "Vegetables", "Fruit"))
-    }
-    var avoided by rememberSaveable { mutableStateOf(listOf("Peanuts", "Shellfish", "Mushrooms")) }
+    val foods = listOf(
+        R.string.profile_food_chicken,
+        R.string.profile_food_eggs,
+        R.string.profile_food_fish,
+        R.string.profile_food_rice,
+        R.string.profile_food_pasta,
+        R.string.profile_food_greek_yoghurt,
+        R.string.profile_food_vegetables,
+        R.string.profile_food_fruit,
+    )
+    val mattersOptions = listOf(R.string.profile_matters_protein, R.string.profile_matters_consistent)
+    // Los evitados son texto libre (el usuario agrega los suyos), así que arrancan con los textos ya resueltos.
+    val defaultAvoided = listOf(
+        stringResource(R.string.profile_food_peanuts),
+        stringResource(R.string.profile_food_shellfish),
+        stringResource(R.string.profile_food_mushrooms),
+    )
+    var diet by rememberSaveable { mutableStateOf(R.string.profile_diet_everything) }
+    var liked by rememberSaveable { mutableStateOf(foods) }
+    var avoided by rememberSaveable { mutableStateOf(defaultAvoided) }
     var newItem by rememberSaveable { mutableStateOf("") }
-    var matters by rememberSaveable { mutableStateOf(listOf("Hit protein targets", "Eat more consistently")) }
+    var matters by rememberSaveable { mutableStateOf(mattersOptions) }
 
-    ProfileLayout("Nutrition preferences", onBack = onBack) {
-        Subtitle("Help VORA make food recommendations that actually fit your lifestyle.")
+    ProfileLayout(stringResource(R.string.profile_nutrition_title), onBack = onBack) {
+        Subtitle(stringResource(R.string.profile_nutrition_subtitle))
         SingleChoice(
-            "Dietary preference",
-            listOf("Everything", "Vegetarian", "Vegan", "Pescatarian", "Other"),
+            stringResource(R.string.profile_dietary_preference),
+            listOf(
+                R.string.profile_diet_everything,
+                R.string.profile_diet_vegetarian,
+                R.string.profile_diet_vegan,
+                R.string.profile_diet_pescatarian,
+                R.string.profile_diet_other,
+            ),
             diet,
             selectedStyle = ChipStyle.Mint,
         ) { diet = it }
-        MultiChoice(
-            "Foods you enjoy",
-            listOf("Chicken", "Eggs", "Fish", "Rice", "Pasta", "Greek yoghurt", "Vegetables", "Fruit"),
-            liked,
-        ) { liked = if (it in liked) liked - it else liked + it }
+        MultiChoice(stringResource(R.string.profile_foods_enjoy), foods, liked) {
+            liked = if (it in liked) liked - it else liked + it
+        }
         Column(verticalArrangement = Arrangement.spacedBy(Spacing.s8)) {
-            SectionLabel("Foods to avoid")
-            VoraTextField(newItem, { newItem = it }, "Add an ingredient", placeholder = "Add an ingredient...")
+            SectionLabel(stringResource(R.string.profile_foods_avoid))
+            VoraTextField(
+                newItem,
+                { newItem = it },
+                stringResource(R.string.profile_add_ingredient),
+                placeholder = stringResource(R.string.profile_add_ingredient_hint),
+            )
             SecondaryButton(
-                "Add",
+                stringResource(R.string.common_add),
                 {
                     val item = newItem.trim()
                     if (item.isNotEmpty() && item !in avoided) avoided = avoided + item
@@ -336,17 +393,15 @@ fun ProfileNutritionScreen(onBack: () -> Unit, onSave: () -> Unit) {
             }
         }
         InfoCard {
-            SectionLabel("Meal preferences")
-            DataRow("Meals per day", "3 meals + 1 snack")
-            DataRow("Preferred breakfast", "Quick & high protein")
-            DataRow("Preferred dinner", "Balanced")
+            SectionLabel(stringResource(R.string.profile_meal_preferences))
+            DataRow(stringResource(R.string.profile_meals_per_day), stringResource(R.string.profile_meals_per_day_value))
+            DataRow(stringResource(R.string.profile_preferred_breakfast), stringResource(R.string.profile_preferred_breakfast_value))
+            DataRow(stringResource(R.string.profile_preferred_dinner), stringResource(R.string.profile_preferred_dinner_value))
         }
-        MultiChoice(
-            "What matters most to you?",
-            listOf("Hit protein targets", "Eat more consistently"),
-            matters,
-        ) { matters = if (it in matters) matters - it else matters + it }
-        PrimaryButton("Save preferences", onSave, Modifier.fillMaxWidth(), size = ButtonSize.Large)
+        MultiChoice(stringResource(R.string.profile_matters_title), mattersOptions, matters) {
+            matters = if (it in matters) matters - it else matters + it
+        }
+        PrimaryButton(stringResource(R.string.profile_save_preferences), onSave, Modifier.fillMaxWidth(), size = ButtonSize.Large)
     }
 }
 
@@ -355,38 +410,58 @@ fun ProfileNutritionScreen(onBack: () -> Unit, onSave: () -> Unit) {
 @Composable
 fun ProfileVoiceScreen(onBack: () -> Unit) {
     val demo = rememberDemoNotice()
-    var style by rememberSaveable { mutableStateOf("Balanced") }
+    var style by rememberSaveable { mutableStateOf(R.string.profile_balanced) }
     var aloud by rememberSaveable { mutableStateOf(true) }
     var autoPlay by rememberSaveable { mutableStateOf(true) }
     var interrupt by rememberSaveable { mutableStateOf(true) }
-    var response by rememberSaveable { mutableStateOf("Balanced") }
+    var response by rememberSaveable { mutableStateOf(R.string.profile_balanced) }
     var voiceFeedback by rememberSaveable { mutableStateOf(true) }
     var haptic by rememberSaveable { mutableStateOf(true) }
 
-    ProfileLayout("VORA Coach", onBack = onBack) {
-        Subtitle("Choose how VORA communicates and coaches you.")
-        SingleChoice("Coaching style", listOf("Supportive", "Balanced", "Direct"), style) { style = it }
-        SectionLabel("Active voice")
+    // Estilo de respuesta (título) -> detalle
+    val responses = listOf(
+        R.string.profile_response_concise to R.string.profile_response_concise_detail,
+        R.string.profile_balanced to R.string.profile_response_balanced_detail,
+        R.string.profile_response_detailed to R.string.profile_response_detailed_detail,
+    )
+
+    ProfileLayout(stringResource(R.string.coach_title), onBack = onBack) {
+        Subtitle(stringResource(R.string.profile_voice_subtitle))
+        SingleChoice(
+            stringResource(R.string.profile_coaching_style),
+            listOf(R.string.profile_style_supportive, R.string.profile_balanced, R.string.profile_style_direct),
+            style,
+        ) { style = it }
+        SectionLabel(stringResource(R.string.profile_active_voice))
         InfoCard {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("VORA Voice 01", Modifier.weight(1f), style = MaterialTheme.typography.titleSmall, color = VoraTextPrimary)
-                VoraTextButton("Preview", demo)
+                Text(
+                    stringResource(R.string.profile_voice_name),
+                    Modifier.weight(1f),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = VoraTextPrimary,
+                )
+                VoraTextButton(stringResource(R.string.profile_voice_preview), demo)
             }
         }
-        SectionLabel("Speaking behaviour")
-        SwitchRow("Speak responses aloud", null, aloud) { aloud = it }
-        SwitchRow("Auto-play coaching", null, autoPlay) { autoPlay = it }
-        SwitchRow("Allow interruptions", "Interrupt VORA anytime while it's speaking.", interrupt) { interrupt = it }
-        SectionLabel("Response style")
-        OptionCard("Concise", "Quick answers", response == "Concise") { response = "Concise" }
-        OptionCard("Balanced", "Useful detail without overwhelming", response == "Balanced") { response = "Balanced" }
-        OptionCard("Detailed", "More explanation and context", response == "Detailed") { response = "Detailed" }
-        SwitchRow("Voice feedback", null, voiceFeedback) { voiceFeedback = it }
-        SwitchRow("Haptic feedback", null, haptic) { haptic = it }
+        SectionLabel(stringResource(R.string.profile_speaking_behaviour))
+        SwitchRow(stringResource(R.string.profile_speak_aloud), null, aloud) { aloud = it }
+        SwitchRow(stringResource(R.string.profile_auto_play), null, autoPlay) { autoPlay = it }
+        SwitchRow(
+            stringResource(R.string.profile_interruptions),
+            stringResource(R.string.profile_interruptions_detail),
+            interrupt,
+        ) { interrupt = it }
+        SectionLabel(stringResource(R.string.profile_response_style))
+        responses.forEach { (title, detail) ->
+            OptionCard(stringResource(title), stringResource(detail), response == title) { response = title }
+        }
+        SwitchRow(stringResource(R.string.profile_voice_feedback), null, voiceFeedback) { voiceFeedback = it }
+        SwitchRow(stringResource(R.string.profile_haptic_feedback), null, haptic) { haptic = it }
         InfoCard {
-            Text("Your control matters", style = MaterialTheme.typography.titleSmall, color = VoraTextPrimary)
+            Text(stringResource(R.string.profile_control_title), style = MaterialTheme.typography.titleSmall, color = VoraTextPrimary)
             Text(
-                "Manage microphone permissions and connected data from Settings.",
+                stringResource(R.string.profile_control_body),
                 style = MaterialTheme.typography.bodySmall,
                 color = VoraTextSecondary,
             )
@@ -400,27 +475,27 @@ fun ProfileVoiceScreen(onBack: () -> Unit) {
 fun ProfileSettingsScreen(onBack: () -> Unit, onVoice: () -> Unit, onLogout: () -> Unit) {
     val demo = rememberDemoNotice()
 
-    ProfileLayout("Settings", onBack = onBack) {
-        SectionLabel("Account")
-        ProfileRow("Alex Morgan", "alex@morgan.com", demo)
-        ProfileRow("VORA Premium", "Renews 14 June 2026", demo)
-        ProfileRow("Manage account", "Subscription and details", demo)
-        SectionLabel("App preferences")
-        ProfileRow("VORA Coach", "Voice and AI settings", onVoice)
-        ProfileRow("Notifications", "Workout and meal reminders", demo)
-        ProfileRow("Units", "Metric (kg, cm, km)", demo)
-        ProfileRow("Appearance", "System default", demo)
-        SectionLabel("Connected data")
-        ProfileRow("Health & Activity", "Apple Watch & Health connected", demo)
-        SectionLabel("Privacy & security")
-        ProfileRow("Privacy Policy", "How your data is used", demo)
-        ProfileRow("Permissions & Data Controls", "Microphone and connected data", demo)
-        SectionLabel("Support")
-        ProfileRow("Help Centre", "Guides and answers", demo)
-        ProfileRow("Contact Support", "Talk to the team", demo)
-        SecondaryButton("Log out", onLogout, Modifier.fillMaxWidth(), size = ButtonSize.Large)
+    ProfileLayout(stringResource(R.string.profile_settings), onBack = onBack) {
+        SectionLabel(stringResource(R.string.profile_account))
+        ProfileRow(stringResource(R.string.common_demo_user_name), stringResource(R.string.profile_demo_email), demo)
+        ProfileRow(stringResource(R.string.profile_premium), stringResource(R.string.profile_premium_renews), demo)
+        ProfileRow(stringResource(R.string.profile_manage_account), stringResource(R.string.profile_manage_account_detail), demo)
+        SectionLabel(stringResource(R.string.profile_app_preferences))
+        ProfileRow(stringResource(R.string.coach_title), stringResource(R.string.profile_vora_coach_detail), onVoice)
+        ProfileRow(stringResource(R.string.common_notifications), stringResource(R.string.profile_notifications_detail), demo)
+        ProfileRow(stringResource(R.string.profile_units), stringResource(R.string.profile_units_detail), demo)
+        ProfileRow(stringResource(R.string.profile_appearance), stringResource(R.string.profile_appearance_detail), demo)
+        SectionLabel(stringResource(R.string.profile_connected_data))
+        ProfileRow(stringResource(R.string.profile_health), stringResource(R.string.profile_health_detail), demo)
+        SectionLabel(stringResource(R.string.profile_privacy_security))
+        ProfileRow(stringResource(R.string.profile_privacy_policy), stringResource(R.string.profile_privacy_policy_detail), demo)
+        ProfileRow(stringResource(R.string.profile_permissions), stringResource(R.string.profile_permissions_detail), demo)
+        SectionLabel(stringResource(R.string.profile_support))
+        ProfileRow(stringResource(R.string.profile_help_centre), stringResource(R.string.profile_help_centre_detail), demo)
+        ProfileRow(stringResource(R.string.profile_contact_support), stringResource(R.string.profile_contact_support_detail), demo)
+        SecondaryButton(stringResource(R.string.profile_log_out), onLogout, Modifier.fillMaxWidth(), size = ButtonSize.Large)
         Text(
-            "VORA v1.0.0",
+            stringResource(R.string.profile_version),
             Modifier.fillMaxWidth(),
             style = MaterialTheme.typography.bodySmall,
             color = VoraTextMuted,
