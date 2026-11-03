@@ -80,7 +80,7 @@ private val darkRoutes = setOf(Routes.COACH_LISTENING, Routes.COACH_PROCESSING, 
 // Rutas donde la bottom bar se ve (según specs/02-screens.md).
 private val routesWithBottomBar = setOf(
     Routes.HOME, Routes.WORKOUT, Routes.NUTRITION, Routes.PROGRESS, Routes.PROFILE,
-    Routes.NOTIFICATIONS, Routes.NUTRITION_PHOTO, Routes.NUTRITION_REVIEW, Routes.NUTRITION_MEAL,
+    Routes.NOTIFICATIONS, Routes.NUTRITION_MEALS, Routes.NUTRITION_PHOTO, Routes.NUTRITION_REVIEW, Routes.NUTRITION_MEAL,
     Routes.PROGRESS_TODAY, Routes.PROGRESS_WORKOUT, Routes.PROGRESS_NUTRITION,
     Routes.PROGRESS_HEALTH, Routes.PROGRESS_WEEKLY,
 )
@@ -268,7 +268,6 @@ fun VoraNavHost(navController: NavHostController = rememberNavController()) {
             }
             composable(Routes.NUTRITION_MEALS) {
                 MealsScreen(
-                    onBack = back,
                     onAdd = { go(Routes.NUTRITION_ADD) },
                     onMeal = { go(Routes.nutritionMeal(it.toString())) },
                 )
