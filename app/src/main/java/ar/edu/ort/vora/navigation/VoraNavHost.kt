@@ -105,7 +105,8 @@ fun VoraNavHost(navController: NavHostController = rememberNavController()) {
         navController.navigate(route) {
             popUpTo(Routes.HOME) { saveState = true }
             launchSingleTop = true
-            restoreState = true
+            // Home no recupera lo que se guardó al salir (p. ej. Today's Overview): vuelve siempre a su pantalla principal.
+            restoreState = route != Routes.HOME
         }
     }
     // Al entrar se saca el acceso de la pila: desde Home, atrás cierra la app en vez de volver al login.
