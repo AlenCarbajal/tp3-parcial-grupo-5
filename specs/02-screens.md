@@ -38,7 +38,7 @@ Barra inferior (5 destinos constantes): Home · Workout · Nutrition · Progress
 ## 5. Nutrition Flow (8) + 1 extra
 | # | Pantalla | Ruta | Va a | Estado |
 |---|---|---|---|---|
-| 18 | Nutrition (dashboard) | nutrition | nutrition/meals ("View History"/comidas), nutrition/voice (Voice), nutrition/photo (Photo), nutrition/search (Search) | **F** (total del día de Room) |
+| 18 | Nutrition (dashboard) | nutrition | nutrition/meals ("View History", calendario y cada comida), nutrition/add ("+ Add" de una comida sin registrar), nutrition/voice (Voice), nutrition/photo (Photo), Search (aviso de demo) | **F** (calorías, macros y comidas del día salen de Room; los objetivos son de ejemplo) |
 | 19 | Today's Meals | nutrition/meals | nutrition/add (+ Add Dinner), nutrition/meal/{id} | **F** (lista por fecha, borrar) |
 | 20 | Add Food | nutrition/add | nutrition/voice, nutrition/photo, nutrition/search, **nutrition/manual** | D |
 | 21 | Voice Logging | nutrition/voice | nutrition/analyzing (Done Speaking), nutrition/manual (Type instead) | D |
