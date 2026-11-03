@@ -230,6 +230,15 @@
     <string name="nutrition_meal_lunch">Almuerzo</string>
     <string name="nutrition_meal_dinner">Cena</string>
     <string name="nutrition_meal_snack">Merienda</string>
+    <string name="nutrition_calories_consumed">CALORÍAS CONSUMIDAS</string>
+    <string name="nutrition_calorie_goal">Objetivo: %1$,d kcal</string>
+    <string name="nutrition_dashboard_note">Vas bien hoy. Una cena rica en proteínas te ayudaría a llegar a tu objetivo.</string>
+    <string name="nutrition_view_history">Ver historial</string>
+    <string name="nutrition_not_logged">Todavía sin registrar</string>
+    <string name="nutrition_tell_vora">Contale a Vora qué comiste</string>
+    <string name="nutrition_tell_vora_hint">Vora va a estimar las porciones y los ingredientes, y registrar los datos nutricionales.</string>
+    <string name="nutrition_search">Buscar</string>
+    <string name="nutrition_add_short">+ Agregar</string>
     <string name="nutrition_meals_title">Comidas del día</string>
     <string name="nutrition_meals_empty">No hay comidas registradas este día.</string>
     <string name="nutrition_add_meal">Agregar comida</string>

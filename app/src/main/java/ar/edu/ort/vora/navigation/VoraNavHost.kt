@@ -48,6 +48,7 @@ import ar.edu.ort.vora.ui.nutrition.AnalyzingMealScreen
 import ar.edu.ort.vora.ui.nutrition.ManualMealScreen
 import ar.edu.ort.vora.ui.nutrition.MealDetailScreen
 import ar.edu.ort.vora.ui.nutrition.MealsScreen
+import ar.edu.ort.vora.ui.nutrition.NutritionDashboardScreen
 import ar.edu.ort.vora.ui.nutrition.ReviewMealScreen
 import ar.edu.ort.vora.ui.nutrition.VoiceLoggingScreen
 import ar.edu.ort.vora.ui.profile.ProfileEditScreen
@@ -258,10 +259,11 @@ fun VoraNavHost(navController: NavHostController = rememberNavController()) {
 
             // Nutrition (RF03, RF04). Las pantallas demo (Add Food, voz, análisis, foto, revisión) usan datos de ejemplo (T33).
             composable(Routes.NUTRITION) {
-                MealsScreen(
-                    onBack = back,
+                NutritionDashboardScreen(
+                    onHistory = { go(Routes.NUTRITION_MEALS) },
                     onAdd = { go(Routes.NUTRITION_ADD) },
-                    onMeal = { go(Routes.nutritionMeal(it.toString())) },
+                    onVoice = { go(Routes.NUTRITION_VOICE) },
+                    onPhoto = { go(Routes.NUTRITION_PHOTO) },
                 )
             }
             composable(Routes.NUTRITION_MEALS) {
