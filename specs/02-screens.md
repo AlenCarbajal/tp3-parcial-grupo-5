@@ -1,6 +1,6 @@
 # Inventario de pantallas (37 de Figma + 1 extra obligatoria)
 Fuente: Figma "Parcial Domiciliario 7 Oct 26", páginas de flujo. Estado: F = funcional (Retrofit/Room) · D = demostración.
-Barra inferior (5 destinos constantes): Home · Workout · Nutrition · Progress · Profile. Visible en Home, Workout, Nutrition, Progress, Profile (y en Notifications, Review/Analyse/Lunch en Nutrition, sub-pantallas de Progress de nivel 1). Tocar Home siempre vuelve a la pantalla principal de Home; las demás pestañas recuperan la pantalla en la que se dejaron.
+Barra inferior (5 destinos constantes): Home · Workout · Nutrition · Progress · Profile. Visible en Home, Workout, Nutrition, Progress, Profile (y en Notifications, Review/Analyse/Lunch en Nutrition, sub-pantallas de Progress de nivel 1).
 
 ## 1. Login Flow (2)
 | # | Pantalla (Figma) | Ruta | Va a | Estado |
@@ -13,6 +13,8 @@ Barra inferior (5 destinos constantes): Home · Workout · Nutrition · Progress
 |---|---|---|---|---|
 | 3 | Home (Good morning, Alex Morgan) | home | notifications (campana), coach ("Start voice session"), workout/{id}/prep ("Start workout"), workout ("Start my workout"), nutrition/add ("Log breakfast"), progress/today ("Today's Overview") | D |
 | 4 | Notifications | notifications | atrás; weekly review → progress/weekly | D |
+
+Tocar la pestaña Home siempre vuelve a la pantalla principal de Home; las demás pestañas recuperan la pantalla en la que se dejaron.
 
 ## 3. AI Voice Flow (6) — rutas propias, mismo flujo
 | # | Pantalla | Ruta | Va a | Estado |
