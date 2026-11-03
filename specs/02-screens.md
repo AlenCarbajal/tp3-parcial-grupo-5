@@ -1,6 +1,6 @@
 # Inventario de pantallas (37 de Figma + 1 extra obligatoria)
 Fuente: Figma "Parcial Domiciliario 7 Oct 26", páginas de flujo. Estado: F = funcional (Retrofit/Room) · D = demostración.
-Barra inferior (5 destinos constantes): Home · Workout · Nutrition · Progress · Profile. Visible en Home, Workout, Nutrition, Progress, Profile (y en Notifications, Review/Analyse/Lunch en Nutrition, sub-pantallas de Progress de nivel 1).
+Barra inferior (5 destinos constantes): Home · Workout · Nutrition · Progress · Profile. Visible en Home, Workout, Nutrition, Progress, Profile (y en Notifications, Review/Analyse/Lunch en Nutrition, sub-pantallas de Progress de nivel 1). Tocar Home siempre vuelve a la pantalla principal de Home; las demás pestañas recuperan la pantalla en la que se dejaron.
 
 ## 1. Login Flow (2)
 | # | Pantalla (Figma) | Ruta | Va a | Estado |
