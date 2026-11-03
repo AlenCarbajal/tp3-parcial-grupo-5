@@ -26,13 +26,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ar.edu.ort.vora.R
+import ar.edu.ort.vora.ui.theme.VoraBackground
+import ar.edu.ort.vora.ui.theme.VoraBorder
+import ar.edu.ort.vora.ui.theme.VoraGreen
+import ar.edu.ort.vora.ui.theme.VoraMintLight
+import ar.edu.ort.vora.ui.theme.VoraMintSoft
+import ar.edu.ort.vora.ui.theme.VoraSurfaceMuted
+import ar.edu.ort.vora.ui.theme.VoraTextPrimary
+import ar.edu.ort.vora.ui.theme.VoraTextSecondary
 
-private val WorkoutBackground = Color(0xFFF7F8F5)
-private val WorkoutGreen = Color(0xFF244C3A)
-private val WorkoutMuted = Color(0xFF7A8580)
-private val WorkoutBorder = Color(0xFFE5EAE6)
-private val WorkoutMint = Color(0xFFE2F4E9)
-private val WorkoutLight = Color(0xFFF0F4F0)
 
 @Composable
 fun WorkoutProgressScreen(
@@ -88,13 +90,13 @@ fun WorkoutProgressScreen(
     )
 
     Scaffold(
-        containerColor = WorkoutBackground
+        containerColor = VoraBackground
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .background(WorkoutBackground)
+                .background(VoraBackground)
         ) {
             Column(
                 modifier = Modifier
@@ -119,7 +121,7 @@ fun WorkoutProgressScreen(
                         Text(
                             text = "‹",
                             fontSize = 25.sp,
-                            color = WorkoutGreen
+                            color = VoraGreen
                         )
                     }
 
@@ -127,7 +129,7 @@ fun WorkoutProgressScreen(
                         text = stringResource(R.string.progress_workout_title),
                         fontSize = 21.sp,
                         fontWeight = FontWeight.Bold,
-                        color = WorkoutGreen
+                        color = VoraGreen
                     )
                 }
 
@@ -147,12 +149,12 @@ fun WorkoutProgressScreen(
                                     count = 3
                                 ),
                                 colors = SegmentedButtonDefaults.colors(
-                                    activeContainerColor = WorkoutGreen,
+                                    activeContainerColor = VoraGreen,
                                     activeContentColor = Color.White,
                                     inactiveContainerColor = Color.White,
-                                    inactiveContentColor = WorkoutMuted,
-                                    activeBorderColor = WorkoutGreen,
-                                    inactiveBorderColor = WorkoutBorder
+                                    inactiveContentColor = VoraTextSecondary,
+                                    activeBorderColor = VoraGreen,
+                                    inactiveBorderColor = VoraBorder
                                 )
                             ) {
                                 Text(
@@ -201,7 +203,7 @@ fun WorkoutProgressScreen(
                     ),
                     border = androidx.compose.foundation.BorderStroke(
                         1.dp,
-                        WorkoutBorder
+                        VoraBorder
                     )
                 ) {
                     Column(
@@ -211,20 +213,20 @@ fun WorkoutProgressScreen(
                             text = stringResource(R.string.progress_training_volume),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color(0xFF18231F)
+                            color = VoraTextPrimary
                         )
 
                         Text(
                             text = stringResource(R.string.progress_kg_per_session),
                             fontSize = 9.sp,
-                            color = WorkoutMuted
+                            color = VoraTextSecondary
                         )
 
                         Spacer(Modifier.height(8.dp))
 
                         Text(
                             text = stringResource(R.string.progress_volume_change),
-                            color = WorkoutGreen,
+                            color = VoraGreen,
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -258,9 +260,9 @@ fun WorkoutProgressScreen(
                                             )
                                             .background(
                                                 color = if (value == 0) {
-                                                    WorkoutLight
+                                                    VoraSurfaceMuted
                                                 } else {
-                                                    WorkoutGreen
+                                                    VoraGreen
                                                 },
                                                 shape = RoundedCornerShape(
                                                     topStart = 4.dp,
@@ -274,7 +276,7 @@ fun WorkoutProgressScreen(
                                     Text(
                                         text = days[index],
                                         fontSize = 9.sp,
-                                        color = WorkoutMuted
+                                        color = VoraTextSecondary
                                     )
                                 }
                             }
@@ -289,11 +291,11 @@ fun WorkoutProgressScreen(
                         .padding(bottom = 10.dp),
                     shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = WorkoutMint
+                        containerColor = VoraMintLight
                     ),
                     border = androidx.compose.foundation.BorderStroke(
                         1.dp,
-                        Color(0xFFB9E8D0)
+                        VoraMintSoft
                     )
                 ) {
                     Row(
@@ -323,21 +325,21 @@ fun WorkoutProgressScreen(
                         ) {
                             Text(
                                 text = stringResource(R.string.progress_personal_best),
-                                color = WorkoutGreen,
+                                color = VoraGreen,
                                 fontSize = 9.sp,
                                 fontWeight = FontWeight.Bold
                             )
 
                             Text(
                                 text = stringResource(R.string.progress_exercise_seated_cable_row),
-                                color = Color(0xFF18231F),
+                                color = VoraTextPrimary,
                                 fontSize = 13.sp,
                                 fontWeight = FontWeight.SemiBold
                             )
 
                             Text(
                                 text = stringResource(R.string.progress_personal_best_detail),
-                                color = WorkoutMuted,
+                                color = VoraTextSecondary,
                                 fontSize = 10.sp
                             )
                         }
@@ -351,7 +353,7 @@ fun WorkoutProgressScreen(
                         .padding(bottom = 12.dp),
                     shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = WorkoutMint
+                        containerColor = VoraMintLight
                     )
                 ) {
                     Row(
@@ -362,14 +364,14 @@ fun WorkoutProgressScreen(
                             modifier = Modifier
                                 .size(32.dp)
                                 .background(
-                                    Color(0xFFB9E8D0),
+                                    VoraMintSoft,
                                     CircleShape
                                 ),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
                                 text = "V",
-                                color = WorkoutGreen,
+                                color = VoraGreen,
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.Bold
                             )
@@ -382,14 +384,14 @@ fun WorkoutProgressScreen(
                         ) {
                             Text(
                                 text = stringResource(R.string.progress_vora_advice),
-                                color = WorkoutGreen,
+                                color = VoraGreen,
                                 fontSize = 10.sp,
                                 fontWeight = FontWeight.SemiBold
                             )
 
                             Text(
                                 text = stringResource(R.string.progress_workout_advice),
-                                color = WorkoutGreen,
+                                color = VoraGreen,
                                 fontSize = 11.sp,
                                 lineHeight = 16.sp
                             )
@@ -402,7 +404,7 @@ fun WorkoutProgressScreen(
                     text = stringResource(R.string.progress_exercise_progress),
                     fontSize = 11.sp,
                     fontWeight = FontWeight.Bold,
-                    color = WorkoutMuted,
+                    color = VoraTextSecondary,
                     modifier = Modifier.padding(bottom = 6.dp)
                 )
 
@@ -441,7 +443,7 @@ private fun WorkoutMetricCard(
         ),
         border = androidx.compose.foundation.BorderStroke(
             1.dp,
-            WorkoutBorder
+            VoraBorder
         )
     ) {
         Column(
@@ -454,7 +456,7 @@ private fun WorkoutMetricCard(
             Text(
                 text = label,
                 fontSize = 8.sp,
-                color = WorkoutMuted,
+                color = VoraTextSecondary,
                 maxLines = 1
             )
 
@@ -464,7 +466,7 @@ private fun WorkoutMetricCard(
                 text = value,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF18231F),
+                color = VoraTextPrimary,
                 maxLines = 1
             )
         }
@@ -485,7 +487,7 @@ private fun ExerciseProgressRow(
         ),
         border = androidx.compose.foundation.BorderStroke(
             1.dp,
-            WorkoutBorder
+            VoraBorder
         )
     ) {
         Row(
@@ -502,13 +504,13 @@ private fun ExerciseProgressRow(
                     text = name,
                     fontSize = 11.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = Color(0xFF18231F)
+                    color = VoraTextPrimary
                 )
 
                 Text(
                     text = details,
                     fontSize = 9.sp,
-                    color = WorkoutMuted
+                    color = VoraTextSecondary
                 )
             }
 
@@ -516,10 +518,10 @@ private fun ExerciseProgressRow(
                 text = change,
                 fontSize = 9.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = WorkoutGreen,
+                color = VoraGreen,
                 modifier = Modifier
                     .background(
-                        color = Color(0xFFE4F6ED),
+                        color = VoraMintLight,
                         shape = RoundedCornerShape(50)
                     )
                     .padding(

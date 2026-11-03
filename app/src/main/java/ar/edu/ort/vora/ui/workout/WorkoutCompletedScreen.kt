@@ -28,12 +28,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import ar.edu.ort.vora.R
 import ar.edu.ort.vora.domain.model.Workout
+import ar.edu.ort.vora.ui.theme.VoraBackground
+import ar.edu.ort.vora.ui.theme.VoraGreen
+import ar.edu.ort.vora.ui.theme.VoraLime
+import ar.edu.ort.vora.ui.theme.VoraMint
+import ar.edu.ort.vora.ui.theme.VoraTextPrimary
 
-private val CompletedDarkGreen = Color(0xFF123F35)
-private val CompletedMint = Color(0xFF60D5B1)
-private val CompletedLime = Color(0xFFD0EE69)
-private val CompletedBackground = Color(0xFFF5F7F4)
-private val CompletedText = Color(0xFF18352E)
 
 @Composable
 fun WorkoutCompletedScreen(
@@ -44,7 +44,7 @@ fun WorkoutCompletedScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(CompletedBackground)
+            .background(VoraBackground)
             .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -52,7 +52,7 @@ fun WorkoutCompletedScreen(
         Column(
             modifier = Modifier
                 .background(
-                    color = CompletedMint.copy(alpha = 0.25f),
+                    color = VoraMint.copy(alpha = 0.25f),
                     shape = CircleShape
                 )
                 .padding(24.dp),
@@ -60,7 +60,7 @@ fun WorkoutCompletedScreen(
         ) {
             Text(
                 text = "✓",
-                color = CompletedDarkGreen,
+                color = VoraGreen,
                 style = MaterialTheme.typography.displayLarge,
                 fontWeight = FontWeight.Bold
             )
@@ -70,7 +70,7 @@ fun WorkoutCompletedScreen(
 
         Text(
             text = stringResource(R.string.workout_completed_label),
-            color = CompletedDarkGreen,
+            color = VoraGreen,
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold
         )
@@ -79,7 +79,7 @@ fun WorkoutCompletedScreen(
 
         Text(
             text = stringResource(R.string.workout_completed_title),
-            color = CompletedText,
+            color = VoraTextPrimary,
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
@@ -89,7 +89,7 @@ fun WorkoutCompletedScreen(
 
         Text(
             text = stringResource(R.string.workout_completed_message),
-            color = CompletedText,
+            color = VoraTextPrimary,
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center
         )
@@ -101,7 +101,7 @@ fun WorkoutCompletedScreen(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(24.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = CompletedDarkGreen
+                    containerColor = VoraGreen
                 )
             ) {
                 Column(
@@ -120,7 +120,7 @@ fun WorkoutCompletedScreen(
                     ) {
                         Text(
                             text = stringResource(R.string.workout_duration_caps),
-                            color = CompletedMint,
+                            color = VoraMint,
                             style = MaterialTheme.typography.labelMedium
                         )
                         Text(
@@ -135,7 +135,7 @@ fun WorkoutCompletedScreen(
                     ) {
                         Text(
                             text = stringResource(R.string.workout_exercises_header),
-                            color = CompletedMint,
+                            color = VoraMint,
                             style = MaterialTheme.typography.labelMedium
                         )
                         Text(
@@ -155,7 +155,7 @@ fun WorkoutCompletedScreen(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = CompletedDarkGreen,
+                containerColor = VoraGreen,
                 contentColor = Color.White
             )
         ) {

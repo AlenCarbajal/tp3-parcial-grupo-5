@@ -21,13 +21,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ar.edu.ort.vora.R
+import ar.edu.ort.vora.ui.theme.VoraBackground
+import ar.edu.ort.vora.ui.theme.VoraBorder
+import ar.edu.ort.vora.ui.theme.VoraGreen
+import ar.edu.ort.vora.ui.theme.VoraMint
+import ar.edu.ort.vora.ui.theme.VoraMintLight
+import ar.edu.ort.vora.ui.theme.VoraMintSoft
+import ar.edu.ort.vora.ui.theme.VoraSuccess
+import ar.edu.ort.vora.ui.theme.VoraTextPrimary
+import ar.edu.ort.vora.ui.theme.VoraTextSecondary
 
-private val HealthGreen = Color(0xFF123F35)
-private val HealthBackground = Color(0xFFF7F8F5)
-private val HealthMuted = Color(0xFF7A8580)
-private val HealthBorder = Color(0xFFE4EAE6)
-private val HealthMint = Color(0xFF65D6B0)
-private val HealthLightMint = Color(0xFFE3F5EC)
 
 @Composable
 fun HealthTrendsScreen(
@@ -37,13 +40,13 @@ fun HealthTrendsScreen(
     val days = WeekDayInitials.map { stringResource(it) }
 
     Scaffold(
-        containerColor = HealthBackground
+        containerColor = VoraBackground
     ) { padding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .background(HealthBackground)
+                .background(VoraBackground)
                 .padding(horizontal = 16.dp),
             contentPadding = PaddingValues(
                 top = 8.dp,
@@ -69,7 +72,7 @@ fun HealthTrendsScreen(
                         Text(
                             text = "‹",
                             fontSize = 25.sp,
-                            color = HealthGreen
+                            color = VoraGreen
                         )
                     }
 
@@ -81,20 +84,20 @@ fun HealthTrendsScreen(
                             text = stringResource(R.string.progress_health_title),
                             fontSize = 18.sp,
                             fontWeight = FontWeight.SemiBold,
-                            color = Color(0xFF18231F)
+                            color = VoraTextPrimary
                         )
 
                         Text(
                             text = stringResource(R.string.progress_health_subtitle),
                             fontSize = 10.sp,
-                            color = HealthMuted
+                            color = VoraTextSecondary
                         )
                     }
 
                     Text(
                         text = "•••",
                         fontSize = 18.sp,
-                        color = HealthGreen
+                        color = VoraGreen
                     )
                 }
             }
@@ -109,7 +112,7 @@ fun HealthTrendsScreen(
                     ),
                     border = androidx.compose.foundation.BorderStroke(
                         1.dp,
-                        HealthBorder
+                        VoraBorder
                     )
                 ) {
                     Row(
@@ -153,7 +156,7 @@ fun HealthTrendsScreen(
                     ),
                     border = androidx.compose.foundation.BorderStroke(
                         1.dp,
-                        HealthBorder
+                        VoraBorder
                     )
                 ) {
                     Column(
@@ -168,14 +171,14 @@ fun HealthTrendsScreen(
                                 text = stringResource(R.string.progress_health_weekly_steps),
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.SemiBold,
-                                color = Color(0xFF18231F),
+                                color = VoraTextPrimary,
                                 modifier = Modifier.weight(1f)
                             )
 
                             Text(
                                 text = stringResource(R.string.progress_health_goal, stringResource(R.string.common_number, 8000)),
                                 fontSize = 10.sp,
-                                color = HealthMint,
+                                color = VoraMint,
                                 fontWeight = FontWeight.Medium
                             )
                         }
@@ -199,9 +202,9 @@ fun HealthTrendsScreen(
                                             .height((value * 0.55f).dp)
                                             .background(
                                                 color = if (value >= 78) {
-                                                    HealthGreen
+                                                    VoraGreen
                                                 } else {
-                                                    HealthMint
+                                                    VoraMint
                                                 },
                                                 shape = RoundedCornerShape(
                                                     topStart = 3.dp,
@@ -215,7 +218,7 @@ fun HealthTrendsScreen(
                                     Text(
                                         text = days[index],
                                         fontSize = 9.sp,
-                                        color = HealthMuted
+                                        color = VoraTextSecondary
                                     )
                                 }
                             }
@@ -230,12 +233,12 @@ fun HealthTrendsScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(
-                            color = HealthLightMint,
+                            color = VoraMintLight,
                             shape = RoundedCornerShape(12.dp)
                         )
                         .border(
                             width = 1.dp,
-                            color = HealthMint,
+                            color = VoraMint,
                             shape = RoundedCornerShape(12.dp)
                         )
                         .padding(11.dp),
@@ -245,12 +248,12 @@ fun HealthTrendsScreen(
                         modifier = Modifier
                             .size(30.dp)
                             .background(
-                                color = Color(0xFFB9E8D0),
+                                color = VoraMintSoft,
                                 shape = CircleShape
                             )
                             .border(
                                 width = 1.dp,
-                                color = HealthMint,
+                                color = VoraMint,
                                 shape = CircleShape
                             ),
                         contentAlignment = Alignment.Center
@@ -259,7 +262,7 @@ fun HealthTrendsScreen(
                             text = "V",
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Bold,
-                            color = HealthGreen
+                            color = VoraGreen
                         )
                     }
 
@@ -269,7 +272,7 @@ fun HealthTrendsScreen(
                         text = stringResource(R.string.progress_health_insight),
                         fontSize = 10.sp,
                         lineHeight = 15.sp,
-                        color = HealthGreen
+                        color = VoraGreen
                     )
                 }
             }
@@ -280,7 +283,7 @@ fun HealthTrendsScreen(
                     text = stringResource(R.string.progress_habit_signals),
                     fontSize = 10.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = HealthMuted
+                    color = VoraTextSecondary
                 )
             }
 
@@ -337,7 +340,7 @@ private fun HealthSummaryMetric(
         Text(
             text = title,
             fontSize = 7.sp,
-            color = HealthMuted,
+            color = VoraTextSecondary,
             maxLines = 1
         )
 
@@ -345,7 +348,7 @@ private fun HealthSummaryMetric(
             text = value,
             fontSize = 11.sp,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF18231F),
+            color = VoraTextPrimary,
             maxLines = 1
         )
     }
@@ -357,7 +360,7 @@ private fun HealthMetricDivider() {
         modifier = Modifier
             .width(1.dp)
             .height(30.dp)
-            .background(HealthBorder)
+            .background(VoraBorder)
     )
 }
 
@@ -376,7 +379,7 @@ private fun HabitSignalRow(
         ),
         border = androidx.compose.foundation.BorderStroke(
             1.dp,
-            HealthBorder
+            VoraBorder
         )
     ) {
         Row(
@@ -388,7 +391,7 @@ private fun HabitSignalRow(
             Text(
                 text = icon,
                 fontSize = 15.sp,
-                color = HealthGreen
+                color = VoraGreen
             )
 
             Spacer(Modifier.width(9.dp))
@@ -397,7 +400,7 @@ private fun HabitSignalRow(
                 text = title,
                 fontSize = 11.sp,
                 fontWeight = FontWeight.Medium,
-                color = Color(0xFF18231F),
+                color = VoraTextPrimary,
                 modifier = Modifier.weight(1f)
             )
 
@@ -406,9 +409,9 @@ private fun HabitSignalRow(
                 fontSize = 10.sp,
                 fontWeight = FontWeight.Medium,
                 color = if (improving) {
-                    Color(0xFF27A66B)
+                    VoraSuccess
                 } else {
-                    HealthMuted
+                    VoraTextSecondary
                 }
             )
         }

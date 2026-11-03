@@ -28,14 +28,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ar.edu.ort.vora.R
+import ar.edu.ort.vora.ui.theme.VoraBackground
+import ar.edu.ort.vora.ui.theme.VoraBorder
+import ar.edu.ort.vora.ui.theme.VoraGreen
+import ar.edu.ort.vora.ui.theme.VoraGreenAccent
+import ar.edu.ort.vora.ui.theme.VoraGreenRaised
+import ar.edu.ort.vora.ui.theme.VoraLime
+import ar.edu.ort.vora.ui.theme.VoraMint
+import ar.edu.ort.vora.ui.theme.VoraMintLight
+import ar.edu.ort.vora.ui.theme.VoraMintSoft
+import ar.edu.ort.vora.ui.theme.VoraSuccess
+import ar.edu.ort.vora.ui.theme.VoraSurfaceMuted
+import ar.edu.ort.vora.ui.theme.VoraTextPrimary
+import ar.edu.ort.vora.ui.theme.VoraTextSecondary
 
-private val DashboardGreen = Color(0xFF103F35)
-private val DashboardMint = Color(0xFF65D6B0)
-private val DashboardBackground = Color(0xFFF7F8F6)
-private val DashboardGray = Color(0xFF7A8580)
-private val DashboardBorder = Color(0xFFE4EAE6)
-private val DashboardLight = Color(0xFFF2F5F2)
-private val DashboardLime = Color(0xFFBDEB70)
 
 // Clave interna del período y su texto visible (compartido por las pantallas de progreso)
 internal val ProgressPeriods = listOf(
@@ -88,7 +94,7 @@ fun ProgressDashboardScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(DashboardBackground)
+            .background(VoraBackground)
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 16.dp, vertical = 14.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp)
@@ -101,13 +107,13 @@ fun ProgressDashboardScreen(
                 text = stringResource(R.string.progress_dashboard_title),
                 fontSize = 25.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF18231F)
+                color = VoraTextPrimary
             )
 
             Text(
                 text = stringResource(R.string.progress_dashboard_subtitle),
                 fontSize = 13.sp,
-                color = DashboardGray
+                color = VoraTextSecondary
             )
         }
 
@@ -125,12 +131,12 @@ fun ProgressDashboardScreen(
                             count = 3
                         ),
                         colors = SegmentedButtonDefaults.colors(
-                            activeContainerColor = DashboardGreen,
+                            activeContainerColor = VoraGreen,
                             activeContentColor = Color.White,
                             inactiveContainerColor = Color.White,
-                            inactiveContentColor = DashboardGray,
-                            activeBorderColor = DashboardGreen,
-                            inactiveBorderColor = DashboardBorder
+                            inactiveContentColor = VoraTextSecondary,
+                            activeBorderColor = VoraGreen,
+                            inactiveBorderColor = VoraBorder
                         )
                     ) {
                         Text(
@@ -151,7 +157,7 @@ fun ProgressDashboardScreen(
             ),
             border = androidx.compose.foundation.BorderStroke(
                 1.dp,
-                DashboardBorder
+                VoraBorder
             )
         ) {
             Column(
@@ -167,7 +173,7 @@ fun ProgressDashboardScreen(
                         }
                     ),
                     fontSize = 11.sp,
-                    color = DashboardGray,
+                    color = VoraTextSecondary,
                     fontWeight = FontWeight.Medium
                 )
 
@@ -216,7 +222,7 @@ fun ProgressDashboardScreen(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(20.dp),
             colors = CardDefaults.cardColors(
-                containerColor = DashboardGreen
+                containerColor = VoraGreen
             )
         ) {
             Column(
@@ -231,12 +237,12 @@ fun ProgressDashboardScreen(
                         modifier = Modifier
                             .size(30.dp)
                             .background(
-                                color = Color(0xFF1B6655),
+                                color = VoraGreenAccent,
                                 shape = CircleShape
                             )
                             .border(
                                 width = 1.dp,
-                                color = DashboardMint,
+                                color = VoraMint,
                                 shape = CircleShape
                             ),
                         contentAlignment = Alignment.Center
@@ -253,7 +259,7 @@ fun ProgressDashboardScreen(
 
                     Text(
                         text = stringResource(R.string.progress_vora_insight),
-                        color = DashboardMint,
+                        color = VoraMint,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Medium,
                         modifier = Modifier.weight(1f)
@@ -261,12 +267,12 @@ fun ProgressDashboardScreen(
 
                     Text(
                         text = stringResource(R.string.progress_consistent_badge),
-                        color = DashboardLime,
+                        color = VoraLime,
                         fontSize = 9.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier
                             .background(
-                                color = Color(0xFF285449),
+                                color = VoraGreenRaised,
                                 shape = RoundedCornerShape(50)
                             )
                             .padding(
@@ -294,7 +300,7 @@ fun ProgressDashboardScreen(
                 ) {
                     Text(
                         text = stringResource(R.string.progress_see_weekly_review),
-                        color = DashboardLime,
+                        color = VoraLime,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Medium
                     )
@@ -303,7 +309,7 @@ fun ProgressDashboardScreen(
 
                     Text(
                         text = "→",
-                        color = DashboardLime,
+                        color = VoraLime,
                         fontSize = 16.sp
                     )
                 }
@@ -345,11 +351,11 @@ fun ProgressDashboardScreen(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
             colors = CardDefaults.cardColors(
-                containerColor = Color(0xFFE3F4EC)
+                containerColor = VoraMintLight
             ),
             border = androidx.compose.foundation.BorderStroke(
                 1.dp,
-                DashboardMint
+                VoraMint
             )
         ) {
             Column(
@@ -362,7 +368,7 @@ fun ProgressDashboardScreen(
                     Text(
                         text = "◎",
                         fontSize = 15.sp,
-                        color = DashboardGreen
+                        color = VoraGreen
                     )
 
                     Spacer(Modifier.width(6.dp))
@@ -371,7 +377,7 @@ fun ProgressDashboardScreen(
                         text = stringResource(R.string.progress_active_goal),
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Bold,
-                        color = DashboardGreen,
+                        color = VoraGreen,
                         modifier = Modifier.weight(1f)
                     )
 
@@ -379,7 +385,7 @@ fun ProgressDashboardScreen(
                         text = stringResource(R.string.progress_goal_complete, 68),
                         fontSize = 10.sp,
                         fontWeight = FontWeight.SemiBold,
-                        color = DashboardGreen
+                        color = VoraGreen
                     )
                 }
 
@@ -388,22 +394,22 @@ fun ProgressDashboardScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(5.dp),
-                    color = DashboardGreen,
-                    trackColor = Color(0xFFC8DDD2)
+                    color = VoraGreen,
+                    trackColor = VoraMintSoft
                 )
 
                 Text(
                     text = stringResource(R.string.common_goal_strength_fitness),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,
-                    color = Color(0xFF18231F)
+                    color = VoraTextPrimary
                 )
 
                 Text(
                     text = stringResource(R.string.progress_goal_description),
                     fontSize = 12.sp,
                     lineHeight = 17.sp,
-                    color = DashboardGray
+                    color = VoraTextSecondary
                 )
             }
         }
@@ -422,7 +428,7 @@ private fun OverviewMetric(
     Column(
         modifier = modifier
             .background(
-                color = DashboardLight,
+                color = VoraSurfaceMuted,
                 shape = RoundedCornerShape(12.dp)
             )
             .padding(
@@ -434,7 +440,7 @@ private fun OverviewMetric(
         Text(
             text = title,
             fontSize = 10.sp,
-            color = DashboardGray,
+            color = VoraTextSecondary,
             maxLines = 1
         )
 
@@ -442,7 +448,7 @@ private fun OverviewMetric(
             text = value,
             fontSize = 15.sp,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF18231F),
+            color = VoraTextPrimary,
             maxLines = 1
         )
 
@@ -450,7 +456,7 @@ private fun OverviewMetric(
             Text(
                 text = change,
                 fontSize = 10.sp,
-                color = Color(0xFF319B75),
+                color = VoraSuccess,
                 fontWeight = FontWeight.Medium
             )
         }
@@ -474,7 +480,7 @@ private fun ProgressNavigationCard(
         ),
         border = androidx.compose.foundation.BorderStroke(
             1.dp,
-            DashboardBorder
+            VoraBorder
         )
     ) {
         Row(
@@ -487,7 +493,7 @@ private fun ProgressNavigationCard(
                 modifier = Modifier
                     .size(38.dp)
                     .background(
-                        color = DashboardLight,
+                        color = VoraSurfaceMuted,
                         shape = CircleShape
                     ),
                 contentAlignment = Alignment.Center
@@ -496,7 +502,7 @@ private fun ProgressNavigationCard(
                     text = icon,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color = DashboardGreen
+                    color = VoraGreen
                 )
             }
 
@@ -510,13 +516,13 @@ private fun ProgressNavigationCard(
                     text = title,
                     fontSize = 13.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = Color(0xFF18231F)
+                    color = VoraTextPrimary
                 )
 
                 Text(
                     text = subtitle,
                     fontSize = 10.sp,
-                    color = DashboardGray
+                    color = VoraTextSecondary
                 )
             }
 
@@ -524,7 +530,7 @@ private fun ProgressNavigationCard(
                 text = stringResource(R.string.progress_view_arrow),
                 fontSize = 11.sp,
                 fontWeight = FontWeight.Medium,
-                color = DashboardGreen
+                color = VoraGreen
             )
         }
     }

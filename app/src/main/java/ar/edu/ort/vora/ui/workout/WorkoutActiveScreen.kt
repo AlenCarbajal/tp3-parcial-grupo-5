@@ -33,12 +33,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import ar.edu.ort.vora.R
 import ar.edu.ort.vora.domain.model.Workout
+import ar.edu.ort.vora.ui.theme.VoraBackground
+import ar.edu.ort.vora.ui.theme.VoraBorder
+import ar.edu.ort.vora.ui.theme.VoraGreen
+import ar.edu.ort.vora.ui.theme.VoraGreenRaised
+import ar.edu.ort.vora.ui.theme.VoraLime
+import ar.edu.ort.vora.ui.theme.VoraMint
+import ar.edu.ort.vora.ui.theme.VoraTextPrimary
 
-private val ActiveDarkGreen = Color(0xFF123F35)
-private val ActiveMint = Color(0xFF60D5B1)
-private val ActiveLime = Color(0xFFD0EE69)
-private val ActiveBackground = Color(0xFFF5F7F4)
-private val ActiveText = Color(0xFF18352E)
 
 @Composable
 fun WorkoutActiveScreen(
@@ -53,7 +55,7 @@ fun WorkoutActiveScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(ActiveBackground)
+            .background(VoraBackground)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(18.dp)
     ) {
@@ -64,7 +66,7 @@ fun WorkoutActiveScreen(
             ) {
                 Text(
                     text = stringResource(R.string.workout_loading),
-                    color = ActiveText
+                    color = VoraTextPrimary
                 )
             }
         } else if (workout.exercises.isEmpty()) {
@@ -79,13 +81,13 @@ fun WorkoutActiveScreen(
                     Text(
                         text = stringResource(R.string.workout_active_no_exercises),
                         style = MaterialTheme.typography.titleLarge,
-                        color = ActiveText
+                        color = VoraTextPrimary
                     )
 
                     Button(
                         onClick = onFinish,
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = ActiveDarkGreen
+                            containerColor = VoraGreen
                         )
                     ) {
                         Text(stringResource(R.string.workout_finish))
@@ -101,14 +103,14 @@ fun WorkoutActiveScreen(
                 text = stringResource(R.string.workout_your_workout),
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.Bold,
-                color = ActiveDarkGreen
+                color = VoraGreen
             )
 
             Text(
                 text = stringResource(R.string.workout_active_title),
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold,
-                color = ActiveText
+                color = VoraTextPrimary
             )
 
             Column(
@@ -130,12 +132,12 @@ fun WorkoutActiveScreen(
                         text = workout.name,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
-                        color = ActiveDarkGreen
+                        color = VoraGreen
                     )
 
                     Text(
                         text = "${currentIndex + 1}/${workout.exercises.size}",
-                        color = ActiveDarkGreen,
+                        color = VoraGreen,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -145,7 +147,7 @@ fun WorkoutActiveScreen(
                         .fillMaxWidth()
                         .height(8.dp)
                         .background(
-                            color = Color(0xFFDDE7E1),
+                            color = VoraBorder,
                             shape = CircleShape
                         )
                 ) {
@@ -157,7 +159,7 @@ fun WorkoutActiveScreen(
                             )
                             .height(8.dp)
                             .background(
-                                color = ActiveMint,
+                                color = VoraMint,
                                 shape = CircleShape
                             )
                     )
@@ -180,7 +182,7 @@ fun WorkoutActiveScreen(
                     .weight(1f),
                 shape = RoundedCornerShape(26.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = ActiveDarkGreen
+                    containerColor = VoraGreen
                 )
             ) {
                 Column(
@@ -193,14 +195,14 @@ fun WorkoutActiveScreen(
                     Box(
                         modifier = Modifier
                             .background(
-                                color = Color(0xFF205347),
+                                color = VoraGreenRaised,
                                 shape = CircleShape
                             )
                             .padding(horizontal = 18.dp, vertical = 10.dp)
                     ) {
                         Text(
                             text = stringResource(R.string.workout_active_exercise_badge, currentIndex + 1),
-                            color = ActiveMint,
+                            color = VoraMint,
                             style = MaterialTheme.typography.labelLarge,
                             fontWeight = FontWeight.Bold
                         )
@@ -221,7 +223,7 @@ fun WorkoutActiveScreen(
                     Text(
                         text = exercise.muscleGroup,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = ActiveMint,
+                        color = VoraMint,
                         textAlign = TextAlign.Center
                     )
 
@@ -278,8 +280,8 @@ fun WorkoutActiveScreen(
                     .height(54.dp),
                 shape = RoundedCornerShape(28.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = ActiveLime,
-                    contentColor = ActiveDarkGreen
+                    containerColor = VoraLime,
+                    contentColor = VoraGreen
                 )
             ) {
                 Text(
@@ -304,7 +306,7 @@ private fun ActiveStat(
     Column(
         modifier = modifier
             .background(
-                color = Color(0xFF205347),
+                color = VoraGreenRaised,
                 shape = RoundedCornerShape(14.dp)
             )
             .padding(vertical = 14.dp, horizontal = 6.dp),
@@ -321,7 +323,7 @@ private fun ActiveStat(
         Text(
             text = label,
             style = MaterialTheme.typography.labelSmall,
-            color = ActiveMint,
+            color = VoraMint,
             textAlign = TextAlign.Center
         )
     }

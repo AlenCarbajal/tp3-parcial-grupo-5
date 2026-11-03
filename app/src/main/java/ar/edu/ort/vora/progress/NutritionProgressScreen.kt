@@ -27,13 +27,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ar.edu.ort.vora.R
+import ar.edu.ort.vora.ui.theme.VoraBackground
+import ar.edu.ort.vora.ui.theme.VoraBorder
+import ar.edu.ort.vora.ui.theme.VoraGreen
+import ar.edu.ort.vora.ui.theme.VoraGreenAccent
+import ar.edu.ort.vora.ui.theme.VoraMintLight
+import ar.edu.ort.vora.ui.theme.VoraMintSoft
+import ar.edu.ort.vora.ui.theme.VoraSurfaceMuted
+import ar.edu.ort.vora.ui.theme.VoraTextPrimary
+import ar.edu.ort.vora.ui.theme.VoraTextSecondary
 
-private val NutritionGreen = Color(0xFF123F35)
-private val NutritionBackground = Color(0xFFF7F8F5)
-private val NutritionMuted = Color(0xFF7A8580)
-private val NutritionBorder = Color(0xFFE4EAE6)
-private val NutritionLight = Color(0xFFF2F5F2)
-private val NutritionMint = Color(0xFFBDEBD7)
 
 @Composable
 fun NutritionProgressScreen(
@@ -75,13 +78,13 @@ fun NutritionProgressScreen(
     }
 
     Scaffold(
-        containerColor = NutritionBackground
+        containerColor = VoraBackground
     ) { padding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .background(NutritionBackground)
+                .background(VoraBackground)
                 .padding(horizontal = 16.dp),
             contentPadding = PaddingValues(
                 top = 8.dp,
@@ -107,7 +110,7 @@ fun NutritionProgressScreen(
                         Text(
                             text = "‹",
                             fontSize = 25.sp,
-                            color = NutritionGreen
+                            color = VoraGreen
                         )
                     }
 
@@ -115,14 +118,14 @@ fun NutritionProgressScreen(
                         text = stringResource(R.string.progress_nutrition_title),
                         fontSize = 19.sp,
                         fontWeight = FontWeight.SemiBold,
-                        color = Color(0xFF18231F)
+                        color = VoraTextPrimary
                     )
 
                     Spacer(Modifier.weight(1f))
 
                     Text(
                         text = "•••",
-                        color = NutritionGreen,
+                        color = VoraGreen,
                         fontSize = 18.sp
                     )
                 }
@@ -143,12 +146,12 @@ fun NutritionProgressScreen(
                                     count = 3
                                 ),
                                 colors = SegmentedButtonDefaults.colors(
-                                    activeContainerColor = NutritionGreen,
+                                    activeContainerColor = VoraGreen,
                                     activeContentColor = Color.White,
                                     inactiveContainerColor = Color.White,
-                                    inactiveContentColor = NutritionMuted,
-                                    activeBorderColor = NutritionGreen,
-                                    inactiveBorderColor = NutritionBorder
+                                    inactiveContentColor = VoraTextSecondary,
+                                    activeBorderColor = VoraGreen,
+                                    inactiveBorderColor = VoraBorder
                                 )
                             ) {
                                 Text(
@@ -171,7 +174,7 @@ fun NutritionProgressScreen(
                     ),
                     border = androidx.compose.foundation.BorderStroke(
                         1.dp,
-                        NutritionBorder
+                        VoraBorder
                     )
                 ) {
                     Row(
@@ -220,7 +223,7 @@ fun NutritionProgressScreen(
                     ),
                     border = androidx.compose.foundation.BorderStroke(
                         1.dp,
-                        NutritionBorder
+                        VoraBorder
                     )
                 ) {
                     Column(
@@ -231,7 +234,7 @@ fun NutritionProgressScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(
-                                    NutritionLight,
+                                    VoraSurfaceMuted,
                                     RoundedCornerShape(10.dp)
                                 )
                                 .padding(3.dp),
@@ -251,7 +254,7 @@ fun NutritionProgressScreen(
                                             .weight(1f)
                                             .background(
                                                 color = if (selected) {
-                                                    NutritionGreen
+                                                    VoraGreen
                                                 } else {
                                                     Color.Transparent
                                                 },
@@ -271,7 +274,7 @@ fun NutritionProgressScreen(
                                             color = if (selected) {
                                                 Color.White
                                             } else {
-                                                NutritionMuted
+                                                VoraTextSecondary
                                             },
                                             fontSize = 9.sp,
                                             fontWeight = if (selected) {
@@ -296,7 +299,7 @@ fun NutritionProgressScreen(
                                 target
                             ),
                             fontSize = 9.sp,
-                            color = NutritionMuted
+                            color = VoraTextSecondary
                         )
 
                         Row(
@@ -318,17 +321,17 @@ fun NutritionProgressScreen(
                                             .border(
                                                 width = 1.dp,
                                                 color = if (hit) {
-                                                    NutritionMint
+                                                    VoraMintSoft
                                                 } else {
-                                                    NutritionBorder
+                                                    VoraBorder
                                                 },
                                                 shape = CircleShape
                                             )
                                             .background(
                                                 color = if (hit) {
-                                                    Color(0xFFE7F8F0)
+                                                    VoraMintLight
                                                 } else {
-                                                    NutritionLight
+                                                    VoraSurfaceMuted
                                                 },
                                                 shape = CircleShape
                                             ),
@@ -338,9 +341,9 @@ fun NutritionProgressScreen(
                                             text = day,
                                             fontSize = 9.sp,
                                             color = if (hit) {
-                                                NutritionGreen
+                                                VoraGreen
                                             } else {
-                                                NutritionMuted
+                                                VoraTextSecondary
                                             }
                                         )
                                     }
@@ -351,9 +354,9 @@ fun NutritionProgressScreen(
                                         ),
                                         fontSize = 7.sp,
                                         color = if (hit) {
-                                            NutritionGreen
+                                            VoraGreen
                                         } else {
-                                            NutritionMuted
+                                            VoraTextSecondary
                                         }
                                     )
                                 }
@@ -369,7 +372,7 @@ fun NutritionProgressScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = NutritionGreen
+                        containerColor = VoraGreen
                     )
                 ) {
                     Column(
@@ -383,12 +386,12 @@ fun NutritionProgressScreen(
                                 modifier = Modifier
                                     .size(25.dp)
                                     .background(
-                                        Color(0xFF286B58),
+                                        VoraGreenAccent,
                                         CircleShape
                                     )
                                     .border(
                                         1.dp,
-                                        NutritionMint,
+                                        VoraMintSoft,
                                         CircleShape
                                     )
                             )
@@ -398,7 +401,7 @@ fun NutritionProgressScreen(
                             Text(
                                 text = stringResource(R.string.progress_nutrition_analysis),
                                 fontSize = 13.sp,
-                                color = NutritionMint,
+                                color = VoraMintSoft,
                                 fontWeight = FontWeight.Medium
                             )
                         }
@@ -418,7 +421,7 @@ fun NutritionProgressScreen(
                 Text(
                     text = stringResource(R.string.progress_food_habits),
                     fontSize = 10.sp,
-                    color = NutritionMuted,
+                    color = VoraTextSecondary,
                     fontWeight = FontWeight.SemiBold
                 )
             }
@@ -478,7 +481,7 @@ private fun NutritionSummaryMetric(
         Text(
             text = title,
             fontSize = 7.sp,
-            color = NutritionMuted,
+            color = VoraTextSecondary,
             maxLines = 1
         )
 
@@ -486,7 +489,7 @@ private fun NutritionSummaryMetric(
             text = value,
             fontSize = 10.sp,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF18231F),
+            color = VoraTextPrimary,
             maxLines = 1
         )
     }
@@ -498,7 +501,7 @@ private fun SummaryDivider() {
         modifier = Modifier
             .width(1.dp)
             .height(30.dp)
-            .background(NutritionBorder)
+            .background(VoraBorder)
     )
 }
 
@@ -516,7 +519,7 @@ private fun FoodHabitCard(
         ),
         border = androidx.compose.foundation.BorderStroke(
             1.dp,
-            NutritionBorder
+            VoraBorder
         )
     ) {
         Column(
@@ -528,7 +531,7 @@ private fun FoodHabitCard(
             Text(
                 text = title,
                 fontSize = 9.sp,
-                color = NutritionMuted
+                color = VoraTextSecondary
             )
 
             Text(
@@ -536,7 +539,7 @@ private fun FoodHabitCard(
                 fontSize = 11.sp,
                 lineHeight = 14.sp,
                 fontWeight = FontWeight.Medium,
-                color = Color(0xFF18231F)
+                color = VoraTextPrimary
             )
         }
     }
