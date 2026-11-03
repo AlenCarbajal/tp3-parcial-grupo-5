@@ -6,118 +6,101 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ar.edu.ort.vora.R
-import ar.edu.ort.vora.domain.model.DailyTotals
 import ar.edu.ort.vora.domain.model.Meal
 import ar.edu.ort.vora.ui.components.ButtonSize
-import ar.edu.ort.vora.ui.components.ConfirmDialog
-import ar.edu.ort.vora.ui.components.DarkPanel
 import ar.edu.ort.vora.ui.components.IconCircleButton
 import ar.edu.ort.vora.ui.components.InfoCard
 import ar.edu.ort.vora.ui.components.PrimaryButton
 import ar.edu.ort.vora.ui.components.SecondaryButton
-import ar.edu.ort.vora.ui.components.TopBarBack
-import ar.edu.ort.vora.ui.components.VoraTopBar
 import ar.edu.ort.vora.ui.components.asString
-import ar.edu.ort.vora.ui.theme.PanelTitleStyle
+import ar.edu.ort.vora.ui.home.TabScreen
+import ar.edu.ort.vora.ui.theme.PillShape
 import ar.edu.ort.vora.ui.theme.Spacing
-import ar.edu.ort.vora.ui.theme.VoraBackground
+import ar.edu.ort.vora.ui.theme.VoraBorder
 import ar.edu.ort.vora.ui.theme.VoraError
 import ar.edu.ort.vora.ui.theme.VoraGreen
-import ar.edu.ort.vora.ui.theme.VoraMint
+import ar.edu.ort.vora.ui.theme.VoraTextMuted
 import ar.edu.ort.vora.ui.theme.VoraTextPrimary
 import ar.edu.ort.vora.ui.theme.VoraTextSecondary
 
+// 19 · Today's Meals: comidas del día elegido agrupadas por tipo. Se borran desde el detalle (con confirmación).
 @Composable
 fun MealsScreen(
-    onBack: () -> Unit,
     onAdd: () -> Unit,
     onMeal: (Int) -> Unit,
     viewModel: NutritionViewModel = hiltViewModel(),
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val date by viewModel.selectedDate.collectAsStateWithLifecycle()
-    // Se guarda el id (no el Meal) para que el diálogo sobreviva a la rotación
-    var pendingDeleteId by rememberSaveable { mutableStateOf<Int?>(null) }
-
     val success = state as? NutritionUIState.Success
-    success?.meals?.firstOrNull { it.id == pendingDeleteId }?.let { meal ->
-        ConfirmDialog(
-            title = stringResource(R.string.nutrition_delete_title),
-            message = stringResource(R.string.nutrition_delete_message, meal.name),
-            confirmText = stringResource(R.string.common_delete),
-            onConfirm = {
-                viewModel.deleteMeal(meal)
-                pendingDeleteId = null
-            },
-            onDismiss = { pendingDeleteId = null },
-        )
-    }
 
-    Column(Modifier.fillMaxSize().background(VoraBackground)) {
-        VoraTopBar(title = stringResource(R.string.nutrition_meals_title), back = TopBarBack.Plain, onBack = onBack)
-        Box(
-            Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()),
-            contentAlignment = Alignment.TopCenter,
-        ) {
-            Column(
-                Modifier
-                    .widthIn(max = Spacing.maxContentWidth)
-                    .fillMaxWidth()
-                    .padding(horizontal = Spacing.screen, vertical = Spacing.s16),
-                verticalArrangement = Arrangement.spacedBy(Spacing.groupGap),
-            ) {
-                DaySelector(dayLabel(date), viewModel::previousDay, viewModel::nextDay)
-                TotalsPanel(success?.totals ?: DailyTotals())
+    TabScreen {
+        Header(success?.totals?.kcal ?: 0)
+        DaySelector(dayLabel(date), viewModel::previousDay, viewModel::nextDay)
 
-                when (val s = state) {
-                    NutritionUIState.Loading -> Box(
-                        Modifier.fillMaxWidth().padding(Spacing.s24),
-                        contentAlignment = Alignment.Center,
-                    ) { CircularProgressIndicator(color = VoraGreen) }
+        when (val s = state) {
+            NutritionUIState.Loading -> Box(
+                Modifier.fillMaxWidth().padding(Spacing.s24),
+                contentAlignment = Alignment.Center,
+            ) { CircularProgressIndicator(color = VoraGreen) }
 
-                    NutritionUIState.Empty -> InfoCard {
-                        Text(
-                            stringResource(R.string.nutrition_meals_empty),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = VoraTextSecondary,
-                        )
-                    }
+            is NutritionUIState.Error -> InfoCard {
+                Text(s.message.asString(), style = MaterialTheme.typography.bodyMedium, color = VoraError)
+                SecondaryButton(stringResource(R.string.common_retry), viewModel::retry, Modifier.fillMaxWidth())
+            }
 
-                    is NutritionUIState.Success -> s.meals.forEach { meal ->
-                        MealRow(
-                            meal = meal,
-                            onClick = { onMeal(meal.id) },
-                            onDelete = { pendingDeleteId = meal.id },
-                        )
-                    }
-
-                    is NutritionUIState.Error -> InfoCard {
-                        Text(s.message.asString(), style = MaterialTheme.typography.bodyMedium, color = VoraError)
-                        SecondaryButton(stringResource(R.string.common_retry), viewModel::retry, Modifier.fillMaxWidth())
-                    }
+            // Vacío y con datos se ven igual: cada tipo sin registrar muestra su botón para agregarlo.
+            else -> {
+                val meals = success?.meals.orEmpty()
+                mealTypesInOrder.forEach { type ->
+                    val ofType = meals.filter { it.type == type }.sortedBy { it.id }
+                    if (ofType.isEmpty()) NotLoggedCard(type.label(), onAdd)
+                    else MealGroup(type.label(), ofType, onMeal)
                 }
-
-                PrimaryButton(
-                    text = stringResource(R.string.nutrition_add_meal),
-                    onClick = onAdd,
-                    modifier = Modifier.fillMaxWidth(),
-                    size = ButtonSize.Large,
-                    icon = R.drawable.ic_plus,
-                )
             }
         }
+    }
+}
+
+@Composable
+private fun Header(totalKcal: Int) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Column(Modifier.weight(1f)) {
+            Text(
+                stringResource(R.string.nutrition_timeline),
+                style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium),
+                color = VoraTextSecondary,
+            )
+            Text(stringResource(R.string.nutrition_meals_title), style = MaterialTheme.typography.headlineMedium, color = VoraTextPrimary)
+        }
+        Text(
+            stringResource(R.string.common_value_kcal, totalKcal),
+            modifier = Modifier
+                .background(VoraBorder, PillShape)
+                .padding(horizontal = Spacing.s12, vertical = Spacing.s6),
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = VoraTextPrimary,
+        )
     }
 }
 
@@ -139,53 +122,62 @@ private fun DaySelector(label: String, onPrevious: () -> Unit, onNext: () -> Uni
     }
 }
 
+// Tarjeta de un tipo: título y kcal sumadas, divisor y una fila por comida que abre su detalle.
 @Composable
-private fun TotalsPanel(totals: DailyTotals) {
-    DarkPanel(padding = Spacing.s16, verticalArrangement = Arrangement.spacedBy(Spacing.s12)) {
-        Text(stringResource(R.string.nutrition_daily_total), style = MaterialTheme.typography.labelSmall, color = VoraMint)
-        Text(stringResource(R.string.nutrition_kcal, totals.kcal), style = PanelTitleStyle)
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            MacroText(stringResource(R.string.common_protein), totals.protein)
-            MacroText(stringResource(R.string.common_carbs), totals.carbs)
-            MacroText(stringResource(R.string.common_fat), totals.fat)
+private fun MealGroup(title: String, meals: List<Meal>, onMeal: (Int) -> Unit) {
+    InfoCard(padding = Spacing.s12) {
+        Row(Modifier.padding(horizontal = Spacing.s4), verticalAlignment = Alignment.CenterVertically) {
+            Text(title, Modifier.weight(1f), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = VoraTextPrimary)
+            Text(
+                stringResource(R.string.common_value_kcal, meals.sumOf { it.kcal }),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = VoraTextPrimary,
+            )
+        }
+        HorizontalDivider(Modifier.padding(horizontal = Spacing.s4, vertical = Spacing.s8), color = VoraBorder)
+        meals.forEach { meal ->
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .clip(MaterialTheme.shapes.small)
+                    .clickable { onMeal(meal.id) }
+                    .padding(Spacing.s4),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column(Modifier.weight(1f).padding(end = Spacing.s12)) {
+                    Text(meal.name, style = MaterialTheme.typography.bodyLarge, color = VoraTextPrimary, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(
+                        stringResource(R.string.nutrition_meal_macros, meal.protein, meal.carbs, meal.fat),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = VoraTextMuted,
+                    )
+                }
+                Text(stringResource(R.string.common_value_kcal, meal.kcal), style = MaterialTheme.typography.bodyMedium, color = VoraTextSecondary)
+            }
         }
     }
 }
 
+// Tipo sin registrar: recuadro con borde punteado, como "Dinner is not logged yet" en Figma.
 @Composable
-private fun MacroText(label: String, grams: Double) {
-    Column {
-        Text(label, style = MaterialTheme.typography.bodySmall, color = VoraMint)
-        Text(
-            stringResource(R.string.nutrition_grams, grams),
-            style = MaterialTheme.typography.bodyMedium,
-        )
-    }
-}
-
-@Composable
-private fun MealRow(meal: Meal, onClick: () -> Unit, onDelete: () -> Unit) {
-    InfoCard(
-        modifier = Modifier.clickable(onClick = onClick),
-        shape = MaterialTheme.shapes.small,
-        padding = Spacing.s12,
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Column(Modifier.weight(1f)) {
-                Text(
-                    meal.name,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = VoraTextPrimary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                Text(
-                    stringResource(R.string.nutrition_meal_row_subtitle, meal.type.label(), meal.kcal),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = VoraTextSecondary,
+private fun NotLoggedCard(title: String, onAdd: () -> Unit) {
+    val radius = 16.dp
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .drawBehind {
+                drawRoundRect(
+                    color = VoraBorder,
+                    style = Stroke(width = 1.dp.toPx(), pathEffect = PathEffect.dashPathEffect(floatArrayOf(6.dp.toPx(), 4.dp.toPx()))),
+                    cornerRadius = CornerRadius(radius.toPx()),
                 )
             }
-            IconCircleButton(R.drawable.ic_close, stringResource(R.string.nutrition_delete_meal_named, meal.name), onDelete)
-        }
+            .padding(Spacing.s16),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(Spacing.s12),
+    ) {
+        Text(stringResource(R.string.nutrition_type_not_logged, title), style = MaterialTheme.typography.bodyLarge, color = VoraTextSecondary)
+        PrimaryButton(stringResource(R.string.nutrition_add_type, title), onAdd, size = ButtonSize.Small)
     }
 }

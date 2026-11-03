@@ -48,6 +48,7 @@ import ar.edu.ort.vora.ui.nutrition.AnalyzingMealScreen
 import ar.edu.ort.vora.ui.nutrition.ManualMealScreen
 import ar.edu.ort.vora.ui.nutrition.MealDetailScreen
 import ar.edu.ort.vora.ui.nutrition.MealsScreen
+import ar.edu.ort.vora.ui.nutrition.NutritionDashboardScreen
 import ar.edu.ort.vora.ui.nutrition.ReviewMealScreen
 import ar.edu.ort.vora.ui.nutrition.VoiceLoggingScreen
 import ar.edu.ort.vora.ui.profile.ProfileEditScreen
@@ -79,7 +80,7 @@ private val darkRoutes = setOf(Routes.COACH_LISTENING, Routes.COACH_PROCESSING, 
 // Rutas donde la bottom bar se ve (según specs/02-screens.md).
 private val routesWithBottomBar = setOf(
     Routes.HOME, Routes.WORKOUT, Routes.NUTRITION, Routes.PROGRESS, Routes.PROFILE,
-    Routes.NOTIFICATIONS, Routes.NUTRITION_PHOTO, Routes.NUTRITION_REVIEW, Routes.NUTRITION_MEAL,
+    Routes.NOTIFICATIONS, Routes.NUTRITION_MEALS, Routes.NUTRITION_PHOTO, Routes.NUTRITION_REVIEW, Routes.NUTRITION_MEAL,
     Routes.PROGRESS_TODAY, Routes.PROGRESS_WORKOUT, Routes.PROGRESS_NUTRITION,
     Routes.PROGRESS_HEALTH, Routes.PROGRESS_WEEKLY,
 )
@@ -258,15 +259,15 @@ fun VoraNavHost(navController: NavHostController = rememberNavController()) {
 
             // Nutrition (RF03, RF04). Las pantallas demo (Add Food, voz, análisis, foto, revisión) usan datos de ejemplo (T33).
             composable(Routes.NUTRITION) {
-                MealsScreen(
-                    onBack = back,
+                NutritionDashboardScreen(
+                    onHistory = { go(Routes.NUTRITION_MEALS) },
                     onAdd = { go(Routes.NUTRITION_ADD) },
-                    onMeal = { go(Routes.nutritionMeal(it.toString())) },
+                    onVoice = { go(Routes.NUTRITION_VOICE) },
+                    onPhoto = { go(Routes.NUTRITION_PHOTO) },
                 )
             }
             composable(Routes.NUTRITION_MEALS) {
                 MealsScreen(
-                    onBack = back,
                     onAdd = { go(Routes.NUTRITION_ADD) },
                     onMeal = { go(Routes.nutritionMeal(it.toString())) },
                 )

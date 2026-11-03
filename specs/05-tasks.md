@@ -25,6 +25,8 @@
 - T31 MealRepository + MealViewModel.
 - T32 Formulario con validación; listado por fecha; borrar con confirmación; total diario.
 - T33 Pantallas demo (voz, análisis, foto, revisión).
+- T34 Dashboard de Nutrition como en Figma: calorías, macros y comidas del día desde Room.
+- T35 Today's Meals como en Figma: comidas agrupadas por tipo, total del día y barra inferior.
 
 ## Coach / Progress / Profile (Lisandro)  [NAV05, UI01]
 - T40 Coach con estados simulados. T41 Progress (6). T42 Profile (6).

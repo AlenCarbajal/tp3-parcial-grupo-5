@@ -253,19 +253,29 @@
     <string name="nutrition_meal_lunch">Lunch</string>
     <string name="nutrition_meal_dinner">Dinner</string>
     <string name="nutrition_meal_snack">Snack</string>
+    <string name="nutrition_calories_consumed">CALORIES CONSUMED</string>
+    <string name="nutrition_calorie_goal">Goal: %1$,d kcal</string>
+    <string name="nutrition_macro_value" translatable="false">%1$dg</string>
+    <string name="nutrition_macro_goal" translatable="false">/%1$dg</string>
+    <string name="nutrition_dashboard_note">You\'re on track today. A protein-rich dinner would help you reach your target.</string>
+    <string name="nutrition_view_history">View History</string>
+    <string name="nutrition_not_logged">Not logged yet</string>
+    <string name="nutrition_tell_vora">Tell Vora what you ate</string>
+    <string name="nutrition_tell_vora_hint">Vora will automatically estimate the portions, ingredients, and log the nutrition details.</string>
+    <string name="nutrition_search">Search</string>
+    <string name="nutrition_add_short">+ Add</string>
     <string name="nutrition_meals_title">Today\'s Meals</string>
-    <string name="nutrition_meals_empty">No meals logged for this day.</string>
-    <string name="nutrition_add_meal">Add Meal</string>
     <string name="nutrition_previous_day">Previous day</string>
     <string name="nutrition_next_day">Next day</string>
-    <string name="nutrition_daily_total">DAILY TOTAL</string>
     <string name="nutrition_kcal" translatable="false">%1$d kcal</string>
     <string name="nutrition_grams" translatable="false">%1$.1f g</string>
     <string name="nutrition_grams_int" translatable="false">%1$d g</string>
-    <string name="nutrition_meal_row_subtitle" translatable="false">%1$s · %2$d kcal</string>
+    <string name="nutrition_timeline">TIMELINE</string>
+    <string name="nutrition_type_not_logged">%1$s is not logged yet</string>
+    <string name="nutrition_add_type">+ Add %1$s</string>
+    <string name="nutrition_meal_macros">P %1$.0fg · C %2$.0fg · F %3$.0fg</string>
     <string name="nutrition_delete_title">Delete Meal</string>
     <string name="nutrition_delete_message">Delete “%1$s”? This can\'t be undone.</string>
-    <string name="nutrition_delete_meal_named">Delete %1$s</string>
     <string name="nutrition_meal">Meal</string>
     <string name="nutrition_meal_not_found">This meal no longer exists.</string>
     <string name="nutrition_edit_meal">Edit Meal</string>
