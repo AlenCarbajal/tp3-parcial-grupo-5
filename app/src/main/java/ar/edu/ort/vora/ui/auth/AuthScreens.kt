@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
@@ -86,37 +87,37 @@ fun SignInScreen(onSignIn: () -> Unit, onSignUp: () -> Unit, onBack: () -> Unit)
     var password by rememberSaveable { mutableStateOf("") }
 
     AuthLayout(onBack = onBack, onLanguage = demo) {
-        AuthHeader(tagline = "Your strength, nutrition, and progress plan in one place.")
+        AuthHeader(tagline = stringResource(R.string.auth_tagline))
         Spacer(Modifier.height(Spacing.s32))
         AuthCard {
             Column(verticalArrangement = Arrangement.spacedBy(Spacing.s16)) {
                 AuthTextField(
                     value = email,
                     onValueChange = { email = it },
-                    label = "Email Address",
+                    label = stringResource(R.string.auth_email_label),
                     icon = R.drawable.ic_mail,
-                    placeholder = "alex.morgan@email.com",
+                    placeholder = stringResource(R.string.auth_email_placeholder),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next),
                 )
                 AuthTextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = "Password",
+                    label = stringResource(R.string.auth_password_label),
                     icon = R.drawable.ic_lock,
                     placeholder = "••••••••••••",
                     password = true,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                    labelAction = { LinkText("", "Forgot your password?", demo, MaterialTheme.typography.bodySmall, AuthAccent, underline = false) },
+                    labelAction = { LinkText("", stringResource(R.string.auth_forgot_password), demo, MaterialTheme.typography.bodySmall, AuthAccent, underline = false) },
                 )
             }
-            AuthButton("Sign In", onClick = onSignIn)
-            SocialSignIn("Or continue with", demo)
+            AuthButton(stringResource(R.string.auth_sign_in), onClick = onSignIn)
+            SocialSignIn(stringResource(R.string.auth_or_continue_with), demo)
         }
         Spacer(Modifier.height(Spacing.s24))
-        SecurityNote("End-to-end encrypted biometric sign-in", MaterialTheme.typography.bodySmall, AuthTextSecondary)
+        SecurityNote(stringResource(R.string.auth_encrypted_biometric), MaterialTheme.typography.bodySmall, AuthTextSecondary)
         Spacer(Modifier.height(Spacing.s32))
         Spacer(Modifier.weight(1f))
-        LinkText("Don't have an account? ", "Sign up here", onSignUp, MaterialTheme.typography.labelLarge, AuthTextSecondary)
+        LinkText(stringResource(R.string.auth_no_account), stringResource(R.string.auth_sign_up_here), onSignUp, MaterialTheme.typography.labelLarge, AuthTextSecondary)
     }
 }
 
@@ -135,18 +136,18 @@ fun SignUpScreen(onSignUp: () -> Unit, onSignIn: () -> Unit, onBack: () -> Unit)
                 AuthTextField(
                     value = name,
                     onValueChange = { name = it },
-                    label = "Full Name",
+                    label = stringResource(R.string.auth_full_name_label),
                     icon = R.drawable.ic_user,
-                    placeholder = "Alex Morgan",
+                    placeholder = stringResource(R.string.common_demo_user_name),
                     outlined = true,
                     keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words, imeAction = ImeAction.Next),
                 )
                 AuthTextField(
                     value = email,
                     onValueChange = { email = it },
-                    label = "Email Address",
+                    label = stringResource(R.string.auth_email_label),
                     icon = R.drawable.ic_mail,
-                    placeholder = "alex.morgan@email.com",
+                    placeholder = stringResource(R.string.auth_email_placeholder),
                     outlined = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next),
                 )
@@ -154,9 +155,9 @@ fun SignUpScreen(onSignUp: () -> Unit, onSignIn: () -> Unit, onBack: () -> Unit)
                     AuthTextField(
                         value = password,
                         onValueChange = { password = it },
-                        label = "Password",
+                        label = stringResource(R.string.auth_password_label),
                         icon = R.drawable.ic_lock,
-                        placeholder = "At least 8 characters",
+                        placeholder = stringResource(R.string.auth_password_placeholder),
                         password = true,
                         outlined = true,
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -164,16 +165,16 @@ fun SignUpScreen(onSignUp: () -> Unit, onSignIn: () -> Unit, onBack: () -> Unit)
                     PasswordHint(valid = password.length >= 8, onHelp = demo)
                 }
             }
-            AuthButton("Sign Up", onClick = onSignUp)
-            SocialSignIn("Or sign up with", demo)
+            AuthButton(stringResource(R.string.auth_sign_up), onClick = onSignUp)
+            SocialSignIn(stringResource(R.string.auth_or_sign_up_with), demo)
         }
         Spacer(Modifier.height(Spacing.s24))
-        SecurityNote("Biometric sign-in", MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Normal), VoraTextPrimary)
+        SecurityNote(stringResource(R.string.auth_biometric), MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Normal), VoraTextPrimary)
         Spacer(Modifier.height(Spacing.s16))
-        LinkText("Having account issues? ", "Recover", demo, MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Normal), VoraTextPrimary)
+        LinkText(stringResource(R.string.auth_account_issues), stringResource(R.string.auth_recover), demo, MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Normal), VoraTextPrimary)
         Spacer(Modifier.height(Spacing.s16))
         Spacer(Modifier.weight(1f))
-        LinkText("Already have an account? ", "Sign In", onSignIn, MaterialTheme.typography.labelLarge, AuthTextSecondary)
+        LinkText(stringResource(R.string.auth_have_account), stringResource(R.string.auth_sign_in), onSignIn, MaterialTheme.typography.labelLarge, AuthTextSecondary)
     }
 }
 
@@ -214,8 +215,8 @@ private fun AuthLayout(onBack: () -> Unit, onLanguage: () -> Unit, content: @Com
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                    IconCircleButton(R.drawable.ic_chevron_left, "Volver", onBack)
-                    VoraChip("EN", onClick = onLanguage, trailingIcon = R.drawable.ic_chevron_down)
+                    IconCircleButton(R.drawable.ic_chevron_left, stringResource(R.string.common_back), onBack)
+                    VoraChip(stringResource(R.string.auth_language_code), onClick = onLanguage, trailingIcon = R.drawable.ic_chevron_down)
                 }
                 Spacer(Modifier.height(Spacing.s24))
                 content()
@@ -230,7 +231,7 @@ private fun AuthHeader(tagline: String? = null, signUp: Boolean = false) {
     Spacer(Modifier.height(Spacing.s16))
     // Sign Up usa el título más grande (28 / 700) que Sign In (24 / 700).
     Text(
-        "VORA Coach",
+        stringResource(R.string.coach_title),
         style = if (signUp) {
             MaterialTheme.typography.headlineLarge.copy(letterSpacing = (-0.7).sp)
         } else {
@@ -240,7 +241,7 @@ private fun AuthHeader(tagline: String? = null, signUp: Boolean = false) {
     )
     Spacer(Modifier.height(Spacing.s4))
     Text(
-        "ADAPTIVE INTELLIGENCE",
+        stringResource(R.string.auth_adaptive_intelligence),
         style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp),
         color = AuthAccent,
     )
@@ -278,9 +279,9 @@ private fun SocialSignIn(label: String, onClick: () -> Unit) {
             HorizontalDivider(Modifier.weight(1f), color = AuthFieldBorder)
         }
         Row(horizontalArrangement = Arrangement.spacedBy(Spacing.s12)) {
-            SocialButton(R.drawable.ic_logo_apple, "Apple", onClick, Modifier.weight(1f))
-            SocialButton(R.drawable.ic_logo_google, "Google", onClick, Modifier.weight(1f), brandColors = true)
-            SocialButton(R.drawable.ic_scan_face, "Face ID", onClick, Modifier.weight(1f), highlighted = true)
+            SocialButton(R.drawable.ic_logo_apple, stringResource(R.string.auth_social_apple), onClick, Modifier.weight(1f))
+            SocialButton(R.drawable.ic_logo_google, stringResource(R.string.auth_social_google), onClick, Modifier.weight(1f), brandColors = true)
+            SocialButton(R.drawable.ic_scan_face, stringResource(R.string.auth_social_face_id), onClick, Modifier.weight(1f), highlighted = true)
         }
     }
 }
@@ -297,14 +298,14 @@ private fun PasswordHint(valid: Boolean, onHelp: () -> Unit) {
             Icon(painterResource(R.drawable.ic_check), contentDescription = null, tint = VoraSurface, modifier = Modifier.size(9.dp))
         }
         Text(
-            "8+ secure characters",
+            stringResource(R.string.auth_password_rule),
             modifier = Modifier
                 .weight(1f)
                 .padding(start = Spacing.s8),
             style = MaterialTheme.typography.bodySmall,
             color = VoraTextPrimary,
         )
-        LinkText("", "Password help?", onHelp, MaterialTheme.typography.bodySmall, VoraTextPrimary, bold = false)
+        LinkText("", stringResource(R.string.auth_password_help), onHelp, MaterialTheme.typography.bodySmall, VoraTextPrimary, bold = false)
     }
 }
 

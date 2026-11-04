@@ -30,14 +30,14 @@ val Typography = Typography(
     headlineMedium = manrope(26, FontWeight.Bold),
     headlineSmall = manrope(24, FontWeight.SemiBold),     // cifra destacada
     titleLarge = manrope(20, FontWeight.Bold),            // título de pantalla
-    titleMedium = manrope(18, FontWeight.SemiBold),       // título de tarjeta
+    titleMedium = manrope(18, FontWeight.Medium),         // título de tarjeta
     titleSmall = manrope(16, FontWeight.SemiBold),
     bodyLarge = manrope(15, FontWeight.Normal),
     bodyMedium = manrope(13, FontWeight.Normal),          // cuerpo
     bodySmall = manrope(12, FontWeight.Normal),
-    labelLarge = manrope(14, FontWeight.SemiBold),        // acción principal
+    labelLarge = manrope(14, FontWeight.Medium),          // acción principal
     labelMedium = manrope(11, FontWeight.SemiBold),       // barra inferior
-    labelSmall = manrope(10, FontWeight.SemiBold, 0.5.sp), // etiquetas en mayúsculas
+    labelSmall = manrope(10, FontWeight.Medium, 0.5.sp), // etiquetas en mayúsculas
 )
 
 // Título de panel destacado (22 SemiBold), sin slot en Material 3.

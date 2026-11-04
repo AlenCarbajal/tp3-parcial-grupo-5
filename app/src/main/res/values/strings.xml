@@ -1,3 +1,622 @@
 <resources>
-    <string name="app_name">VoraCoach</string>
+    <string name="app_name" translatable="false">VoraCoach</string>
+
+    <!-- Comunes -->
+    <string name="common_back">Back</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="common_add">Add</string>
+    <string name="common_remove">Remove</string>
+    <string name="common_demo_notice">Demo mode: not available in this version</string>
+    <string name="common_nav_home">Home</string>
+    <string name="common_nav_workout">Workout</string>
+    <string name="common_nav_nutrition">Nutrition</string>
+    <string name="common_nav_progress">Progress</string>
+    <string name="common_nav_profile">Profile</string>
+    <string name="common_error_server">The server returned an error (%1$d). Please try again later.</string>
+    <string name="common_error_bad_data">The server sent data the app couldn\'t read.</string>
+    <string name="common_error_network">Couldn\'t connect to the server. Check your connection and try again.</string>
+    <string name="common_error_unexpected">Something went wrong. Please try again.</string>
+    <string name="common_retry">Retry</string>
+    <string name="common_view">View</string>
+    <string name="common_delete">Delete</string>
+    <string name="common_done">Done</string>
+    <string name="common_today">Today</string>
+    <string name="common_yesterday">Yesterday</string>
+    <string name="common_demo_user_name" translatable="false">Alex Morgan</string>
+    <string name="common_notifications">Notifications</string>
+    <string name="common_start_my_workout">Start my workout</string>
+    <string name="common_todays_overview">Today\'s Overview</string>
+    <string name="common_protein">Protein</string>
+    <string name="common_carbs">Carbs</string>
+    <string name="common_fat">Fat</string>
+    <string name="common_upper_body_strength">Upper Body Strength</string>
+    <string name="common_workout_meta" translatable="false">%1$d min • %2$s • %3$s</string>
+    <plurals name="common_exercise_count">
+        <item quantity="one">%d exercise</item>
+        <item quantity="other">%d exercises</item>
+    </plurals>
+    <string name="common_level_intermediate">Intermediate</string>
+    <string name="common_type_instead">Type instead</string>
+    <string name="common_start_workout">Start Workout</string>
+    <string name="common_goal_strength_fitness">Build strength &amp; improve fitness</string>
+    <string name="common_goal_strength">Build strength</string>
+    <!-- Valores numéricos: el separador de miles y decimales sigue al idioma -->
+    <string name="common_number" translatable="false">%1$,d</string>
+    <string name="common_value_km" translatable="false">%1$.1f km</string>
+    <string name="common_value_kcal" translatable="false">%1$,d kcal</string>
+    <string name="common_value_kcal_of" translatable="false">%1$,d / %2$,d kcal</string>
+    <string name="common_value_kg" translatable="false">%1$,d kg</string>
+    <string name="common_value_g" translatable="false">%1$dg</string>
+    <string name="common_value_min" translatable="false">%1$d min</string>
+    <string name="common_delta_kg" translatable="false">↑ %1$.1f kg</string>
+
+    <!-- Acceso -->
+    <string name="auth_logo_badge" translatable="false">AI</string>
+    <string name="auth_tagline">Your strength, nutrition, and progress plan in one place.</string>
+    <string name="auth_adaptive_intelligence">ADAPTIVE INTELLIGENCE</string>
+    <string name="auth_language_code">EN</string>
+    <string name="auth_email_label">Email Address</string>
+    <string name="auth_email_placeholder" translatable="false">alex.morgan@email.com</string>
+    <string name="auth_password_label">Password</string>
+    <string name="auth_password_placeholder">At least 8 characters</string>
+    <string name="auth_full_name_label">Full Name</string>
+    <string name="auth_forgot_password">Forgot your password?</string>
+    <string name="auth_sign_in">Sign In</string>
+    <string name="auth_sign_up">Sign Up</string>
+    <string name="auth_or_continue_with">Or continue with</string>
+    <string name="auth_or_sign_up_with">Or sign up with</string>
+    <string name="auth_social_apple" translatable="false">Apple</string>
+    <string name="auth_social_google" translatable="false">Google</string>
+    <string name="auth_social_face_id" translatable="false">Face ID</string>
+    <string name="auth_encrypted_biometric">End-to-end encrypted biometric sign-in</string>
+    <string name="auth_biometric">Biometric sign-in</string>
+    <string name="auth_no_account">"Don\'t have an account? "</string>
+    <string name="auth_sign_up_here">Sign up here</string>
+    <string name="auth_account_issues">"Having account issues? "</string>
+    <string name="auth_recover">Recover</string>
+    <string name="auth_have_account">"Already have an account? "</string>
+    <string name="auth_password_rule">8+ secure characters</string>
+    <string name="auth_password_help">Password help?</string>
+
+    <!-- Home -->
+    <string name="home_user_initials" translatable="false">AM</string>
+    <string name="home_greeting">Good morning</string>
+    <string name="home_ai_online">AI online</string>
+    <string name="home_coach_question">\"How can I support your fitness targets today?\"</string>
+    <string name="home_coach_hint">Tap the mic to talk naturally. I\'ll plan or log for you.</string>
+    <string name="home_start_voice_session">Start voice session</string>
+    <string name="home_log_breakfast">Log breakfast</string>
+    <string name="home_coach_note">You\'re on track. A protein-rich dinner would help you reach your daily target.</string>
+    <string name="home_percent" translatable="false">%1$d%%</string>
+    <string name="home_daily_goal">Daily Goal</string>
+    <string name="home_kcal_goal" translatable="false">" / %1$,d kcal"</string>
+    <string name="home_steps">Steps</string>
+    <string name="home_distance">Distance</string>
+    <string name="home_active_kcal">Active kcal</string>
+    <string name="home_recommended_workout">RECOMMENDED WORKOUT</string>
+    <string name="home_estimated_volume">Estimated Vol: %1$,d kg</string>
+    <string name="home_start_workout">Start workout</string>
+    <string name="home_mark_all_read">Mark all as read</string>
+    <string name="home_hours_ago">%1$dh ago</string>
+    <string name="home_days_ago">%1$dd ago</string>
+    <string name="home_notice_review_title">Your weekly health review is ready.</string>
+    <string name="home_notice_review_body" formatted="false">We noticed your training consistency improved by 14% over the last week.</string>
+    <string name="home_notice_workout_source">Workout Plan</string>
+    <string name="home_notice_workout_title">Upper Body Strength is ready.</string>
+    <string name="home_notice_workout_body">Equipped for home/gym. Approx. 42 minutes.</string>
+    <string name="home_notice_nutrition_source">Nutrition Goal</string>
+    <string name="home_notice_nutrition_title">Protein target milestone alert.</string>
+    <string name="home_notice_nutrition_body">You require 36g more of protein to hit today\'s UK performance baseline.</string>
+    <string name="home_notice_streak_source">Milestone Reached</string>
+    <string name="home_notice_streak_title">4-day workout streak logged!</string>
+    <string name="home_notice_streak_body">Outstanding work, Alex. Let\'s make it 5 today.</string>
+    <string name="home_recommended_today">TODAY</string>
+
+    <!-- Coach -->
+    <string name="coach_mic_speak">Speak</string>
+    <string name="coach_mic_stop">Stop</string>
+    <string name="coach_input_placeholder">Ask VORA anything...</string>
+    <string name="coach_dictate">Dictate</string>
+    <string name="coach_send">Send</string>
+    <string name="coach_quoted" translatable="false">\"%1$s\"</string>
+    <string name="coach_online">Online</string>
+    <string name="coach_tap_to_talk">TAP TO TALK</string>
+    <string name="coach_how_can_i_help">How can I help?</string>
+    <string name="coach_idle_hint">Talk naturally about your workout, nutrition or progress.</string>
+    <string name="coach_suggested_questions">SUGGESTED QUESTIONS</string>
+    <string name="coach_suggest_breakfast">Log my breakfast</string>
+    <string name="coach_suggest_dinner">What should I eat tonight?</string>
+    <string name="coach_suggest_progress">How am I doing?</string>
+    <string name="coach_last_conversation">LAST CONVERSATION</string>
+    <plurals name="coach_hours_ago">
+        <item quantity="one">%d hour ago</item>
+        <item quantity="other">%d hours ago</item>
+    </plurals>
+    <string name="coach_last_request">\"Create a 30-minute workout for me.\"</string>
+    <string name="coach_transcript">I had chicken, rice and some vegetables for lunch.</string>
+    <string name="coach_answer">That sounds like a balanced lunch. I\'ve estimated around 520 calories with approximately 38 grams of protein.</string>
+    <string name="coach_listening">Listening</string>
+    <string name="coach_live_audio">LIVE AUDIO</string>
+    <string name="coach_live_transcript">Live transcript</string>
+    <string name="coach_listening_hint">Speak naturally. I\'m listening.</string>
+    <string name="coach_processing">Processing</string>
+    <string name="coach_thinking">THINKING...</string>
+    <string name="coach_checking_nutrition">Checking your nutrition target...</string>
+    <string name="coach_vora_speaking">VORA Speaking</string>
+    <string name="coach_speaking">Speaking</string>
+    <string name="coach_replay">Replay</string>
+    <string name="coach_pause">Pause</string>
+    <string name="coach_play">Play</string>
+    <string name="coach_focus">Focus</string>
+    <string name="coach_tap_to_interrupt">Tap to Interrupt</string>
+    <string name="coach_chat_date">TODAY AT 12:40 PM</string>
+    <string name="coach_chat_user_1">What should I eat for dinner?</string>
+    <string name="coach_chat_vora_1">You\'re currently 36g short of your protein target today. I\'d highly recommend grilled chicken breast with roasted seasonal vegetables and a side of Greek yoghurt.</string>
+    <string name="coach_listen_response">Listen to response (%1$s)</string>
+    <string name="coach_chat_user_2">Can you make that vegetarian?</string>
+    <string name="coach_chat_vora_2">Absolutely. Try grilled organic tofu with roasted vegetables, quinoa and Greek yoghurt.</string>
+    <string name="coach_now">Now</string>
+    <string name="coach_demo_answer">Demo mode: VORA\'s answers are simulated in this version.</string>
+    <string name="coach_system_alert">System Alert</string>
+    <string name="coach_try_again">Try again</string>
+    <string name="coach_error_title">Sorry, I didn\'t catch that</string>
+    <string name="coach_error_body">Try speaking again or type your request instead. Make sure your microphone is enabled.</string>
+    <string name="coach_mic_needed_title">Microphone access needed</string>
+    <string name="coach_mic_needed_body">VORA uses your microphone to listen to your voice commands and provide real-time hands-free coaching.</string>
+    <string name="coach_allow_access">Allow Access</string>
+    <string name="coach_not_now">Not Now</string>
+    <string name="coach_title" translatable="false">VORA Coach</string>
+
+    <!-- Workout -->
+    <string name="workout_error_offline_detail">Not available offline.</string>
+    <string name="workout_catalog_title">Workouts</string>
+    <string name="workout_refresh">Refresh</string>
+    <string name="workout_your_plan">Your Plan</string>
+    <string name="workout_catalog_empty">No workouts available yet.</string>
+    <string name="workout_ready_for_today">READY FOR TODAY?</string>
+    <string name="workout_detail_meta" translatable="false">"%1$d min  •  %2$s  •  %3$s"</string>
+    <string name="workout_plan_meta" translatable="false">"%1$s  •  %2$s"</string>
+    <plurals name="workout_minutes_count">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <string name="workout_view_workout">View Workout</string>
+    <string name="workout_back_link">"‹  Back"</string>
+    <string name="workout_overview">Workout Overview</string>
+    <string name="workout_coach_note">"●  VORA COACH NOTE"</string>
+    <string name="workout_coach_note_default">Keep your technique controlled and focus on the quality of every rep.</string>
+    <string name="workout_exercises_header">EXERCISES</string>
+    <string name="workout_sets_reps_rest">%1$d × %2$d • Rest %3$ds</string>
+    <string name="workout_start_arrow">"Start Workout  →"</string>
+    <string name="workout_back_to_catalog">Back to Catalog</string>
+    <string name="workout_back_to_workout_link">"‹  Back to Workout"</string>
+    <string name="workout_back_to_workout">Back to Workout</string>
+    <string name="workout_guide_label">EXERCISE GUIDE</string>
+    <string name="workout_guide_title">Exercise Guide</string>
+    <string name="workout_loading">Loading workout...</string>
+    <string name="workout_guide_not_found_title">Exercise not found</string>
+    <string name="workout_guide_not_found_body">This exercise isn\'t part of the selected workout.</string>
+    <string name="workout_guide_details">EXERCISE DETAILS</string>
+    <string name="workout_guide_muscle_group">Muscle group</string>
+    <string name="workout_sets">Sets</string>
+    <string name="workout_reps">Reps</string>
+    <string name="workout_rest">Rest</string>
+    <string name="workout_seconds" translatable="false">%1$ds</string>
+    <string name="workout_guide_how_to">How to do it</string>
+    <string name="workout_guide_tip">VORA TIP</string>
+    <string name="workout_active_no_exercises">No exercises available</string>
+    <string name="workout_finish">Finish Workout</string>
+    <string name="workout_finish_check">"Finish Workout  ✓"</string>
+    <string name="workout_next_exercise">"Next Exercise  →"</string>
+    <string name="workout_your_workout">YOUR WORKOUT</string>
+    <string name="workout_active_title">Active Workout</string>
+    <string name="workout_active_progress">Exercise %1$d of %2$d</string>
+    <string name="workout_active_exercise_badge">EXERCISE %1$d</string>
+    <string name="workout_sets_caps">SETS</string>
+    <string name="workout_reps_caps">REPS</string>
+    <string name="workout_rest_caps">REST</string>
+    <string name="workout_completed_label">WORKOUT COMPLETED</string>
+    <string name="workout_completed_title">Workout complete!</string>
+    <string name="workout_completed_message">Great job! Every workout brings you closer to your goals.</string>
+    <string name="workout_duration_caps">DURATION</string>
+    <string name="workout_plan_label">YOUR PLAN</string>
+    <string name="workout_plan_title">Your Weekly Plan</string>
+    <string name="workout_plan_subtitle">Pick a workout to see its details or get started.</string>
+    <string name="workout_plan_empty_title">No workouts yet</string>
+    <string name="workout_plan_empty_body">Workouts will show up here once they\'re available.</string>
+    <string name="workout_level">Level: %1$s</string>
+    <string name="workout_prep_label">WORKOUT PREPARATION</string>
+    <string name="workout_prep_title">Get Ready</string>
+    <string name="workout_prep_subtitle">Set up your space. Your next workout is about to begin.</string>
+    <string name="workout_prep_next">YOUR NEXT WORKOUT</string>
+    <string name="workout_minutes_caps">MINUTES</string>
+    <string name="workout_prep_before">Before you start</string>
+    <string name="workout_prep_check_space">"✓  Set up your space and equipment"</string>
+    <string name="workout_prep_check_water">"✓  Keep water nearby"</string>
+    <string name="workout_prep_check_technique">"✓  Focus on technique in every rep"</string>
+
+    <!-- Nutrition -->
+    <string name="nutrition_error_load">Couldn\'t load your meals.</string>
+    <string name="nutrition_error_save">Couldn\'t save the meal.</string>
+    <string name="nutrition_error_delete">Couldn\'t delete the meal.</string>
+    <string name="nutrition_error_name_empty">The name can\'t be empty.</string>
+    <string name="nutrition_error_negative_values">Values can\'t be negative.</string>
+    <string name="nutrition_form_error_required">Required.</string>
+    <string name="nutrition_form_error_integer">Enter a whole number.</string>
+    <string name="nutrition_form_error_number">Invalid number.</string>
+    <string name="nutrition_form_error_negative">Can\'t be negative.</string>
+    <string name="nutrition_form_error_name">Enter a name.</string>
+    <string name="nutrition_form_error_date">Use the YYYY-MM-DD format.</string>
+    <string name="nutrition_day_tomorrow">Tomorrow</string>
+    <string name="nutrition_meal_breakfast">Breakfast</string>
+    <string name="nutrition_meal_lunch">Lunch</string>
+    <string name="nutrition_meal_dinner">Dinner</string>
+    <string name="nutrition_meal_snack">Snack</string>
+    <string name="nutrition_calories_consumed">CALORIES CONSUMED</string>
+    <string name="nutrition_calorie_goal">Goal: %1$,d kcal</string>
+    <string name="nutrition_macro_value" translatable="false">%1$dg</string>
+    <string name="nutrition_macro_goal" translatable="false">/%1$dg</string>
+    <string name="nutrition_dashboard_note">You\'re on track today. A protein-rich dinner would help you reach your target.</string>
+    <string name="nutrition_view_history">View History</string>
+    <string name="nutrition_not_logged">Not logged yet</string>
+    <string name="nutrition_tell_vora">Tell Vora what you ate</string>
+    <string name="nutrition_tell_vora_hint">Vora will automatically estimate the portions, ingredients, and log the nutrition details.</string>
+    <string name="nutrition_search">Search</string>
+    <string name="nutrition_add_short">+ Add</string>
+    <string name="nutrition_meals_title">Today\'s Meals</string>
+    <string name="nutrition_previous_day">Previous day</string>
+    <string name="nutrition_next_day">Next day</string>
+    <string name="nutrition_kcal" translatable="false">%1$d kcal</string>
+    <string name="nutrition_grams" translatable="false">%1$.1f g</string>
+    <string name="nutrition_grams_int" translatable="false">%1$d g</string>
+    <string name="nutrition_timeline">TIMELINE</string>
+    <string name="nutrition_type_not_logged">%1$s is not logged yet</string>
+    <string name="nutrition_add_type">+ Add %1$s</string>
+    <string name="nutrition_meal_macros">P %1$.0fg · C %2$.0fg · F %3$.0fg</string>
+    <string name="nutrition_delete_title">Delete Meal</string>
+    <string name="nutrition_delete_message">Delete “%1$s”? This can\'t be undone.</string>
+    <string name="nutrition_meal">Meal</string>
+    <string name="nutrition_meal_not_found">This meal no longer exists.</string>
+    <string name="nutrition_edit_meal">Edit Meal</string>
+    <string name="nutrition_duplicate_meal">Duplicate Meal</string>
+    <string name="nutrition_field_name">Name</string>
+    <string name="nutrition_field_name_placeholder">e.g. Chicken and rice</string>
+    <string name="nutrition_field_date">Date</string>
+    <string name="nutrition_field_date_placeholder">YYYY-MM-DD</string>
+    <string name="nutrition_field_type">TYPE</string>
+    <string name="nutrition_field_kcal">Calories (kcal)</string>
+    <string name="nutrition_field_protein">Protein (g)</string>
+    <string name="nutrition_field_carbs">Carbs (g)</string>
+    <string name="nutrition_field_fat">Fat (g)</string>
+    <string name="nutrition_save_meal">Save Meal</string>
+    <string name="nutrition_add_food_title">Add Food</string>
+    <string name="nutrition_add_food_question">How would you like to log your meal?</string>
+    <string name="nutrition_add_food_voice">Voice</string>
+    <string name="nutrition_add_food_photo">Photo</string>
+    <string name="nutrition_add_food_search">Search Database</string>
+    <string name="nutrition_voice_title">Voice Logging</string>
+    <string name="nutrition_voice_transcript_label">LIVE TRANSCRIPT</string>
+    <string name="nutrition_voice_transcript">\"I had a grilled chicken salad with avocado and a small orange juice.\"</string>
+    <string name="nutrition_voice_done">Done Speaking</string>
+    <string name="nutrition_ai_title" translatable="false">VORA AI</string>
+    <string name="nutrition_analyzing_title">Analyzing your meal...</string>
+    <string name="nutrition_analyzing_subtitle">Identifying ingredients and estimating portions</string>
+    <string name="nutrition_analyse_title">Analyse Meal</string>
+    <string name="nutrition_analyse_photo_preview">Photo preview (demo)</string>
+    <string name="nutrition_analyse_detected">DETECTED INGREDIENTS</string>
+    <string name="nutrition_ingredient_chicken">Grilled chicken</string>
+    <string name="nutrition_ingredient_avocado">Avocado</string>
+    <string name="nutrition_ingredient_greens">Mixed greens</string>
+    <string name="nutrition_ingredient_tomatoes">Cherry tomatoes</string>
+    <string name="nutrition_analyse_coach_note">Looks like a balanced lunch. Review the estimate before adding it.</string>
+    <string name="nutrition_analyse_review">Review &amp; Add</string>
+    <string name="nutrition_analyse_retake">Retake Photo</string>
+    <string name="nutrition_review_title">Review Meal</string>
+    <string name="nutrition_review_lunch">LUNCH</string>
+    <string name="nutrition_review_meal_name">Grilled chicken salad</string>
+    <string name="nutrition_review_coach_note">Estimated by VORA AI. These are demo values.</string>
+    <string name="nutrition_review_add_to_lunch">Add to Lunch</string>
+    <string name="nutrition_review_save_without_logging">Save without logging</string>
+    <string name="nutrition_manual_title">Log Manually</string>
+
+    <!-- Progress -->
+    <string name="progress_period_week">Week</string>
+    <string name="progress_period_month">Month</string>
+    <string name="progress_period_3_months">3 Months</string>
+    <string name="progress_day_initial_mon">M</string>
+    <string name="progress_day_initial_tue">T</string>
+    <string name="progress_day_initial_wed">W</string>
+    <string name="progress_day_initial_thu">T</string>
+    <string name="progress_day_initial_fri">F</string>
+    <string name="progress_day_initial_sat">S</string>
+    <string name="progress_day_initial_sun">S</string>
+    <string name="progress_avg_steps">AVG STEPS</string>
+    <string name="progress_vora_advice">VORA ADVICE</string>
+    <plurals name="progress_steps_count">
+        <item quantity="one">%1$s step</item>
+        <item quantity="other">%1$s steps</item>
+    </plurals>
+    <plurals name="progress_sessions_count">
+        <item quantity="one">%1$d session</item>
+        <item quantity="other">%1$d sessions</item>
+    </plurals>
+    <string name="progress_dashboard_title">Your progress</string>
+    <string name="progress_dashboard_subtitle">Small improvements add up.</string>
+    <string name="progress_overview_week">THIS WEEK OVERVIEW</string>
+    <string name="progress_overview_month">MONTH OVERVIEW</string>
+    <string name="progress_overview_3_months">3 MONTHS OVERVIEW</string>
+    <string name="progress_workouts_completed">Workouts completed</string>
+    <plurals name="progress_workouts_count">
+        <item quantity="one">%1$d workout</item>
+        <item quantity="other">%1$d workouts</item>
+    </plurals>
+    <string name="progress_avg_daily_steps">Avg Daily Steps</string>
+    <string name="progress_daily_avg_protein">Daily Avg Protein</string>
+    <string name="progress_active_streak">Active Streak</string>
+    <plurals name="progress_streak_days">
+        <item quantity="one">%1$d day</item>
+        <item quantity="other">%1$d days</item>
+    </plurals>
+    <string name="progress_vora_insight">VORA Insight</string>
+    <string name="progress_consistent_badge">CONSISTENT</string>
+    <plurals name="progress_dashboard_insight">
+        <item quantity="one">\"You\'ve completed %1$d workout %2$s and increased your training volume by 8%%. Your consistency is trending in the right direction.\"</item>
+        <item quantity="other">\"You\'ve completed %1$d workouts %2$s and increased your training volume by 8%%. Your consistency is trending in the right direction.\"</item>
+    </plurals>
+    <string name="progress_insight_period_week">this week</string>
+    <string name="progress_insight_period_month">this month</string>
+    <string name="progress_insight_period_3_months">in the last 3 months</string>
+    <string name="progress_see_weekly_review">See weekly review</string>
+    <string name="progress_workout_card_subtitle">3 sessions • 2,340 kg volume</string>
+    <string name="progress_nutrition_card_subtitle">%1$s protein • 74%% avg target</string>
+    <string name="progress_activity">Activity</string>
+    <string name="progress_activity_card_subtitle">%1$s steps • 5.6 km daily avg</string>
+    <string name="progress_active_goal">ACTIVE GOAL</string>
+    <string name="progress_goal_complete">%1$d%% complete</string>
+    <string name="progress_goal_description">You\'re building consistency across workouts and nutrition.</string>
+    <string name="progress_view">View</string>
+    <string name="progress_health_title">Health trends</string>
+    <string name="progress_health_subtitle">See how your daily habits are changing.</string>
+    <string name="progress_avg_distance">AVG DISTANCE</string>
+    <string name="progress_active_kcal">ACTIVE KCAL</string>
+    <string name="progress_health_weekly_steps">Weekly Steps Trend</string>
+    <string name="progress_health_goal">Goal: %1$s</string>
+    <string name="progress_health_insight">\"Your activity has been more consistent over the last two weeks. Your workout days also tend to be your most active days.\"</string>
+    <string name="progress_habit_signals">HABIT SIGNALS</string>
+    <string name="progress_habit_sleep">Sleep Quality</string>
+    <string name="progress_habit_movement">Daily Movement</string>
+    <string name="progress_habit_workouts">Workout Frequency</string>
+    <string name="progress_habit_protein">Protein Intake</string>
+    <string name="progress_status_improving">Improving ↗</string>
+    <string name="progress_status_consistent">"Consistent  ↕"</string>
+    <string name="progress_nutrition_title">Nutrition progress</string>
+    <string name="progress_avg_calories">AVG CALORIES</string>
+    <string name="progress_avg_protein">AVG PROTEIN</string>
+    <string name="progress_target_hit">TARGET HIT</string>
+    <plurals name="progress_days_ratio">
+        <item quantity="one">%1$d / %2$d day</item>
+        <item quantity="other">%1$d / %2$d days</item>
+    </plurals>
+    <string name="progress_nutrient_calories">Calories</string>
+    <string name="progress_target_calories">DAILY CALORIE TARGET (%1$s)</string>
+    <string name="progress_target_protein">DAILY AVG PROTEIN TARGET (%1$s)</string>
+    <string name="progress_target_carbs">DAILY CARBS TARGET (%1$s)</string>
+    <string name="progress_target_fat">DAILY FAT TARGET (%1$s)</string>
+    <string name="progress_hit">HIT</string>
+    <string name="progress_miss">MISS</string>
+    <string name="progress_nutrition_analysis">Nutrition Analysis</string>
+    <string name="progress_nutrition_insight">\"Your protein intake has improved this week, especially on workout days. Keeping this consistent will better support your strength goal.\"</string>
+    <string name="progress_food_habits">FOOD HABITS &amp; PATTERNS</string>
+    <string name="progress_food_frequent_lunch">Frequent lunch</string>
+    <string name="progress_food_chicken_rice_bowl">Chicken &amp; Rice Bowl</string>
+    <string name="progress_food_top_protein">Top protein source</string>
+    <string name="progress_food_whey_chicken">Whey &amp; Chicken Breast</string>
+    <string name="progress_food_avg_breakfast">Avg breakfast</string>
+    <string name="progress_food_avg_dinner">Avg dinner</string>
+    <string name="progress_today_date">TUESDAY, 8 SEPTEMBER</string>
+    <string name="progress_daily_completion">DAILY COMPLETION</string>
+    <string name="progress_workout_progress">Workout Progress</string>
+    <string name="progress_not_started">Not started</string>
+    <string name="progress_nutrition_target">Nutrition Target</string>
+    <string name="progress_activity_target">Activity Target</string>
+    <string name="progress_hydration_intake">Hydration Intake</string>
+    <string name="progress_hydration_detail">1.6 / 2.5 Litres</string>
+    <string name="progress_today_advice">\"Completing today\'s intermediate workout and a protein-rich dinner will secure your optimal target recovery.\"</string>
+    <string name="progress_category_breakdowns">Category Breakdowns</string>
+    <string name="progress_workout_caps">WORKOUT</string>
+    <string name="progress_not_started_caps">NOT STARTED</string>
+    <string name="progress_current_goal">CURRENT GOAL</string>
+    <string name="progress_weekly_target">WEEKLY TARGET</string>
+    <string name="progress_weekly_target_value">4 / 5 Workouts</string>
+    <string name="progress_view_dashboard">"View Your Progress Dashboard  →"</string>
+    <string name="progress_weekly_title">Your weekly review</string>
+    <string name="progress_weekly_subtitle">Here\'s what changed this week.</string>
+    <string name="progress_weekly_headline">\"You had a strong week.\"</string>
+    <string name="progress_workouts_caps">WORKOUTS</string>
+    <string name="progress_protein_caps">PROTEIN</string>
+    <string name="progress_protein_daily">%1$s daily</string>
+    <string name="progress_went_well">WHAT WENT WELL</string>
+    <string name="progress_well_consistent_title">You stayed consistent</string>
+    <string name="progress_well_consistent_detail">Four completed workouts helped you maintain your weekly training rhythm.</string>
+    <string name="progress_well_protein_title">Your protein improved</string>
+    <string name="progress_well_protein_detail">You reached your protein target on 5 of 7 days.</string>
+    <string name="progress_well_volume_title">Your training volume increased</string>
+    <string name="progress_well_volume_detail">You completed 8% more volume than last week.</string>
+    <string name="progress_to_improve">WHAT TO IMPROVE</string>
+    <string name="progress_improve_dinner_title">Dinner consistency</string>
+    <string name="progress_improve_dinner_detail">Your protein intake tends to drop at dinner. Try planning a protein-rich dinner before the evening.</string>
+    <string name="progress_dinner_ideas">"Get dinner ideas  →"</string>
+    <string name="progress_next_week_recommendations">NEXT WEEK\'S RECOMMENDATIONS</string>
+    <string name="progress_reco_schedule">Keep your current workout schedule.</string>
+    <string name="progress_reco_protein">Try to reach 140g protein on at least 6 days.</string>
+    <string name="progress_reco_steps">Aim for 8,000+ steps on non-training days.</string>
+    <string name="progress_next_week_plan">"View next week\'s plan  →"</string>
+    <string name="progress_ask_vora">Ask VORA</string>
+    <string name="progress_workout_title">Workout progress</string>
+    <string name="progress_exercise_bench_press">Bench Press</string>
+    <string name="progress_exercise_cable_row">Cable Row</string>
+    <string name="progress_exercise_shoulder_press">Shoulder Press</string>
+    <string name="progress_exercise_lateral_raise">Lateral Raise</string>
+    <string name="progress_exercise_seated_cable_row">Seated Cable Row</string>
+    <string name="progress_weight_reps" translatable="false">%1$d kg × %2$d reps</string>
+    <string name="progress_stable">→ Stable</string>
+    <string name="progress_sessions_caps">SESSIONS</string>
+    <string name="progress_volume_caps">VOLUME</string>
+    <string name="progress_avg_time">AVG TIME</string>
+    <string name="progress_training_volume">Training Volume</string>
+    <string name="progress_kg_per_session">KILOGRAMS LIFTED PER SESSION</string>
+    <string name="progress_volume_change">+8% vs last week</string>
+    <string name="progress_personal_best">PERSONAL BEST</string>
+    <string name="progress_personal_best_detail">45 kg × 12 reps (+5 kg vs prev best)</string>
+    <string name="progress_workout_advice">Your training volume increased without adding workout duration. That\'s efficiency improving.</string>
+    <string name="progress_exercise_progress">EXERCISE PROGRESS</string>
+
+    <!-- Profile -->
+    <string name="profile_settings">Settings</string>
+    <string name="profile_tagline">Building strength &amp; improving fitness</string>
+    <string name="profile_edit">Edit profile</string>
+    <string name="profile_snapshot">My snapshot</string>
+    <string name="profile_goal">Goal</string>
+    <string name="profile_experience">Experience</string>
+    <string name="profile_training">Training</string>
+    <string name="profile_preferred_workout">Preferred workout</string>
+    <string name="profile_preferred_workout_value">Strength training</string>
+    <string name="profile_personalisation_label">VORA Personalisation</string>
+    <string name="profile_personalisation_title">VORA knows your goals</string>
+    <string name="profile_personalisation_body">Your coaching adapts to your training, nutrition and activity preferences.</string>
+    <string name="profile_review_preferences">Review preferences</string>
+    <string name="profile_row_goals">Your Goals</string>
+    <string name="profile_row_preferences">Your Preferences</string>
+    <string name="profile_row_preferences_detail">Training, nutrition and coaching</string>
+    <string name="profile_connected_data">Connected Data</string>
+    <string name="profile_connected_data_detail">Health &amp; activity data</string>
+    <string name="profile_account">Account</string>
+    <string name="profile_account_detail">Subscription, notifications &amp; privacy</string>
+    <string name="profile_demo_birth">14 March 1995</string>
+    <string name="profile_error_number">Enter a valid number</string>
+    <string name="profile_first_name">First name</string>
+    <string name="profile_last_name">Last name</string>
+    <string name="profile_birth">Date of birth</string>
+    <string name="profile_height">Height (cm)</string>
+    <string name="profile_weight">Weight (kg)</string>
+    <string name="profile_gender">Gender</string>
+    <string name="profile_gender_female">Female</string>
+    <string name="profile_gender_male">Male</string>
+    <string name="profile_gender_non_binary">Non-binary</string>
+    <string name="profile_gender_prefer_not">Prefer not to say</string>
+    <string name="profile_edit_note">Used to personalise your recommendations.</string>
+    <string name="profile_save_changes">Save changes</string>
+    <string name="profile_edit_footer">Your information is used to personalise your VORA experience.</string>
+    <string name="profile_goals_title">Your goals</string>
+    <string name="profile_goals_subtitle">Tell VORA what you\'re working towards. Your coaching adapts around this.</string>
+    <string name="profile_primary_goal">Primary goal — what\'s your main goal?</string>
+    <string name="profile_goal_strength_detail">Focus on weight training &amp; mechanical load</string>
+    <string name="profile_goal_fitness">Improve fitness</string>
+    <string name="profile_goal_fitness_detail">Condition cardiovascular &amp; energy systems</string>
+    <string name="profile_goal_fat">Lose body fat</string>
+    <string name="profile_goal_fat_detail">Reduce body fat with training and nutrition</string>
+    <string name="profile_goal_habits">Build healthy habits</string>
+    <string name="profile_goal_habits_detail">Stay consistent with a sustainable routine</string>
+    <string name="profile_training_frequency">Training frequency</string>
+    <string name="profile_freq_3">3 days</string>
+    <string name="profile_freq_4">4 days</string>
+    <string name="profile_freq_5">5 days</string>
+    <string name="profile_freq_6_plus">6+ days</string>
+    <string name="profile_workout_preference">Workout preference</string>
+    <string name="profile_workout_strength">Strength</string>
+    <string name="profile_workout_cardio">Cardio</string>
+    <string name="profile_workout_hiit">HIIT</string>
+    <string name="profile_workout_mobility">Mobility</string>
+    <string name="profile_workout_mixed">Mixed</string>
+    <string name="profile_coaching_style_question">Coaching style — how should VORA coach you?</string>
+    <string name="profile_balanced">Balanced</string>
+    <string name="profile_balanced_coaching_detail">Practical guidance with gentle motivation</string>
+    <string name="profile_save_preferences">Save preferences</string>
+    <string name="profile_nutrition_title">Nutrition preferences</string>
+    <string name="profile_nutrition_subtitle">Help VORA make food recommendations that actually fit your lifestyle.</string>
+    <string name="profile_dietary_preference">Dietary preference</string>
+    <string name="profile_diet_everything">Everything</string>
+    <string name="profile_diet_vegetarian">Vegetarian</string>
+    <string name="profile_diet_vegan">Vegan</string>
+    <string name="profile_diet_pescatarian">Pescatarian</string>
+    <string name="profile_diet_other">Other</string>
+    <string name="profile_foods_enjoy">Foods you enjoy</string>
+    <string name="profile_food_chicken">Chicken</string>
+    <string name="profile_food_eggs">Eggs</string>
+    <string name="profile_food_fish">Fish</string>
+    <string name="profile_food_rice">Rice</string>
+    <string name="profile_food_pasta">Pasta</string>
+    <string name="profile_food_greek_yoghurt">Greek yoghurt</string>
+    <string name="profile_food_vegetables">Vegetables</string>
+    <string name="profile_food_fruit">Fruit</string>
+    <string name="profile_food_peanuts">Peanuts</string>
+    <string name="profile_food_shellfish">Shellfish</string>
+    <string name="profile_food_mushrooms">Mushrooms</string>
+    <string name="profile_foods_avoid">Foods to avoid</string>
+    <string name="profile_add_ingredient">Add an ingredient</string>
+    <string name="profile_add_ingredient_hint">Add an ingredient...</string>
+    <string name="profile_meal_preferences">Meal preferences</string>
+    <string name="profile_meals_per_day">Meals per day</string>
+    <string name="profile_meals_per_day_value">3 meals + 1 snack</string>
+    <string name="profile_preferred_breakfast">Preferred breakfast</string>
+    <string name="profile_preferred_breakfast_value">Quick &amp; high protein</string>
+    <string name="profile_preferred_dinner">Preferred dinner</string>
+    <string name="profile_preferred_dinner_value">Balanced</string>
+    <string name="profile_matters_title">What matters most to you?</string>
+    <string name="profile_matters_protein">Hit protein targets</string>
+    <string name="profile_matters_consistent">Eat more consistently</string>
+    <string name="profile_voice_subtitle">Choose how VORA communicates and coaches you.</string>
+    <string name="profile_coaching_style">Coaching style</string>
+    <string name="profile_style_supportive">Supportive</string>
+    <string name="profile_style_direct">Direct</string>
+    <string name="profile_active_voice">Active voice</string>
+    <string name="profile_voice_preview">Preview</string>
+    <string name="profile_speaking_behaviour">Speaking behaviour</string>
+    <string name="profile_speak_aloud">Speak responses aloud</string>
+    <string name="profile_auto_play">Auto-play coaching</string>
+    <string name="profile_interruptions">Allow interruptions</string>
+    <string name="profile_interruptions_detail">Interrupt VORA anytime while it\'s speaking.</string>
+    <string name="profile_response_style">Response style</string>
+    <string name="profile_response_concise">Concise</string>
+    <string name="profile_response_concise_detail">Quick answers</string>
+    <string name="profile_response_balanced_detail">Useful detail without overwhelming</string>
+    <string name="profile_response_detailed">Detailed</string>
+    <string name="profile_response_detailed_detail">More explanation and context</string>
+    <string name="profile_voice_feedback">Voice feedback</string>
+    <string name="profile_haptic_feedback">Haptic feedback</string>
+    <string name="profile_control_title">Your control matters</string>
+    <string name="profile_control_body">Manage microphone permissions and connected data from Settings.</string>
+    <string name="profile_premium_renews">Renews 14 June 2026</string>
+    <string name="profile_manage_account">Manage account</string>
+    <string name="profile_manage_account_detail">Subscription and details</string>
+    <string name="profile_app_preferences">App preferences</string>
+    <string name="profile_vora_coach_detail">Voice and AI settings</string>
+    <string name="profile_notifications_detail">Workout and meal reminders</string>
+    <string name="profile_units">Units</string>
+    <string name="profile_units_detail">Metric (kg, cm, km)</string>
+    <string name="profile_appearance">Appearance</string>
+    <string name="profile_appearance_detail">System default</string>
+    <string name="profile_health">Health &amp; Activity</string>
+    <string name="profile_health_detail">Apple Watch &amp; Health connected</string>
+    <string name="profile_privacy_security">Privacy &amp; security</string>
+    <string name="profile_privacy_policy">Privacy Policy</string>
+    <string name="profile_privacy_policy_detail">How your data is used</string>
+    <string name="profile_permissions">Permissions &amp; Data Controls</string>
+    <string name="profile_permissions_detail">Microphone and connected data</string>
+    <string name="profile_support">Support</string>
+    <string name="profile_help_centre">Help Centre</string>
+    <string name="profile_help_centre_detail">Guides and answers</string>
+    <string name="profile_contact_support">Contact Support</string>
+    <string name="profile_contact_support_detail">Talk to the team</string>
+    <string name="profile_log_out">Log out</string>
+    <string name="profile_demo_first_name" translatable="false">Alex</string>
+    <string name="profile_demo_last_name" translatable="false">Morgan</string>
+    <string name="profile_demo_email" translatable="false">alex@morgan.com</string>
+    <string name="profile_premium" translatable="false">VORA Premium</string>
+    <string name="profile_voice_name" translatable="false">VORA Voice 01</string>
+    <string name="profile_version" translatable="false">VORA v1.0.0</string>
+    <plurals name="profile_days_per_week">
+        <item quantity="one">%1$d day/week</item>
+        <item quantity="other">%1$d days/week</item>
+    </plurals>
 </resources>

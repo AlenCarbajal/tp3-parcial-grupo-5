@@ -8,9 +8,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SingleChoiceSegmentedButtonRow
-import androidx.compose.material3.SegmentedButton
-import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -21,16 +18,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ar.edu.ort.vora.R
+import ar.edu.ort.vora.ui.theme.VoraBackground
+import ar.edu.ort.vora.ui.theme.VoraBorder
+import ar.edu.ort.vora.ui.theme.VoraGreen
+import ar.edu.ort.vora.ui.theme.VoraMintLight
+import ar.edu.ort.vora.ui.theme.VoraMintSoft
+import ar.edu.ort.vora.ui.theme.VoraSurfaceMuted
+import ar.edu.ort.vora.ui.theme.VoraTextPrimary
+import ar.edu.ort.vora.ui.theme.VoraTextSecondary
 
-private val WorkoutBackground = Color(0xFFF7F8F5)
-private val WorkoutGreen = Color(0xFF244C3A)
-private val WorkoutMuted = Color(0xFF7A8580)
-private val WorkoutBorder = Color(0xFFE5EAE6)
-private val WorkoutMint = Color(0xFFE2F4E9)
-private val WorkoutLight = Color(0xFFF0F4F0)
 
 @Composable
 fun WorkoutProgressScreen(
@@ -45,15 +46,15 @@ fun WorkoutProgressScreen(
     }
 
     val volume = when (period) {
-        "Month" -> "32,640 kg"
-        "3 Months" -> "91,200 kg"
-        else -> "8,420 kg"
+        "Month" -> stringResource(R.string.common_value_kg, 32640)
+        "3 Months" -> stringResource(R.string.common_value_kg, 91200)
+        else -> stringResource(R.string.common_value_kg, 8420)
     }
 
     val averageTime = when (period) {
-        "Month" -> "39 min"
-        "3 Months" -> "40 min"
-        else -> "41 min"
+        "Month" -> stringResource(R.string.common_value_min, 39)
+        "3 Months" -> stringResource(R.string.common_value_min, 40)
+        else -> stringResource(R.string.common_value_min, 41)
     }
 
     val chartValues = when (period) {
@@ -63,20 +64,36 @@ fun WorkoutProgressScreen(
     }
 
     val exercises = listOf(
-        Triple("Bench Press", "40 kg × 10 reps", "↑ 2.5 kg"),
-        Triple("Cable Row", "45 kg × 12 reps", "↑ 5.0 kg"),
-        Triple("Shoulder Press", "20 kg × 10 reps", "→ Stable"),
-        Triple("Lateral Raise", "8 kg × 12 reps", "↑ 1.0 kg")
+        Triple(
+            stringResource(R.string.progress_exercise_bench_press),
+            stringResource(R.string.progress_weight_reps, 40, 10),
+            stringResource(R.string.common_delta_kg, 2.5)
+        ),
+        Triple(
+            stringResource(R.string.progress_exercise_cable_row),
+            stringResource(R.string.progress_weight_reps, 45, 12),
+            stringResource(R.string.common_delta_kg, 5.0)
+        ),
+        Triple(
+            stringResource(R.string.progress_exercise_shoulder_press),
+            stringResource(R.string.progress_weight_reps, 20, 10),
+            stringResource(R.string.progress_stable)
+        ),
+        Triple(
+            stringResource(R.string.progress_exercise_lateral_raise),
+            stringResource(R.string.progress_weight_reps, 8, 12),
+            stringResource(R.string.common_delta_kg, 1.0)
+        )
     )
 
     Scaffold(
-        containerColor = WorkoutBackground
+        containerColor = VoraBackground
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .background(WorkoutBackground)
+                .background(VoraBackground)
         ) {
             Column(
                 modifier = Modifier
@@ -101,50 +118,20 @@ fun WorkoutProgressScreen(
                         Text(
                             text = "‹",
                             fontSize = 25.sp,
-                            color = WorkoutGreen
+                            color = VoraGreen
                         )
                     }
 
                     Text(
-                        text = "Workout progress",
+                        text = stringResource(R.string.progress_workout_title),
                         fontSize = 21.sp,
                         fontWeight = FontWeight.Bold,
-                        color = WorkoutGreen
+                        color = VoraGreen
                     )
                 }
 
                 // Selector de período
-                SingleChoiceSegmentedButtonRow(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 12.dp)
-                ) {
-                    listOf("Week", "Month", "3 Months")
-                        .forEachIndexed { index, option ->
-                            SegmentedButton(
-                                selected = period == option,
-                                onClick = { period = option },
-                                shape = SegmentedButtonDefaults.itemShape(
-                                    index = index,
-                                    count = 3
-                                ),
-                                colors = SegmentedButtonDefaults.colors(
-                                    activeContainerColor = WorkoutGreen,
-                                    activeContentColor = Color.White,
-                                    inactiveContainerColor = Color.White,
-                                    inactiveContentColor = WorkoutMuted,
-                                    activeBorderColor = WorkoutGreen,
-                                    inactiveBorderColor = WorkoutBorder
-                                )
-                            ) {
-                                Text(
-                                    text = option,
-                                    fontSize = 10.sp,
-                                    maxLines = 1
-                                )
-                            }
-                        }
-                }
+                Box(Modifier.padding(bottom = 12.dp)) { PeriodSelector(period) { period = it } }
 
                 // Métricas principales
                 Row(
@@ -154,19 +141,19 @@ fun WorkoutProgressScreen(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     WorkoutMetricCard(
-                        label = "SESSIONS",
+                        label = stringResource(R.string.progress_sessions_caps),
                         value = sessions,
                         modifier = Modifier.weight(1f)
                     )
 
                     WorkoutMetricCard(
-                        label = "VOLUME",
+                        label = stringResource(R.string.progress_volume_caps),
                         value = volume,
                         modifier = Modifier.weight(1.25f)
                     )
 
                     WorkoutMetricCard(
-                        label = "AVG TIME",
+                        label = stringResource(R.string.progress_avg_time),
                         value = averageTime,
                         modifier = Modifier.weight(1f)
                     )
@@ -183,30 +170,30 @@ fun WorkoutProgressScreen(
                     ),
                     border = androidx.compose.foundation.BorderStroke(
                         1.dp,
-                        WorkoutBorder
+                        VoraBorder
                     )
                 ) {
                     Column(
                         modifier = Modifier.padding(12.dp)
                     ) {
                         Text(
-                            text = "Training Volume",
+                            text = stringResource(R.string.progress_training_volume),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color(0xFF18231F)
+                            color = VoraTextPrimary
                         )
 
                         Text(
-                            text = "KILOGRAMS LIFTED PER SESSION",
+                            text = stringResource(R.string.progress_kg_per_session),
                             fontSize = 9.sp,
-                            color = WorkoutMuted
+                            color = VoraTextSecondary
                         )
 
                         Spacer(Modifier.height(8.dp))
 
                         Text(
-                            text = "+8% vs last week",
-                            color = WorkoutGreen,
+                            text = stringResource(R.string.progress_volume_change),
+                            color = VoraGreen,
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -220,7 +207,7 @@ fun WorkoutProgressScreen(
                             horizontalArrangement = Arrangement.spacedBy(10.dp),
                             verticalAlignment = Alignment.Bottom
                         ) {
-                            val days = listOf("M", "T", "W", "T", "F")
+                            val days = WeekDayInitials.take(5).map { stringResource(it) }
 
                             chartValues.forEachIndexed { index, value ->
                                 Column(
@@ -240,9 +227,9 @@ fun WorkoutProgressScreen(
                                             )
                                             .background(
                                                 color = if (value == 0) {
-                                                    WorkoutLight
+                                                    VoraSurfaceMuted
                                                 } else {
-                                                    WorkoutGreen
+                                                    VoraGreen
                                                 },
                                                 shape = RoundedCornerShape(
                                                     topStart = 4.dp,
@@ -256,7 +243,7 @@ fun WorkoutProgressScreen(
                                     Text(
                                         text = days[index],
                                         fontSize = 9.sp,
-                                        color = WorkoutMuted
+                                        color = VoraTextSecondary
                                     )
                                 }
                             }
@@ -271,11 +258,11 @@ fun WorkoutProgressScreen(
                         .padding(bottom = 10.dp),
                     shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = WorkoutMint
+                        containerColor = VoraMintLight
                     ),
                     border = androidx.compose.foundation.BorderStroke(
                         1.dp,
-                        Color(0xFFB9E8D0)
+                        VoraMintSoft
                     )
                 ) {
                     Row(
@@ -304,22 +291,22 @@ fun WorkoutProgressScreen(
                             verticalArrangement = Arrangement.spacedBy(3.dp)
                         ) {
                             Text(
-                                text = "PERSONAL BEST",
-                                color = WorkoutGreen,
+                                text = stringResource(R.string.progress_personal_best),
+                                color = VoraGreen,
                                 fontSize = 9.sp,
                                 fontWeight = FontWeight.Bold
                             )
 
                             Text(
-                                text = "Seated Cable Row",
-                                color = Color(0xFF18231F),
+                                text = stringResource(R.string.progress_exercise_seated_cable_row),
+                                color = VoraTextPrimary,
                                 fontSize = 13.sp,
                                 fontWeight = FontWeight.SemiBold
                             )
 
                             Text(
-                                text = "45 kg × 12 reps (+5 kg vs prev best)",
-                                color = WorkoutMuted,
+                                text = stringResource(R.string.progress_personal_best_detail),
+                                color = VoraTextSecondary,
                                 fontSize = 10.sp
                             )
                         }
@@ -333,7 +320,7 @@ fun WorkoutProgressScreen(
                         .padding(bottom = 12.dp),
                     shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = WorkoutMint
+                        containerColor = VoraMintLight
                     )
                 ) {
                     Row(
@@ -344,14 +331,14 @@ fun WorkoutProgressScreen(
                             modifier = Modifier
                                 .size(32.dp)
                                 .background(
-                                    Color(0xFFB9E8D0),
+                                    VoraMintSoft,
                                     CircleShape
                                 ),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
                                 text = "V",
-                                color = WorkoutGreen,
+                                color = VoraGreen,
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.Bold
                             )
@@ -363,16 +350,15 @@ fun WorkoutProgressScreen(
                             verticalArrangement = Arrangement.spacedBy(5.dp)
                         ) {
                             Text(
-                                text = "VORA ADVICE",
-                                color = WorkoutGreen,
+                                text = stringResource(R.string.progress_vora_advice),
+                                color = VoraGreen,
                                 fontSize = 10.sp,
                                 fontWeight = FontWeight.SemiBold
                             )
 
                             Text(
-                                text = "Your training volume increased without " +
-                                        "adding workout duration. That's efficiency improving.",
-                                color = WorkoutGreen,
+                                text = stringResource(R.string.progress_workout_advice),
+                                color = VoraGreen,
                                 fontSize = 11.sp,
                                 lineHeight = 16.sp
                             )
@@ -382,10 +368,10 @@ fun WorkoutProgressScreen(
 
                 // Lista de ejercicios
                 Text(
-                    text = "EXERCISE PROGRESS",
+                    text = stringResource(R.string.progress_exercise_progress),
                     fontSize = 11.sp,
                     fontWeight = FontWeight.Bold,
-                    color = WorkoutMuted,
+                    color = VoraTextSecondary,
                     modifier = Modifier.padding(bottom = 6.dp)
                 )
 
@@ -424,7 +410,7 @@ private fun WorkoutMetricCard(
         ),
         border = androidx.compose.foundation.BorderStroke(
             1.dp,
-            WorkoutBorder
+            VoraBorder
         )
     ) {
         Column(
@@ -437,7 +423,7 @@ private fun WorkoutMetricCard(
             Text(
                 text = label,
                 fontSize = 8.sp,
-                color = WorkoutMuted,
+                color = VoraTextSecondary,
                 maxLines = 1
             )
 
@@ -447,7 +433,7 @@ private fun WorkoutMetricCard(
                 text = value,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF18231F),
+                color = VoraTextPrimary,
                 maxLines = 1
             )
         }
@@ -468,7 +454,7 @@ private fun ExerciseProgressRow(
         ),
         border = androidx.compose.foundation.BorderStroke(
             1.dp,
-            WorkoutBorder
+            VoraBorder
         )
     ) {
         Row(
@@ -485,13 +471,13 @@ private fun ExerciseProgressRow(
                     text = name,
                     fontSize = 11.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = Color(0xFF18231F)
+                    color = VoraTextPrimary
                 )
 
                 Text(
                     text = details,
                     fontSize = 9.sp,
-                    color = WorkoutMuted
+                    color = VoraTextSecondary
                 )
             }
 
@@ -499,10 +485,10 @@ private fun ExerciseProgressRow(
                 text = change,
                 fontSize = 9.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = WorkoutGreen,
+                color = VoraGreen,
                 modifier = Modifier
                     .background(
-                        color = Color(0xFFE4F6ED),
+                        color = VoraMintLight,
                         shape = RoundedCornerShape(50)
                     )
                     .padding(

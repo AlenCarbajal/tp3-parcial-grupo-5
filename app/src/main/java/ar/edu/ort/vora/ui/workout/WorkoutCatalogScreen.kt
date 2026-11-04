@@ -27,16 +27,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import ar.edu.ort.vora.R
+import ar.edu.ort.vora.ui.components.asString
+import ar.edu.ort.vora.ui.theme.VoraBackground
+import ar.edu.ort.vora.ui.theme.VoraGreen
+import ar.edu.ort.vora.ui.theme.VoraLime
+import ar.edu.ort.vora.ui.theme.VoraMint
+import ar.edu.ort.vora.ui.theme.VoraTextPrimary
 
-private val WorkoutBackground = Color(0xFFF5F7F4)
-private val WorkoutDarkGreen = Color(0xFF123F35)
-private val WorkoutMint = Color(0xFF60D5B1)
-private val WorkoutLime = Color(0xFFD0EE69)
-private val WorkoutText = Color(0xFF18352E)
 
 @Composable
 fun WorkoutCatalogScreen(
@@ -54,10 +58,10 @@ fun WorkoutCatalogScreen(
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         Text(
-            text = "Workouts",
+            text = stringResource(R.string.workout_catalog_title),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
-            color = WorkoutText
+            color = VoraTextPrimary
         )
 
         Row(
@@ -67,19 +71,19 @@ fun WorkoutCatalogScreen(
             Button(
                 onClick = viewModel::refreshWorkouts,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = WorkoutDarkGreen,
+                    containerColor = VoraGreen,
                     contentColor = Color.White
                 ),
                 shape = RoundedCornerShape(24.dp)
             ) {
-                Text("Actualizar")
+                Text(stringResource(R.string.workout_refresh))
             }
 
             OutlinedButton(
                 onClick = onPlanClick,
                 shape = RoundedCornerShape(24.dp)
             ) {
-                Text("Your Plan")
+                Text(stringResource(R.string.workout_your_plan))
             }
         }
 
@@ -87,37 +91,37 @@ fun WorkoutCatalogScreen(
             state.isLoading && state.workouts.isEmpty() -> {
                 CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
-                    color = WorkoutMint
+                    color = VoraMint
                 )
             }
 
             state.error != null && state.workouts.isEmpty() -> {
                 Text(
-                    text = state.error ?: "Ocurrió un error.",
+                    text = state.error?.asString() ?: stringResource(R.string.common_error_unexpected),
                     color = MaterialTheme.colorScheme.error
                 )
 
                 Button(
                     onClick = viewModel::refreshWorkouts,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = WorkoutDarkGreen
+                        containerColor = VoraGreen
                     )
                 ) {
-                    Text("Reintentar")
+                    Text(stringResource(R.string.common_retry))
                 }
             }
 
             state.workouts.isEmpty() -> {
                 Text(
-                    text = "Todavía no hay entrenamientos disponibles.",
-                    color = WorkoutText
+                    text = stringResource(R.string.workout_catalog_empty),
+                    color = VoraTextPrimary
                 )
             }
 
             else -> {
                 if (state.error != null) {
                     Text(
-                        text = state.error!!,
+                        text = state.error!!.asString(),
                         color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.bodySmall
                     )
@@ -130,9 +134,9 @@ fun WorkoutCatalogScreen(
                 ) {
                     item {
                         Text(
-                            text = "READY FOR TODAY?",
+                            text = stringResource(R.string.workout_ready_for_today),
                             style = MaterialTheme.typography.labelSmall,
-                            color = WorkoutDarkGreen
+                            color = VoraGreen
                         )
                     }
 
@@ -148,7 +152,7 @@ fun WorkoutCatalogScreen(
                                 },
                             shape = RoundedCornerShape(18.dp),
                             colors = CardDefaults.cardColors(
-                                containerColor = WorkoutDarkGreen
+                                containerColor = VoraGreen
                             )
                         ) {
                             Column(
@@ -163,11 +167,14 @@ fun WorkoutCatalogScreen(
                                 )
 
                                 Text(
-                                    text = "${workout.durationMinutes} min • " +
-                                            "${workout.exerciseCount} ejercicios • " +
-                                            "${workout.level}",
+                                    text = stringResource(
+                                        R.string.common_workout_meta,
+                                        workout.durationMinutes,
+                                        pluralStringResource(R.plurals.common_exercise_count, workout.exerciseCount, workout.exerciseCount),
+                                        workout.level
+                                    ),
                                     style = MaterialTheme.typography.bodyMedium,
-                                    color = WorkoutMint
+                                    color = VoraMint
                                 )
 
                                 Spacer(modifier = Modifier.height(2.dp))
@@ -177,14 +184,14 @@ fun WorkoutCatalogScreen(
                                         onWorkoutClick(workout.id)
                                     },
                                     colors = ButtonDefaults.buttonColors(
-                                        containerColor = WorkoutLime,
-                                        contentColor = WorkoutDarkGreen
+                                        containerColor = VoraLime,
+                                        contentColor = VoraGreen
                                     ),
                                     shape = RoundedCornerShape(24.dp),
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
                                     Text(
-                                        text = "Ver entrenamiento",
+                                        text = stringResource(R.string.workout_view_workout),
                                         fontWeight = FontWeight.Bold
                                     )
                                 }
@@ -198,7 +205,7 @@ fun WorkoutCatalogScreen(
                                 modifier = Modifier.align(
                                     Alignment.CenterHorizontally
                                 ),
-                                color = WorkoutMint
+                                color = VoraMint
                             )
                         }
                     }

@@ -21,16 +21,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import ar.edu.ort.vora.R
 import ar.edu.ort.vora.domain.model.Workout
+import ar.edu.ort.vora.ui.theme.VoraBackground
+import ar.edu.ort.vora.ui.theme.VoraGreen
+import ar.edu.ort.vora.ui.theme.VoraLime
+import ar.edu.ort.vora.ui.theme.VoraMint
+import ar.edu.ort.vora.ui.theme.VoraTextPrimary
 
-private val CompletedDarkGreen = Color(0xFF123F35)
-private val CompletedMint = Color(0xFF60D5B1)
-private val CompletedLime = Color(0xFFD0EE69)
-private val CompletedBackground = Color(0xFFF5F7F4)
-private val CompletedText = Color(0xFF18352E)
 
 @Composable
 fun WorkoutCompletedScreen(
@@ -41,7 +44,7 @@ fun WorkoutCompletedScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(CompletedBackground)
+            .background(VoraBackground)
             .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -49,7 +52,7 @@ fun WorkoutCompletedScreen(
         Column(
             modifier = Modifier
                 .background(
-                    color = CompletedMint.copy(alpha = 0.25f),
+                    color = VoraMint.copy(alpha = 0.25f),
                     shape = CircleShape
                 )
                 .padding(24.dp),
@@ -57,7 +60,7 @@ fun WorkoutCompletedScreen(
         ) {
             Text(
                 text = "✓",
-                color = CompletedDarkGreen,
+                color = VoraGreen,
                 style = MaterialTheme.typography.displayLarge,
                 fontWeight = FontWeight.Bold
             )
@@ -66,8 +69,8 @@ fun WorkoutCompletedScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = "WORKOUT COMPLETED",
-            color = CompletedDarkGreen,
+            text = stringResource(R.string.workout_completed_label),
+            color = VoraGreen,
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold
         )
@@ -75,8 +78,8 @@ fun WorkoutCompletedScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "¡Entrenamiento completado!",
-            color = CompletedText,
+            text = stringResource(R.string.workout_completed_title),
+            color = VoraTextPrimary,
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
@@ -85,8 +88,8 @@ fun WorkoutCompletedScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "¡Muy bien hecho! Cada entrenamiento te acerca a tus objetivos.",
-            color = CompletedText,
+            text = stringResource(R.string.workout_completed_message),
+            color = VoraTextPrimary,
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center
         )
@@ -98,7 +101,7 @@ fun WorkoutCompletedScreen(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(24.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = CompletedDarkGreen
+                    containerColor = VoraGreen
                 )
             ) {
                 Column(
@@ -116,12 +119,12 @@ fun WorkoutCompletedScreen(
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         Text(
-                            text = "DURACIÓN",
-                            color = CompletedMint,
+                            text = stringResource(R.string.workout_duration_caps),
+                            color = VoraMint,
                             style = MaterialTheme.typography.labelMedium
                         )
                         Text(
-                            text = "${workout.durationMinutes} minutos",
+                            text = pluralStringResource(R.plurals.workout_minutes_count, workout.durationMinutes, workout.durationMinutes),
                             color = Color.White,
                             style = MaterialTheme.typography.titleMedium
                         )
@@ -131,12 +134,12 @@ fun WorkoutCompletedScreen(
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         Text(
-                            text = "EJERCICIOS",
-                            color = CompletedMint,
+                            text = stringResource(R.string.workout_exercises_header),
+                            color = VoraMint,
                             style = MaterialTheme.typography.labelMedium
                         )
                         Text(
-                            text = "${workout.exercises.size} ejercicios",
+                            text = pluralStringResource(R.plurals.common_exercise_count, workout.exercises.size, workout.exercises.size),
                             color = Color.White,
                             style = MaterialTheme.typography.titleMedium
                         )
@@ -152,12 +155,12 @@ fun WorkoutCompletedScreen(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = CompletedDarkGreen,
+                containerColor = VoraGreen,
                 contentColor = Color.White
             )
         ) {
             Text(
-                text = "Volver al entrenamiento",
+                text = stringResource(R.string.workout_back_to_workout),
                 modifier = Modifier.padding(vertical = 6.dp)
             )
         }

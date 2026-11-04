@@ -20,15 +20,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import ar.edu.ort.vora.R
 import ar.edu.ort.vora.domain.model.Workout
+import ar.edu.ort.vora.ui.theme.VoraBackground
+import ar.edu.ort.vora.ui.theme.VoraGreen
+import ar.edu.ort.vora.ui.theme.VoraLime
+import ar.edu.ort.vora.ui.theme.VoraMint
+import ar.edu.ort.vora.ui.theme.VoraTextPrimary
 
-private val PlanDarkGreen = Color(0xFF123F35)
-private val PlanMint = Color(0xFF60D5B1)
-private val PlanLime = Color(0xFFD0EE69)
-private val PlanBackground = Color(0xFFF5F7F4)
-private val PlanText = Color(0xFF18352E)
 
 @Composable
 fun WorkoutPlanScreen(
@@ -40,27 +43,27 @@ fun WorkoutPlanScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(PlanBackground)
+            .background(VoraBackground)
             .padding(24.dp)
     ) {
         Text(
-            text = "YOUR PLAN",
-            color = PlanDarkGreen,
+            text = stringResource(R.string.workout_plan_label),
+            color = VoraGreen,
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold
         )
 
         Text(
-            text = "Tu plan semanal",
-            color = PlanText,
+            text = stringResource(R.string.workout_plan_title),
+            color = VoraTextPrimary,
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(top = 6.dp, bottom = 8.dp)
         )
 
         Text(
-            text = "Elegí un entrenamiento para consultar sus detalles o comenzar.",
-            color = PlanText,
+            text = stringResource(R.string.workout_plan_subtitle),
+            color = VoraTextPrimary,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(bottom = 20.dp)
         )
@@ -78,14 +81,14 @@ fun WorkoutPlanScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "Todavía no hay entrenamientos",
-                        color = PlanDarkGreen,
+                        text = stringResource(R.string.workout_plan_empty_title),
+                        color = VoraGreen,
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = "Cuando haya entrenamientos disponibles, aparecerán acá.",
-                        color = PlanText
+                        text = stringResource(R.string.workout_plan_empty_body),
+                        color = VoraTextPrimary
                     )
                 }
             }
@@ -99,7 +102,7 @@ fun WorkoutPlanScreen(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(22.dp),
                         colors = CardDefaults.cardColors(
-                            containerColor = PlanDarkGreen
+                            containerColor = VoraGreen
                         )
                     ) {
                         Column(
@@ -117,13 +120,17 @@ fun WorkoutPlanScreen(
                             )
 
                             Text(
-                                text = "Nivel: ${workout.level}",
-                                color = PlanMint,
+                                text = stringResource(R.string.workout_level, workout.level),
+                                color = VoraMint,
                                 style = MaterialTheme.typography.bodyMedium
                             )
 
                             Text(
-                                text = "${workout.durationMinutes} minutos  •  ${workout.exerciseCount} ejercicios",
+                                text = stringResource(
+                                    R.string.workout_plan_meta,
+                                    pluralStringResource(R.plurals.workout_minutes_count, workout.durationMinutes, workout.durationMinutes),
+                                    pluralStringResource(R.plurals.common_exercise_count, workout.exerciseCount, workout.exerciseCount)
+                                ),
                                 color = Color.White,
                                 style = MaterialTheme.typography.bodyMedium
                             )
@@ -134,11 +141,11 @@ fun WorkoutPlanScreen(
                                 shape = RoundedCornerShape(14.dp),
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = Color.White,
-                                    contentColor = PlanDarkGreen
+                                    contentColor = VoraGreen
                                 )
                             ) {
                                 Text(
-                                    text = "Ver entrenamiento",
+                                    text = stringResource(R.string.workout_view_workout),
                                     fontWeight = FontWeight.SemiBold
                                 )
                             }
@@ -148,12 +155,12 @@ fun WorkoutPlanScreen(
                                 modifier = Modifier.fillMaxWidth(),
                                 shape = RoundedCornerShape(14.dp),
                                 colors = ButtonDefaults.buttonColors(
-                                    containerColor = PlanLime,
-                                    contentColor = PlanDarkGreen
+                                    containerColor = VoraLime,
+                                    contentColor = VoraGreen
                                 )
                             ) {
                                 Text(
-                                    text = "Comenzar entrenamiento",
+                                    text = stringResource(R.string.common_start_workout),
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -170,12 +177,12 @@ fun WorkoutPlanScreen(
                 .padding(top = 16.dp),
             shape = RoundedCornerShape(16.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = PlanDarkGreen,
+                containerColor = VoraGreen,
                 contentColor = Color.White
             )
         ) {
             Text(
-                text = "Volver",
+                text = stringResource(R.string.common_back),
                 modifier = Modifier.padding(vertical = 5.dp)
             )
         }

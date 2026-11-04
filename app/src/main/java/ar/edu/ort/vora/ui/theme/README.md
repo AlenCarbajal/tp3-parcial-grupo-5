@@ -36,6 +36,20 @@ Para revisarlo contra Figma, abrí `ThemePreview.kt` en Android Studio con la vi
 | `VoraWhiteTranslucent` | `#FFFFFF` al 12 % | | Botones secundarios sobre panel oscuro (Photo, Search) |
 | `VoraDestructive` | `#DC2626` | | Ícono para quitar un ítem ("Foods to avoid") |
 
+### Tonos intermedios (Progress y Workout)
+
+Tonos que esas pantallas usaban a mano y no tenían token:
+
+| Token | Valor | Uso |
+|---|---|---|
+| `VoraMintLight` | `#E3F5EC` | Fondos de chips, íconos y tarjetas menta |
+| `VoraMintSoft` | `#B9E8D0` | Círculos, bordes y pistas de progreso menta |
+| `VoraSurfaceMuted` | `#F2F5F2` | Fondos grises claros dentro de tarjetas |
+| `VoraGreenRaised` | `#205347` | Tarjetas y chips sobre fondo verde |
+| `VoraGreenAccent` | `#286B58` | Círculos de íconos sobre fondo verde |
+| `VoraGreenBorder` | `#38675B` | Bordes sobre fondo verde |
+| `VoraOnGreenMuted` | `#A6C2B8` | Texto secundario sobre fondo verde |
+
 ### Pantallas de acceso (Sign In / Sign Up)
 
 Figma usa una paleta propia en Login, distinta de la del resto de la app:
@@ -78,14 +92,14 @@ Fuente **Manrope** embebida en `res/font` (`manrope_regular`, `manrope_medium`, 
 | `headlineSmall` | 24 / 600 | Cifra destacada ("1,420") |
 | `PanelTitleStyle` | 22 / 600 | Título de panel destacado ("Upper Body Strength") |
 | `titleLarge` | 20 / 700 | Título de pantalla ("Edit profile") |
-| `titleMedium` | 18 / 600 | Título de tarjeta |
+| `titleMedium` | 18 / 500 | Título de tarjeta |
 | `titleSmall` | 16 / 600 | Título de panel chico ("Tell Vora what you ate") |
 | `bodyLarge` | 15 / 400 | Valor de campo de formulario |
-| `bodyMedium` | 13 / 400 | Cuerpo. En 600: acción contextual ("View History") y botón chico |
+| `bodyMedium` | 13 / 400 | Cuerpo. En 500: acción contextual ("View History") y botón chico |
 | `bodySmall` | 12 / 400 | Texto de apoyo, errores de campo |
-| `labelLarge` | 14 / 600 | Acción principal ("Start Workout") |
+| `labelLarge` | 14 / 500 | Acción principal ("Start Workout") |
 | `labelMedium` | 11 / 600 | Barra inferior (activo 600, inactivo 500). En 400: tiempo ("2 hours ago") |
-| `labelSmall` | 10 / 600, espaciado 0,5 | Etiquetas en mayúsculas ("TODAY", "FIRST NAME") |
+| `labelSmall` | 10 / 500, espaciado 0,5 | Etiquetas en mayúsculas ("TODAY", "FIRST NAME") |
 
 ## Formas (`Shape.kt`)
 
@@ -117,8 +131,8 @@ Tomadas de la página "Elementos de interfaz" del sistema de diseño de Figma. S
 
 | Elemento | Especificación |
 |---|---|
-| Botón chico (Home) | 13 / 600, padding 8/16, radio 100 |
-| Botón mediano (paneles) | 14 / 600, padding 10/20, radio 100 |
+| Botón chico (Home) | 13 / 500, padding 8/16, radio 100 |
+| Botón mediano (paneles) | 14 / 500, padding 10/20, radio 100 |
 | Botón grande (Edit profile) | 15 / 700, padding 14/24, radio 100 |
 | Botones sobre panel oscuro | CTA lima; "Details" con borde blanco translúcido; Photo y Search con relleno blanco translúcido |
 | Prompts de voz | Chip blanco con borde |

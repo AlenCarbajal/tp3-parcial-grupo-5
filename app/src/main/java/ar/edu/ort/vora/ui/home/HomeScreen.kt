@@ -30,6 +30,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -37,6 +39,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import ar.edu.ort.vora.R
 import ar.edu.ort.vora.ui.components.ButtonSize
 import ar.edu.ort.vora.ui.components.CoachNote
@@ -77,9 +80,9 @@ fun HomeScreen(
     TabScreen {
         Header(onNotifications)
         CoachPanel(onVoiceSession, onStartWorkout, onLogMeal)
-        CoachNote("You're on track. A protein-rich dinner would help you reach your daily target.")
+        CoachNote(stringResource(R.string.home_coach_note))
         Text(
-            "Today's Overview",
+            stringResource(R.string.common_todays_overview),
             modifier = Modifier.padding(top = Spacing.s4),
             style = MaterialTheme.typography.titleMedium,
             color = VoraTextPrimary,
@@ -120,18 +123,18 @@ private fun Header(onNotifications: () -> Unit) {
                 .background(VoraMintTranslucent, PillShape),
             contentAlignment = Alignment.Center,
         ) {
-            Text("AM", style = MaterialTheme.typography.labelLarge, color = VoraGreen)
+            Text(stringResource(R.string.home_user_initials), style = MaterialTheme.typography.labelLarge, color = VoraGreen)
         }
         Column(
             Modifier
                 .weight(1f)
                 .padding(horizontal = Spacing.s12),
         ) {
-            Text("Good morning", style = MaterialTheme.typography.bodyMedium, color = VoraTextSecondary)
-            Text("Alex Morgan", style = MaterialTheme.typography.titleMedium, color = VoraTextPrimary, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(stringResource(R.string.home_greeting), style = MaterialTheme.typography.bodyMedium, color = VoraTextSecondary)
+            Text(stringResource(R.string.common_demo_user_name), style = MaterialTheme.typography.titleMedium, color = VoraTextPrimary, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
         Box {
-            IconCircleButton(R.drawable.ic_bell, "Notificaciones", onNotifications)
+            IconCircleButton(R.drawable.ic_bell, stringResource(R.string.common_notifications), onNotifications)
             StatusDot(
                 Modifier
                     .align(Alignment.TopEnd)
@@ -150,30 +153,31 @@ private fun CoachPanel(onVoiceSession: () -> Unit, onStartWorkout: () -> Unit, o
         Row(verticalAlignment = Alignment.CenterVertically) {
             VoraOrb(size = 28.dp, glowAlpha = 0.3f)
             Text(
-                "VORA Coach",
+                stringResource(R.string.coach_title),
                 modifier = Modifier
                     .weight(1f)
                     .padding(horizontal = Spacing.s8),
                 style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Medium,
                 color = VoraMint,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            StatusTag("AI online", dark = true)
+            StatusTag(stringResource(R.string.home_ai_online), dark = true)
         }
         Column(verticalArrangement = Arrangement.spacedBy(Spacing.s8)) {
-            Text("\"How can I support your fitness targets today?\"", style = PanelTitleStyle)
+            Text(stringResource(R.string.home_coach_question), style = PanelTitleStyle.copy(fontWeight = FontWeight.Medium))
             Text(
-                "Tap the mic to talk naturally. I'll plan or log for you.",
+                stringResource(R.string.home_coach_hint),
                 style = MaterialTheme.typography.bodySmall,
                 color = VoraSurface.copy(alpha = 0.6f),
             )
         }
         Column(verticalArrangement = Arrangement.spacedBy(Spacing.s12)) {
-            LimeButton("Start voice session", onVoiceSession, Modifier.fillMaxWidth(), icon = R.drawable.ic_mic)
+            LimeButton(stringResource(R.string.home_start_voice_session), onVoiceSession, Modifier.fillMaxWidth(), icon = R.drawable.ic_mic, alignStart = true)
             FlowRow(horizontalArrangement = Arrangement.spacedBy(Spacing.s8), verticalArrangement = Arrangement.spacedBy(Spacing.s8)) {
-                PanelButton("Start my workout", onStartWorkout, size = ButtonSize.Small)
-                PanelButton("Log breakfast", onLogMeal, size = ButtonSize.Small)
+                PanelButton(stringResource(R.string.common_start_my_workout), onStartWorkout, size = ButtonSize.Small)
+                PanelButton(stringResource(R.string.home_log_breakfast), onLogMeal, size = ButtonSize.Small)
             }
         }
     }
@@ -189,32 +193,32 @@ private fun DailyOverview(onClick: () -> Unit) {
             .clickable(onClick = onClick),
         horizontalArrangement = Arrangement.spacedBy(Spacing.groupGap),
     ) {
-        InfoCard(Modifier.weight(0.36f).fillMaxHeight()) {
+        InfoCard(Modifier.weight(0.32f).fillMaxHeight()) {
             Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                ProgressRing(0.72f) {
-                    Text("72%", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, color = VoraTextPrimary)
+                ProgressRing(0.72f, size = 64.dp) {
+                    Text(stringResource(R.string.home_percent, 72), style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, color = VoraTextPrimary)
                 }
                 Spacer(Modifier.height(Spacing.s8))
-                Text("Daily Goal", style = MaterialTheme.typography.bodySmall, color = VoraTextSecondary)
+                Text(stringResource(R.string.home_daily_goal), style = MaterialTheme.typography.bodyMedium, color = VoraTextSecondary)
             }
         }
-        InfoCard(Modifier.weight(0.64f).fillMaxHeight()) {
+        InfoCard(Modifier.weight(0.68f).fillMaxHeight()) {
             Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("Nutrition", Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium, color = VoraTextSecondary)
+                    Text(stringResource(R.string.common_nav_nutrition), Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium, color = VoraTextSecondary)
                     Text(
                         buildAnnotatedString {
-                            withStyle(SpanStyle(fontWeight = FontWeight.Bold, color = VoraTextPrimary)) { append("1,420") }
-                            append(" / 2,100 kcal")
+                            withStyle(SpanStyle(fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = VoraTextPrimary)) { append(stringResource(R.string.common_number, 1420)) }
+                            append(stringResource(R.string.home_kcal_goal, 2100))
                         },
-                        style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Normal),
+                        style = MaterialTheme.typography.bodySmall,
                         color = VoraTextMuted,
                     )
                 }
                 Spacer(Modifier.height(Spacing.s10))
-                MacroProgress("Protein", "104g / 140g", 104 / 140f, VoraGreen)
+                MacroProgress(stringResource(R.string.common_protein), stringResource(R.string.common_value_g, 104), 104 / 140f, VoraGreen, goal = stringResource(R.string.common_value_g, 140))
                 Spacer(Modifier.height(Spacing.s8))
-                MacroProgress("Carbs", "152g / 220g", 152 / 220f, VoraMint)
+                MacroProgress(stringResource(R.string.common_carbs), stringResource(R.string.common_value_g, 152), 152 / 220f, VoraMint, goal = stringResource(R.string.common_value_g, 220))
             }
         }
     }
@@ -229,11 +233,11 @@ private fun ActivityStats(onClick: () -> Unit) {
         padding = Spacing.s12,
     ) {
         Row(Modifier.height(IntrinsicSize.Min)) {
-            Stat("Steps", "7,842")
+            Stat(stringResource(R.string.home_steps), stringResource(R.string.common_number, 7842))
             VerticalDivider(color = VoraBorder)
-            Stat("Distance", "5.6 km")
+            Stat(stringResource(R.string.home_distance), stringResource(R.string.common_value_km, 5.6))
             VerticalDivider(color = VoraBorder)
-            Stat("Active kcal", "312 kcal")
+            Stat(stringResource(R.string.home_active_kcal), stringResource(R.string.common_value_kcal, 312))
         }
     }
 }
@@ -248,7 +252,7 @@ private fun RowScope.Stat(label: String, value: String) {
         verticalArrangement = Arrangement.spacedBy(Spacing.s4),
     ) {
         Text(label.uppercase(), style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Normal), color = VoraTextMuted, maxLines = 1)
-        Text(value, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, color = VoraTextPrimary, maxLines = 1)
+        Text(value, style = MaterialTheme.typography.titleSmall, color = VoraTextPrimary, maxLines = 1)
     }
 }
 
@@ -256,27 +260,31 @@ private fun RowScope.Stat(label: String, value: String) {
 private fun RecommendedWorkout(onStartWorkout: () -> Unit) {
     InfoCard {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(painterResource(R.drawable.ic_calendar), contentDescription = null, tint = VoraGreen, modifier = Modifier.size(14.dp))
+            Icon(painterResource(R.drawable.ic_calendar), contentDescription = null, tint = VoraGreen, modifier = Modifier.size(16.dp))
             Text(
-                "RECOMMENDED WORKOUT",
+                stringResource(R.string.home_recommended_workout),
                 modifier = Modifier
                     .weight(1f)
                     .padding(horizontal = Spacing.s6),
-                style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium),
+                style = MaterialTheme.typography.bodyMedium,
                 color = VoraTextSecondary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            Text("TODAY", style = MaterialTheme.typography.labelSmall, color = VoraGreen)
+            Text(stringResource(R.string.home_recommended_today), style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Medium), color = VoraTextPrimary)
         }
         Spacer(Modifier.height(Spacing.s12))
-        Text("Upper Body Strength", style = MaterialTheme.typography.titleMedium, color = VoraTextPrimary)
+        Text(stringResource(R.string.common_upper_body_strength), style = MaterialTheme.typography.titleMedium, color = VoraTextPrimary)
         Spacer(Modifier.height(Spacing.titleGap))
-        Text("42 min • 5 exercises • Intermediate", style = MaterialTheme.typography.bodyMedium, color = VoraTextSecondary)
+        Text(
+            stringResource(R.string.common_workout_meta, 42, pluralStringResource(R.plurals.common_exercise_count, 5, 5), stringResource(R.string.common_level_intermediate)),
+            style = MaterialTheme.typography.bodyMedium,
+            color = VoraTextSecondary,
+        )
         Spacer(Modifier.height(Spacing.s16))
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text("Estimated Vol: 2,340 kg", Modifier.weight(1f), style = MaterialTheme.typography.bodySmall, color = VoraTextMuted)
-            PrimaryButton("Start workout", onStartWorkout, size = ButtonSize.Small)
+            Text(stringResource(R.string.home_estimated_volume, 2340), Modifier.weight(1f), style = MaterialTheme.typography.bodySmall, color = VoraTextMuted)
+            PrimaryButton(stringResource(R.string.home_start_workout), onStartWorkout, size = ButtonSize.Small)
         }
     }
 }

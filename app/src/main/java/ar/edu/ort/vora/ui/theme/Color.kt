@@ -19,6 +19,15 @@ val VoraMintTranslucent = Color(0x1F65D6B0)
 val VoraWhiteTranslucent = Color(0x1FFFFFFF)
 val VoraDestructive = Color(0xFFDC2626)     // ícono para quitar ("Foods to avoid")
 
+// Tonos intermedios de las pantallas de Progress y Workout.
+val VoraMintLight = Color(0xFFE3F5EC)       // fondos de chips, íconos y tarjetas menta
+val VoraMintSoft = Color(0xFFB9E8D0)        // círculos, bordes y pistas de progreso menta
+val VoraSurfaceMuted = Color(0xFFF2F5F2)    // fondos grises claros dentro de tarjetas
+val VoraGreenRaised = Color(0xFF205347)     // tarjetas y chips sobre fondo verde
+val VoraGreenAccent = Color(0xFF286B58)     // círculos de íconos sobre fondo verde
+val VoraGreenBorder = Color(0xFF38675B)     // bordes sobre fondo verde
+val VoraOnGreenMuted = Color(0xFFA6C2B8)    // texto secundario sobre fondo verde
+
 // Acceso (Sign In / Sign Up): paleta propia de esas pantallas en Figma.
 val AuthLime = Color(0xFFCCE65E)
 val AuthFieldBackground = Color(0x99F3F9F5)  // #F3F9F5 al 60 %
