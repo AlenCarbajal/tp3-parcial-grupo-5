@@ -313,7 +313,7 @@ fun VoraNavHost(navController: NavHostController = rememberNavController()) {
             }
             composable(
                 route = Routes.NUTRITION_MEAL,
-                arguments = listOf(navArgument("id") { type = NavType.IntType }),
+                arguments = listOf(navArgument("mealId") { type = NavType.IntType }),
             ) {
                 MealDetailScreen(onBack = back)
             }
