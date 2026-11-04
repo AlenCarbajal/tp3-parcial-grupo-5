@@ -25,6 +25,8 @@ Fuente: página del sistema de diseño (valores observados 06/10/2026). Tipograf
 ## Espaciado
 4, 6, 8, 10, 12, 14, 16, 20, 24, 32, 40. Padding de tarjeta 16, gap entre grupos 12, título→descripción 4, margen 20, fila de comida padding 12.
 
+Los componentes ocupan su tamaño de Figma: no se agrega el área táctil mínima de 48 de Material, que sumaba aire alrededor de botones y chips.
+
 ## Radios
 8, 12 (campos/mensajes/filas), 16 (tarjetas), 18, 20–24 (paneles), 100 (píldora: botones, chips, etiquetas).
 

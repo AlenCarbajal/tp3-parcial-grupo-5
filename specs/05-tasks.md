@@ -35,4 +35,4 @@
 - T50 Conectar todas las rutas y destinos; atrás coherente. T51 README completo. T52 Demo ensayada.
 
 ## Cierre
-- T60 Probar escenarios: empty, error, malformed, delay. T61 Comparaciones visuales (5). T62 Tag entrega-tp3.
+- T60 Probar escenarios: empty, error, malformed, delay. T61 Comparaciones visuales (5) y ajustes que surgen de ellas en Home, Coach, Progress y Nutrition. T62 Tag entrega-tp3.
