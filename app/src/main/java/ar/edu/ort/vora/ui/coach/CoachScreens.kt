@@ -108,7 +108,7 @@ fun CoachIdleScreen(onBack: () -> Unit, onTalk: () -> Unit, onTypeInstead: () ->
         bottom = {
             MicButton(onClick = onTalk)
             Spacer(Modifier.height(Spacing.s8))
-            Text(stringResource(R.string.coach_tap_to_talk), style = MaterialTheme.typography.labelLarge.copy(letterSpacing = 0.5.sp), color = VoraGreen)
+            Text(stringResource(R.string.coach_tap_to_talk), style = MaterialTheme.typography.labelLarge.copy(fontSize = 15.sp, letterSpacing = 0.5.sp), color = VoraGreen)
             VoraTextButton(stringResource(R.string.common_type_instead), onTypeInstead, color = VoraTextSecondary)
         },
     ) {

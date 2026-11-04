@@ -87,7 +87,7 @@ fun VoraBottomBar(
                         BasicText(
                             stringResource(item.label),
                             style = MaterialTheme.typography.labelMedium.copy(
-                                fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium,
+                                fontWeight = FontWeight.Medium,
                                 color = color,
                                 textAlign = TextAlign.Center,
                             ),
@@ -219,7 +219,7 @@ fun SegmentedControl(options: List<String>, selectedIndex: Int, onSelect: (Int) 
                     .clickable(role = Role.Tab) { onSelect(index) }
                     .padding(vertical = Spacing.s8),
                 style = MaterialTheme.typography.bodyMedium,
-                fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium,
+                fontWeight = FontWeight.Medium,
                 color = if (selected) VoraSurface else VoraTextSecondary,
                 textAlign = TextAlign.Center,
             )

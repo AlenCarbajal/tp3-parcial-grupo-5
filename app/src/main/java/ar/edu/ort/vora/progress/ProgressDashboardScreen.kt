@@ -180,8 +180,20 @@ fun ProgressDashboardScreen(
             }
 
             Text(
-                text = pluralStringResource(R.plurals.progress_dashboard_insight, workouts, workouts),
-                style = MaterialTheme.typography.bodyLarge
+                text = pluralStringResource(
+                    R.plurals.progress_dashboard_insight,
+                    workouts,
+                    workouts,
+                    stringResource(
+                        when (period) {
+                            "Month" -> R.string.progress_insight_period_month
+                            "3 Months" -> R.string.progress_insight_period_3_months
+                            else -> R.string.progress_insight_period_week
+                        }
+                    )
+                ),
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Medium
             )
 
             Row(
@@ -238,7 +250,7 @@ fun ProgressDashboardScreen(
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
-                        painterResource(R.drawable.ic_circle_dot),
+                        painterResource(R.drawable.ic_target),
                         contentDescription = null,
                         tint = VoraGreen,
                         modifier = Modifier.size(18.dp)

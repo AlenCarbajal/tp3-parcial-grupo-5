@@ -90,7 +90,6 @@
     <string name="home_percent" translatable="false">%1$d%%</string>
     <string name="home_daily_goal">Daily Goal</string>
     <string name="home_kcal_goal" translatable="false">" / %1$,d kcal"</string>
-    <string name="home_macro_grams" translatable="false">%1$dg / %2$dg</string>
     <string name="home_steps">Steps</string>
     <string name="home_distance">Distance</string>
     <string name="home_active_kcal">Active kcal</string>
@@ -361,9 +360,12 @@
     <string name="progress_vora_insight">VORA Insight</string>
     <string name="progress_consistent_badge">CONSISTENT</string>
     <plurals name="progress_dashboard_insight">
-        <item quantity="one">\"You\'ve completed %1$d workout this period. Keep building your routine and your consistency is trending in the right direction.\"</item>
-        <item quantity="other">\"You\'ve completed %1$d workouts this period. Keep building your routine and your consistency is trending in the right direction.\"</item>
+        <item quantity="one">\"You\'ve completed %1$d workout %2$s and increased your training volume by 8%%. Your consistency is trending in the right direction.\"</item>
+        <item quantity="other">\"You\'ve completed %1$d workouts %2$s and increased your training volume by 8%%. Your consistency is trending in the right direction.\"</item>
     </plurals>
+    <string name="progress_insight_period_week">this week</string>
+    <string name="progress_insight_period_month">this month</string>
+    <string name="progress_insight_period_3_months">in the last 3 months</string>
     <string name="progress_see_weekly_review">See weekly review</string>
     <string name="progress_workout_card_subtitle">3 sessions • 2,340 kg volume</string>
     <string name="progress_nutrition_card_subtitle">%1$s protein • 74%% avg target</string>

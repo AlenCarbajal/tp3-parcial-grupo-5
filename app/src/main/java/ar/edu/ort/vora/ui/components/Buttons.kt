@@ -33,7 +33,7 @@ import ar.edu.ort.vora.ui.theme.VoraTextPrimary
 import ar.edu.ort.vora.ui.theme.VoraTextSecondary
 import ar.edu.ort.vora.ui.theme.VoraWhiteTranslucent
 
-// Tamaños de Figma: Small 13 SemiBold 8/16 (Home), Medium 14 SemiBold 10/20 (paneles), Large 15 Bold 14/24 (Edit profile).
+// Tamaños de Figma: Small 13 Medium 8/16 (Home), Medium 14 Medium 10/20 (paneles), Large 15 Bold 14/24 (Edit profile).
 // Split: mismo texto que Medium con padding lateral chico, para botones repartidos en una fila (Voice, Photo, Search).
 enum class ButtonSize(val vertical: Int, val horizontal: Int) {
     Small(8, 16),
@@ -44,7 +44,7 @@ enum class ButtonSize(val vertical: Int, val horizontal: Int) {
 
 @Composable
 private fun ButtonSize.textStyle(): TextStyle = when (this) {
-    ButtonSize.Small -> MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold)
+    ButtonSize.Small -> MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium)
     ButtonSize.Medium, ButtonSize.Split -> MaterialTheme.typography.labelLarge
     ButtonSize.Large -> MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
 }
@@ -138,7 +138,7 @@ fun VoraTextButton(
         Text(
             text,
             style = MaterialTheme.typography.bodyMedium.copy(
-                fontWeight = if (underline) FontWeight.Normal else FontWeight.SemiBold,
+                fontWeight = if (underline) FontWeight.Normal else FontWeight.Medium,
                 textDecoration = if (underline) TextDecoration.Underline else null,
             ),
             color = color.takeOrElse { if (underline) VoraTextSecondary else VoraGreen },

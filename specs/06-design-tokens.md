@@ -19,8 +19,8 @@ Fuente: página del sistema de diseño (valores observados 06/10/2026). Tipograf
 
 ## Tipografía (px → sp)
 10, 11, 12, 13, 14, 15, 16, 18, 20, 24 (+22, 26, 28 titulares, 32 cifras).
-- Cuerpo: 13 / 400. Acción: 13–14 / 600. Título tarjeta: 18 / 600. Título pantalla: 20 / 700. Escala alta: 24 / 600.
-- Etiquetas en mayúsculas: 10 / 600. Tab bar activo: 11 / 600, inactivo 11 / 500.
+- Cuerpo: 13 / 400. Acción: 13–14 / 500. Título tarjeta: 18 / 500. Título pantalla: 20 / 700. Escala alta: 24 / 600.
+- Etiquetas en mayúsculas: 10 / 500. Pesos corregidos al comparar las pantallas con Figma (T61). Tab bar activo: 11 / 600, inactivo 11 / 500.
 
 ## Espaciado
 4, 6, 8, 10, 12, 14, 16, 20, 24, 32, 40. Padding de tarjeta 16, gap entre grupos 12, título→descripción 4, margen 20, fila de comida padding 12.

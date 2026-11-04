@@ -336,10 +336,13 @@
     <string name="progress_vora_insight">Análisis de VORA</string>
     <string name="progress_consistent_badge">CONSTANTE</string>
     <plurals name="progress_dashboard_insight">
-        <item quantity="one">\"Completaste %1$d entreno en este período. Seguí armando tu rutina: tu constancia va en la dirección correcta.\"</item>
-        <item quantity="many">\"Completaste %1$d entrenos en este período. Seguí armando tu rutina: tu constancia va en la dirección correcta.\"</item>
-        <item quantity="other">\"Completaste %1$d entrenos en este período. Seguí armando tu rutina: tu constancia va en la dirección correcta.\"</item>
+        <item quantity="one">\"Completaste %1$d entreno %2$s y aumentaste tu volumen de entrenamiento un 8%%. Tu constancia va en la dirección correcta.\"</item>
+        <item quantity="many">\"Completaste %1$d entrenos %2$s y aumentaste tu volumen de entrenamiento un 8%%. Tu constancia va en la dirección correcta.\"</item>
+        <item quantity="other">\"Completaste %1$d entrenos %2$s y aumentaste tu volumen de entrenamiento un 8%%. Tu constancia va en la dirección correcta.\"</item>
     </plurals>
+    <string name="progress_insight_period_week">esta semana</string>
+    <string name="progress_insight_period_month">este mes</string>
+    <string name="progress_insight_period_3_months">en los últimos 3 meses</string>
     <string name="progress_see_weekly_review">Ver resumen semanal</string>
     <string name="progress_workout_card_subtitle">3 sesiones • 2.340 kg de volumen</string>
     <string name="progress_nutrition_card_subtitle">%1$s de proteína • 74%% del objetivo prom.</string>

@@ -27,7 +27,10 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import ar.edu.ort.vora.ui.theme.PillShape
@@ -37,6 +40,7 @@ import ar.edu.ort.vora.ui.theme.VoraError
 import ar.edu.ort.vora.ui.theme.VoraGreen
 import ar.edu.ort.vora.ui.theme.VoraMintTranslucent
 import ar.edu.ort.vora.ui.theme.VoraSurface
+import ar.edu.ort.vora.ui.theme.VoraTextMuted
 import ar.edu.ort.vora.ui.theme.VoraTextPrimary
 import ar.edu.ort.vora.ui.theme.VoraTextSecondary
 import ar.edu.ort.vora.ui.theme.VoraWhiteTranslucent
@@ -69,13 +73,21 @@ fun ProgressBar(
     }
 }
 
-// Macronutriente: nombre a la izquierda, valor a la derecha y barra debajo.
+// Macronutriente: nombre a la izquierda, valor a la derecha y barra debajo. goal va en gris después del valor ("104g / 140g").
 @Composable
-fun MacroProgress(label: String, value: String, progress: Float, color: Color, modifier: Modifier = Modifier) {
+fun MacroProgress(label: String, value: String, progress: Float, color: Color, modifier: Modifier = Modifier, goal: String? = null) {
     Column(modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(Spacing.s6)) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Text(label, style = MaterialTheme.typography.bodyMedium, color = VoraTextSecondary)
-            Text(value, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold, color = VoraTextPrimary)
+            Text(
+                buildAnnotatedString {
+                    append(value)
+                    if (goal != null) withStyle(SpanStyle(fontWeight = FontWeight.Normal, color = VoraTextMuted)) { append(" / $goal") }
+                },
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = if (goal != null) FontWeight.Medium else FontWeight.SemiBold,
+                color = VoraTextPrimary,
+            )
         }
         ProgressBar(progress, color = color)
     }
