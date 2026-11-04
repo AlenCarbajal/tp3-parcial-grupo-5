@@ -36,9 +36,14 @@ import ar.edu.ort.vora.ui.workout.WorkoutDetailScreen
 import ar.edu.ort.vora.ui.workout.WorkoutPlanScreen
 import ar.edu.ort.vora.ui.workout.WorkoutPrepScreen
 import ar.edu.ort.vora.ui.workout.WorkoutViewModel
+import ar.edu.ort.vora.ui.nutrition.AddFoodScreen
+import ar.edu.ort.vora.ui.nutrition.AnalyzingMealScreen
 import ar.edu.ort.vora.ui.nutrition.ManualMealScreen
 import ar.edu.ort.vora.ui.nutrition.MealDetailScreen
 import ar.edu.ort.vora.ui.nutrition.MealsScreen
+import ar.edu.ort.vora.ui.nutrition.PhotoLoggingScreen
+import ar.edu.ort.vora.ui.nutrition.ReviewMealScreen
+import ar.edu.ort.vora.ui.nutrition.VoiceLoggingScreen
 
 // Rutas quemadas como texto para evitar errores si no están en tu Routes.kt
 private const val ROUTE_COACH = "coach"
@@ -224,32 +229,57 @@ fun VoraNavHost(
             composable(Routes.NUTRITION) {
                 MealsScreen(
                     onBack = back,
-                    onAdd = { go(Routes.NUTRITION_MANUAL) },
+                    onAdd = { go(Routes.NUTRITION_ADD) },
                     onMeal = { id -> go(Routes.nutritionMeal(id.toString())) },
                 )
             }
             composable(Routes.NUTRITION_MEALS) {
                 MealsScreen(
                     onBack = back,
-                    onAdd = { go(Routes.NUTRITION_MANUAL) },
+                    onAdd = { go(Routes.NUTRITION_ADD) },
                     onMeal = { id -> go(Routes.nutritionMeal(id.toString())) },
                 )
             }
             composable(Routes.NUTRITION_ADD) {
-                PlaceholderScreen(
-                    "Add Food",
-                    Routes.NUTRITION_MANUAL to "Registro manual",
-                    Routes.NUTRITION_VOICE to "Voice (demo)",
-                    Routes.NUTRITION_PHOTO to "Photo (demo)",
-                    onNavigate = go
+                AddFoodScreen(
+                    onBack = back,
+                    onVoice = { go(Routes.NUTRITION_VOICE) },
+                    onPhoto = { go(Routes.NUTRITION_PHOTO) },
+                    onManual = { go(Routes.NUTRITION_MANUAL) },
                 )
             }
             composable(Routes.NUTRITION_VOICE) {
-                PlaceholderScreen("Voice Logging", Routes.NUTRITION_ANALYZING to "Done Speaking", Routes.NUTRITION_MANUAL to "Type instead", onNavigate = go)
+                VoiceLoggingScreen(
+                    onBack = back,
+                    onDoneSpeaking = { go(Routes.NUTRITION_ANALYZING) },
+                    onTypeInstead = { go(Routes.NUTRITION_MANUAL) },
+                )
             }
-            composable(Routes.NUTRITION_ANALYZING) { PlaceholderScreen("Analyzing Meal", Routes.NUTRITION_REVIEW to "Siguiente", onNavigate = go) }
-            composable(Routes.NUTRITION_PHOTO) { PlaceholderScreen("Analyse Meal", Routes.NUTRITION_REVIEW to "Review & Add", onNavigate = go) }
-            composable(Routes.NUTRITION_REVIEW) { PlaceholderScreen("Review Meal", Routes.NUTRITION_MEALS to "Add to Lunch", onNavigate = go) }
+            composable(Routes.NUTRITION_ANALYZING) {
+                AnalyzingMealScreen(
+                    onBack = back,
+                    onAnalyzed = { go(Routes.NUTRITION_REVIEW) },
+                )
+            }
+            composable(Routes.NUTRITION_PHOTO) {
+                PhotoLoggingScreen(
+                    onBack = back,
+                    onReview = { go(Routes.NUTRITION_REVIEW) },
+                )
+            }
+            composable(Routes.NUTRITION_REVIEW) {
+                ReviewMealScreen(
+                    onBack = back,
+                    onSaved = {
+                        if (!navController.popBackStack(Routes.NUTRITION_MEALS, inclusive = false) &&
+                            !navController.popBackStack(Routes.NUTRITION, inclusive = false)) {
+                            navController.navigate(Routes.NUTRITION) {
+                                popUpTo(Routes.NUTRITION_REVIEW) { inclusive = true }
+                            }
+                        }
+                    },
+                )
+            }
             composable(
                 route = Routes.NUTRITION_MEAL,
                 arguments = listOf(navArgument("id") { type = NavType.IntType }),
