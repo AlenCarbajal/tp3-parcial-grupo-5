@@ -27,7 +27,7 @@ App Android (Kotlin + Jetpack Compose) de coaching de entrenamiento y nutrición
 | --- | --- | --- |
 | Proyecto compila, Hilt configurado | ✅ | `@HiltAndroidApp`, `@AndroidEntryPoint` |
 | Navegación entre áreas (NAV02–NAV04) | ✅ | Todas las pantallas del inventario están conectadas; ya no quedan pantallas temporales |
-| Tema y componentes (UI01/UI02) | 🔶 | Tema en `ui/theme` y componentes en `ui/components`; faltan las 5 comparaciones con Figma |
+| Tema y componentes (UI01/UI02) | ✅ | Tema en `ui/theme` y componentes en `ui/components`; 5 comparaciones con Figma más abajo |
 | Retrofit: `GET /v1/workouts` y `/v1/workouts/{id}` (RF01) | ✅ | `ApiService` + `WorkoutRepository`; cada tarjeta abre su propio detalle |
 | Room: caché de entrenamientos (RF02) | ✅ | Tablas `workouts` y `exercises`. Un detalle ya visto se ve con el servidor apagado, y actualizar la lista no borra los ejercicios cacheados. Detalle nunca descargado: "No disponible sin conexión." |
 | Room: comidas con validación, listado por fecha, borrado con confirmación, total diario (RF03/RF04) | ✅ | Registro manual validado, lista por día, detalle, borrado con confirmación y total diario. En el flujo demo, "Add to Lunch" también guarda en Room |
@@ -36,7 +36,7 @@ App Android (Kotlin + Jetpack Compose) de coaching de entrenamiento y nutrición
 | ViewModel con StateFlow y corrutinas (RF07) | ✅ | `WorkoutViewModel` y `NutritionViewModel`; la rotación conserva el estado y lo escrito en el formulario |
 | Hilt para repositorios y ViewModels (RF08) | ✅ | `@HiltViewModel`, repositorios por constructor, `NetworkModule` y `DatabaseModule` |
 | Tests unitarios | ✅ | 24 tests en `app/src/test` (validación de comidas, total diario, fechas, tipos) |
-| Video, tag de entrega, comparaciones con Figma, declaración de IA | ⬜ | Ver los apartados correspondientes más abajo |
+| Video, tag de entrega, declaración de IA | ⬜ | Ver los apartados correspondientes más abajo |
 
 ## Inventario de pantallas
 
@@ -107,7 +107,24 @@ El servidor publicado devolvió error 522 (Cloudflare) el 01/11/2026; la caché 
 
 ## Comparaciones visuales con Figma
 
-[PENDIENTE: 5 capturas lado a lado, Figma vs app]
+Cada imagen muestra el frame de Figma a la izquierda y la app a la derecha, capturada en el emulador con 390 dp de ancho y el mismo alto que el frame. Las comidas de Nutrition son datos de ejemplo guardados en la base local (Room) para reproducir los de Figma.
+
+### Sign In
+![Sign In: Figma vs app](docs/comparaciones/comparacion-signin.png)
+
+### Home
+![Home: Figma vs app](docs/comparaciones/comparacion-home.png)
+
+### VORA Coach
+![VORA Coach: Figma vs app](docs/comparaciones/comparacion-coach.png)
+
+### Nutrition
+![Nutrition: Figma vs app](docs/comparaciones/comparacion-nutrition.png)
+
+### Your progress
+![Your progress: Figma vs app](docs/comparaciones/comparacion-progress.png)
+
+Diferencias que quedan a propósito: la foto de perfil de Home es un avatar con iniciales, los datos de Nutrition son los del día en que se tomó la captura, y en Sign In el candado y el ícono de Face ID siguen el sistema de íconos de la app. El verde de los paneles se ve más claro en Figma por la exportación a JPG: botones y paneles salen con el mismo color, distinto del token `#123D35`.
 
 ## Uso de tokens (IA)
 
