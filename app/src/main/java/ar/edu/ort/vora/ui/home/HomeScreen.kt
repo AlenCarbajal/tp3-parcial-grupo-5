@@ -39,6 +39,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import ar.edu.ort.vora.R
 import ar.edu.ort.vora.ui.components.ButtonSize
 import ar.edu.ort.vora.ui.components.CoachNote
@@ -157,6 +158,7 @@ private fun CoachPanel(onVoiceSession: () -> Unit, onStartWorkout: () -> Unit, o
                     .weight(1f)
                     .padding(horizontal = Spacing.s8),
                 style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Medium,
                 color = VoraMint,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -164,7 +166,7 @@ private fun CoachPanel(onVoiceSession: () -> Unit, onStartWorkout: () -> Unit, o
             StatusTag(stringResource(R.string.home_ai_online), dark = true)
         }
         Column(verticalArrangement = Arrangement.spacedBy(Spacing.s8)) {
-            Text(stringResource(R.string.home_coach_question), style = PanelTitleStyle)
+            Text(stringResource(R.string.home_coach_question), style = PanelTitleStyle.copy(fontWeight = FontWeight.Medium))
             Text(
                 stringResource(R.string.home_coach_hint),
                 style = MaterialTheme.typography.bodySmall,
@@ -172,7 +174,7 @@ private fun CoachPanel(onVoiceSession: () -> Unit, onStartWorkout: () -> Unit, o
             )
         }
         Column(verticalArrangement = Arrangement.spacedBy(Spacing.s12)) {
-            LimeButton(stringResource(R.string.home_start_voice_session), onVoiceSession, Modifier.fillMaxWidth(), icon = R.drawable.ic_mic)
+            LimeButton(stringResource(R.string.home_start_voice_session), onVoiceSession, Modifier.fillMaxWidth(), icon = R.drawable.ic_mic, alignStart = true)
             FlowRow(horizontalArrangement = Arrangement.spacedBy(Spacing.s8), verticalArrangement = Arrangement.spacedBy(Spacing.s8)) {
                 PanelButton(stringResource(R.string.common_start_my_workout), onStartWorkout, size = ButtonSize.Small)
                 PanelButton(stringResource(R.string.home_log_breakfast), onLogMeal, size = ButtonSize.Small)
@@ -191,32 +193,32 @@ private fun DailyOverview(onClick: () -> Unit) {
             .clickable(onClick = onClick),
         horizontalArrangement = Arrangement.spacedBy(Spacing.groupGap),
     ) {
-        InfoCard(Modifier.weight(0.36f).fillMaxHeight()) {
+        InfoCard(Modifier.weight(0.32f).fillMaxHeight()) {
             Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                ProgressRing(0.72f) {
+                ProgressRing(0.72f, size = 64.dp) {
                     Text(stringResource(R.string.home_percent, 72), style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, color = VoraTextPrimary)
                 }
                 Spacer(Modifier.height(Spacing.s8))
-                Text(stringResource(R.string.home_daily_goal), style = MaterialTheme.typography.bodySmall, color = VoraTextSecondary)
+                Text(stringResource(R.string.home_daily_goal), style = MaterialTheme.typography.bodyMedium, color = VoraTextSecondary)
             }
         }
-        InfoCard(Modifier.weight(0.64f).fillMaxHeight()) {
+        InfoCard(Modifier.weight(0.68f).fillMaxHeight()) {
             Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(stringResource(R.string.common_nav_nutrition), Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium, color = VoraTextSecondary)
                     Text(
                         buildAnnotatedString {
-                            withStyle(SpanStyle(fontWeight = FontWeight.Bold, color = VoraTextPrimary)) { append(stringResource(R.string.common_number, 1420)) }
+                            withStyle(SpanStyle(fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = VoraTextPrimary)) { append(stringResource(R.string.common_number, 1420)) }
                             append(stringResource(R.string.home_kcal_goal, 2100))
                         },
-                        style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Normal),
+                        style = MaterialTheme.typography.bodySmall,
                         color = VoraTextMuted,
                     )
                 }
                 Spacer(Modifier.height(Spacing.s10))
-                MacroProgress(stringResource(R.string.common_protein), stringResource(R.string.home_macro_grams, 104, 140), 104 / 140f, VoraGreen)
+                MacroProgress(stringResource(R.string.common_protein), stringResource(R.string.common_value_g, 104), 104 / 140f, VoraGreen, goal = stringResource(R.string.common_value_g, 140))
                 Spacer(Modifier.height(Spacing.s8))
-                MacroProgress(stringResource(R.string.common_carbs), stringResource(R.string.home_macro_grams, 152, 220), 152 / 220f, VoraMint)
+                MacroProgress(stringResource(R.string.common_carbs), stringResource(R.string.common_value_g, 152), 152 / 220f, VoraMint, goal = stringResource(R.string.common_value_g, 220))
             }
         }
     }
@@ -250,7 +252,7 @@ private fun RowScope.Stat(label: String, value: String) {
         verticalArrangement = Arrangement.spacedBy(Spacing.s4),
     ) {
         Text(label.uppercase(), style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Normal), color = VoraTextMuted, maxLines = 1)
-        Text(value, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, color = VoraTextPrimary, maxLines = 1)
+        Text(value, style = MaterialTheme.typography.titleSmall, color = VoraTextPrimary, maxLines = 1)
     }
 }
 
@@ -258,18 +260,18 @@ private fun RowScope.Stat(label: String, value: String) {
 private fun RecommendedWorkout(onStartWorkout: () -> Unit) {
     InfoCard {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(painterResource(R.drawable.ic_calendar), contentDescription = null, tint = VoraGreen, modifier = Modifier.size(14.dp))
+            Icon(painterResource(R.drawable.ic_calendar), contentDescription = null, tint = VoraGreen, modifier = Modifier.size(16.dp))
             Text(
                 stringResource(R.string.home_recommended_workout),
                 modifier = Modifier
                     .weight(1f)
                     .padding(horizontal = Spacing.s6),
-                style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium),
+                style = MaterialTheme.typography.bodyMedium,
                 color = VoraTextSecondary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            Text(stringResource(R.string.home_recommended_today), style = MaterialTheme.typography.labelSmall, color = VoraGreen)
+            Text(stringResource(R.string.home_recommended_today), style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Medium), color = VoraTextPrimary)
         }
         Spacer(Modifier.height(Spacing.s12))
         Text(stringResource(R.string.common_upper_body_strength), style = MaterialTheme.typography.titleMedium, color = VoraTextPrimary)

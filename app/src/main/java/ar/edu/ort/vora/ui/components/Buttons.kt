@@ -33,7 +33,7 @@ import ar.edu.ort.vora.ui.theme.VoraTextPrimary
 import ar.edu.ort.vora.ui.theme.VoraTextSecondary
 import ar.edu.ort.vora.ui.theme.VoraWhiteTranslucent
 
-// Tamaños de Figma: Small 13 SemiBold 8/16 (Home), Medium 14 SemiBold 10/20 (paneles), Large 15 Bold 14/24 (Edit profile).
+// Tamaños de Figma: Small 13 Medium 8/16 (Home), Medium 14 Medium 10/20 (paneles), Large 15 Bold 14/24 (Edit profile).
 // Split: mismo texto que Medium con padding lateral chico, para botones repartidos en una fila (Voice, Photo, Search).
 enum class ButtonSize(val vertical: Int, val horizontal: Int) {
     Small(8, 16),
@@ -44,7 +44,7 @@ enum class ButtonSize(val vertical: Int, val horizontal: Int) {
 
 @Composable
 private fun ButtonSize.textStyle(): TextStyle = when (this) {
-    ButtonSize.Small -> MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold)
+    ButtonSize.Small -> MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium)
     ButtonSize.Medium, ButtonSize.Split -> MaterialTheme.typography.labelLarge
     ButtonSize.Large -> MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
 }
@@ -69,8 +69,9 @@ fun LimeButton(
     size: ButtonSize = ButtonSize.Medium,
     @DrawableRes icon: Int? = null,
     enabled: Boolean = true,
+    alignStart: Boolean = false,
 ) {
-    PillButton(text, onClick, modifier, size, icon, enabled, container = VoraLime, content = VoraGreen)
+    PillButton(text, onClick, modifier, size, icon, enabled, container = VoraLime, content = VoraGreen, alignStart = alignStart)
 }
 
 // Menta de ancho completo: "Try again" del error de micrófono.
@@ -137,7 +138,7 @@ fun VoraTextButton(
         Text(
             text,
             style = MaterialTheme.typography.bodyMedium.copy(
-                fontWeight = if (underline) FontWeight.Normal else FontWeight.SemiBold,
+                fontWeight = if (underline) FontWeight.Normal else FontWeight.Medium,
                 textDecoration = if (underline) TextDecoration.Underline else null,
             ),
             color = color.takeOrElse { if (underline) VoraTextSecondary else VoraGreen },
@@ -156,6 +157,7 @@ private fun PillButton(
     container: Color,
     content: Color,
     border: BorderStroke? = null,
+    alignStart: Boolean = false,
 ) {
     Button(
         onClick = onClick,
@@ -176,5 +178,7 @@ private fun PillButton(
             Spacer(Modifier.width(Spacing.s8))
         }
         Text(text, style = size.textStyle(), maxLines = 1)
+        // alignStart: ícono y texto a la izquierda en botones de ancho completo ("Start voice session" de Home).
+        if (alignStart) Spacer(Modifier.weight(1f))
     }
 }

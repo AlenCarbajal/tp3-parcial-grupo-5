@@ -101,7 +101,7 @@ private fun Header(onCalendar: () -> Unit) {
                 style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium),
                 color = VoraTextSecondary,
             )
-            Text(stringResource(R.string.common_nav_nutrition), style = MaterialTheme.typography.headlineMedium, color = VoraTextPrimary)
+            Text(stringResource(R.string.common_nav_nutrition), style = MaterialTheme.typography.headlineSmall, color = VoraTextPrimary)
         }
         IconCircleButton(R.drawable.ic_calendar, stringResource(R.string.nutrition_view_history), onCalendar)
     }
@@ -119,8 +119,8 @@ private fun CaloriesCard(totals: DailyTotals) {
             ProgressRing(totals.kcal / KCAL_GOAL.toFloat(), size = 88.dp) {
                 Text(
                     stringResource(R.string.home_percent, totals.kcal * 100 / KCAL_GOAL),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.SemiBold,
                     color = VoraTextPrimary,
                 )
             }
@@ -165,10 +165,10 @@ private fun MealTypeRow(title: String, meals: List<Meal>, onOpen: () -> Unit, on
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f).padding(end = Spacing.s12)) {
-                Text(title, style = MaterialTheme.typography.titleMedium, color = VoraTextPrimary)
+                Text(title, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Medium, color = VoraTextPrimary)
                 Text(
                     if (logged) meals.sortedBy { it.id }.joinToString(" · ") { it.name } else stringResource(R.string.nutrition_not_logged),
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodySmall,
                     color = if (logged) VoraTextSecondary else VoraTextMuted,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -177,8 +177,8 @@ private fun MealTypeRow(title: String, meals: List<Meal>, onOpen: () -> Unit, on
             if (logged) {
                 Text(
                     stringResource(R.string.common_value_kcal, meals.sumOf { it.kcal }),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.SemiBold,
                     color = VoraTextPrimary,
                 )
             } else {
@@ -191,10 +191,10 @@ private fun MealTypeRow(title: String, meals: List<Meal>, onOpen: () -> Unit, on
 @Composable
 private fun TellVoraPanel(onVoice: () -> Unit, onPhoto: () -> Unit) {
     val demoNotice = rememberDemoNotice()
-    DarkPanel {
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s12)) {
+    DarkPanel(padding = Spacing.s16, verticalArrangement = Arrangement.spacedBy(Spacing.s12)) {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s8)) {
             VoraOrb(size = 28.dp, glowAlpha = 0.3f)
-            Text(stringResource(R.string.nutrition_tell_vora), style = MaterialTheme.typography.bodyLarge, color = VoraMint)
+            Text(stringResource(R.string.nutrition_tell_vora), style = MaterialTheme.typography.labelLarge, color = VoraMint)
         }
         Text(
             stringResource(R.string.nutrition_tell_vora_hint),

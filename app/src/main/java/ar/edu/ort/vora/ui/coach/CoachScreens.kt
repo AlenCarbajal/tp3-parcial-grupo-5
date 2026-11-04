@@ -98,22 +98,28 @@ private val WhiteSoft = VoraSurface.copy(alpha = 0.6f)
 fun CoachIdleScreen(onBack: () -> Unit, onTalk: () -> Unit, onTypeInstead: () -> Unit) {
     CoachLayout(
         dark = false,
-        topBar = { VoraTopBar(stringResource(R.string.coach_title), onBack = onBack) { StatusTag(stringResource(R.string.coach_online)) } },
+        topBar = {
+            VoraTopBar(
+                stringResource(R.string.coach_title),
+                onBack = onBack,
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Medium),
+            ) { StatusTag(stringResource(R.string.coach_online)) }
+        },
         bottom = {
             MicButton(onClick = onTalk)
             Spacer(Modifier.height(Spacing.s8))
-            Text(stringResource(R.string.coach_tap_to_talk), style = MaterialTheme.typography.labelLarge.copy(letterSpacing = 0.5.sp), color = VoraGreen)
+            Text(stringResource(R.string.coach_tap_to_talk), style = MaterialTheme.typography.labelLarge.copy(fontSize = 15.sp, letterSpacing = 0.5.sp), color = VoraGreen)
             VoraTextButton(stringResource(R.string.common_type_instead), onTypeInstead, color = VoraTextSecondary)
         },
     ) {
         VoiceOrb()
         Spacer(Modifier.height(Spacing.s24))
-        Text(stringResource(R.string.coach_how_can_i_help), style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold), color = VoraTextPrimary)
+        Text(stringResource(R.string.coach_how_can_i_help), style = MaterialTheme.typography.headlineMedium, color = VoraTextPrimary)
         Spacer(Modifier.height(Spacing.titleGap))
         Text(
             stringResource(R.string.coach_idle_hint),
-            modifier = Modifier.widthIn(max = 280.dp),
-            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.widthIn(max = 300.dp),
+            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp),
             color = VoraTextSecondary,
             textAlign = TextAlign.Center,
         )
@@ -145,7 +151,7 @@ fun CoachIdleScreen(onBack: () -> Unit, onTalk: () -> Unit, onTypeInstead: () ->
                 Text(pluralStringResource(R.plurals.coach_hours_ago, 2, 2), style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Normal), color = VoraTextMuted)
             }
             Spacer(Modifier.height(Spacing.s4))
-            Text(stringResource(R.string.coach_last_request), style = MaterialTheme.typography.bodyMedium, color = VoraTextPrimary)
+            Text(stringResource(R.string.coach_last_request), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium, color = VoraTextPrimary)
         }
     }
 }
