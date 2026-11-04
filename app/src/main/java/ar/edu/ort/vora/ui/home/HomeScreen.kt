@@ -172,7 +172,7 @@ private fun CoachPanel(onVoiceSession: () -> Unit, onStartWorkout: () -> Unit, o
             )
         }
         Column(verticalArrangement = Arrangement.spacedBy(Spacing.s12)) {
-            LimeButton(stringResource(R.string.home_start_voice_session), onVoiceSession, Modifier.fillMaxWidth(), icon = R.drawable.ic_mic)
+            LimeButton(stringResource(R.string.home_start_voice_session), onVoiceSession, Modifier.fillMaxWidth(), icon = R.drawable.ic_mic, alignStart = true)
             FlowRow(horizontalArrangement = Arrangement.spacedBy(Spacing.s8), verticalArrangement = Arrangement.spacedBy(Spacing.s8)) {
                 PanelButton(stringResource(R.string.common_start_my_workout), onStartWorkout, size = ButtonSize.Small)
                 PanelButton(stringResource(R.string.home_log_breakfast), onLogMeal, size = ButtonSize.Small)
@@ -191,16 +191,16 @@ private fun DailyOverview(onClick: () -> Unit) {
             .clickable(onClick = onClick),
         horizontalArrangement = Arrangement.spacedBy(Spacing.groupGap),
     ) {
-        InfoCard(Modifier.weight(0.36f).fillMaxHeight()) {
+        InfoCard(Modifier.weight(0.32f).fillMaxHeight()) {
             Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                ProgressRing(0.72f) {
+                ProgressRing(0.72f, size = 64.dp) {
                     Text(stringResource(R.string.home_percent, 72), style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, color = VoraTextPrimary)
                 }
                 Spacer(Modifier.height(Spacing.s8))
                 Text(stringResource(R.string.home_daily_goal), style = MaterialTheme.typography.bodySmall, color = VoraTextSecondary)
             }
         }
-        InfoCard(Modifier.weight(0.64f).fillMaxHeight()) {
+        InfoCard(Modifier.weight(0.68f).fillMaxHeight()) {
             Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(stringResource(R.string.common_nav_nutrition), Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium, color = VoraTextSecondary)

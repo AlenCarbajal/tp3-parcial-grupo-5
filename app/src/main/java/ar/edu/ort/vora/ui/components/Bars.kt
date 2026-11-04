@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.TextAutoSize
@@ -28,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -139,7 +141,7 @@ enum class TopBarBack {
 }
 
 // Encabezado de Figma: fila de 350 (margen 20), padding superior 12, chevron 20 o botón de 32, 8/12 hasta el título.
-// Con centered, el título va al centro (Workout Overview, Exercise Guide). titleDot: punto menta de "en línea" junto al título (chat del Coach).
+// style reemplaza el del título (VORA Coach usa 18 Medium). Con centered, el título va al centro (Workout Overview, Exercise Guide). titleDot: punto menta de "en línea" junto al título (chat del Coach).
 @Composable
 fun VoraTopBar(
     title: String,
@@ -149,10 +151,11 @@ fun VoraTopBar(
     centered: Boolean = false,
     dark: Boolean = false,
     titleDot: Boolean = false,
+    style: TextStyle? = null,
     actions: @Composable RowScope.() -> Unit = {},
 ) {
     val contentColor = if (dark) VoraSurface else VoraTextPrimary
-    val titleStyle = if (back == TopBarBack.Plain || centered) {
+    val titleStyle = style ?: if (back == TopBarBack.Plain || centered) {
         MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.SemiBold)
     } else {
         MaterialTheme.typography.titleLarge
@@ -196,13 +199,14 @@ fun VoraTopBar(
     }
 }
 
-// Selector de período (Week / Month / 3 Months): contenedor blanco y opción activa verde.
+// Selector de período (Week / Month / 3 Months): píldora blanca con borde y opción activa verde.
 @Composable
 fun SegmentedControl(options: List<String>, selectedIndex: Int, onSelect: (Int) -> Unit, modifier: Modifier = Modifier) {
     Row(
         modifier
             .fillMaxWidth()
             .background(VoraSurface, PillShape)
+            .border(1.dp, VoraBorder, PillShape)
             .padding(Spacing.s4),
     ) {
         options.forEachIndexed { index, option ->

@@ -8,9 +8,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SingleChoiceSegmentedButtonRow
-import androidx.compose.material3.SegmentedButton
-import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -134,37 +131,7 @@ fun WorkoutProgressScreen(
                 }
 
                 // Selector de período
-                SingleChoiceSegmentedButtonRow(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 12.dp)
-                ) {
-                    ProgressPeriods
-                        .forEachIndexed { index, (option, label) ->
-                            SegmentedButton(
-                                selected = period == option,
-                                onClick = { period = option },
-                                shape = SegmentedButtonDefaults.itemShape(
-                                    index = index,
-                                    count = 3
-                                ),
-                                colors = SegmentedButtonDefaults.colors(
-                                    activeContainerColor = VoraGreen,
-                                    activeContentColor = Color.White,
-                                    inactiveContainerColor = Color.White,
-                                    inactiveContentColor = VoraTextSecondary,
-                                    activeBorderColor = VoraGreen,
-                                    inactiveBorderColor = VoraBorder
-                                )
-                            ) {
-                                Text(
-                                    text = stringResource(label),
-                                    fontSize = 10.sp,
-                                    maxLines = 1
-                                )
-                            }
-                        }
-                }
+                Box(Modifier.padding(bottom = 12.dp)) { PeriodSelector(period) { period = it } }
 
                 // Métricas principales
                 Row(

@@ -69,8 +69,9 @@ fun LimeButton(
     size: ButtonSize = ButtonSize.Medium,
     @DrawableRes icon: Int? = null,
     enabled: Boolean = true,
+    alignStart: Boolean = false,
 ) {
-    PillButton(text, onClick, modifier, size, icon, enabled, container = VoraLime, content = VoraGreen)
+    PillButton(text, onClick, modifier, size, icon, enabled, container = VoraLime, content = VoraGreen, alignStart = alignStart)
 }
 
 // Menta de ancho completo: "Try again" del error de micrófono.
@@ -156,6 +157,7 @@ private fun PillButton(
     container: Color,
     content: Color,
     border: BorderStroke? = null,
+    alignStart: Boolean = false,
 ) {
     Button(
         onClick = onClick,
@@ -176,5 +178,7 @@ private fun PillButton(
             Spacer(Modifier.width(Spacing.s8))
         }
         Text(text, style = size.textStyle(), maxLines = 1)
+        // alignStart: ícono y texto a la izquierda en botones de ancho completo ("Start voice session" de Home).
+        if (alignStart) Spacer(Modifier.weight(1f))
     }
 }

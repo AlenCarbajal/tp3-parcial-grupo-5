@@ -329,9 +329,9 @@
     <string name="progress_daily_avg_protein">Proteína diaria prom.</string>
     <string name="progress_active_streak">Racha activa</string>
     <plurals name="progress_streak_days">
-        <item quantity="one">%1$d día 🔥</item>
-        <item quantity="many">%1$d días 🔥</item>
-        <item quantity="other">%1$d días 🔥</item>
+        <item quantity="one">%1$d día</item>
+        <item quantity="many">%1$d días</item>
+        <item quantity="other">%1$d días</item>
     </plurals>
     <string name="progress_vora_insight">Análisis de VORA</string>
     <string name="progress_consistent_badge">CONSTANTE</string>
@@ -348,7 +348,7 @@
     <string name="progress_active_goal">OBJETIVO ACTIVO</string>
     <string name="progress_goal_complete">%1$d%% completado</string>
     <string name="progress_goal_description">Estás ganando constancia en entrenamiento y nutrición.</string>
-    <string name="progress_view_arrow">"Ver  ›"</string>
+    <string name="progress_view">Ver</string>
     <string name="progress_health_title">Tendencias de salud</string>
     <string name="progress_health_subtitle">Mirá cómo cambian tus hábitos diarios.</string>
     <string name="progress_avg_distance">DIST. PROM.</string>

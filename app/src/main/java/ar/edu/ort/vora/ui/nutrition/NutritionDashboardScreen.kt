@@ -191,10 +191,10 @@ private fun MealTypeRow(title: String, meals: List<Meal>, onOpen: () -> Unit, on
 @Composable
 private fun TellVoraPanel(onVoice: () -> Unit, onPhoto: () -> Unit) {
     val demoNotice = rememberDemoNotice()
-    DarkPanel {
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s12)) {
+    DarkPanel(padding = Spacing.s16, verticalArrangement = Arrangement.spacedBy(Spacing.s12)) {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s8)) {
             VoraOrb(size = 28.dp, glowAlpha = 0.3f)
-            Text(stringResource(R.string.nutrition_tell_vora), style = MaterialTheme.typography.bodyLarge, color = VoraMint)
+            Text(stringResource(R.string.nutrition_tell_vora), style = MaterialTheme.typography.labelLarge, color = VoraMint)
         }
         Text(
             stringResource(R.string.nutrition_tell_vora_hint),

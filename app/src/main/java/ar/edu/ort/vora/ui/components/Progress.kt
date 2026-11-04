@@ -22,6 +22,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.semantics.progressBarRangeInfo
@@ -111,15 +112,16 @@ fun ProgressRing(
 }
 
 // Etiqueta compacta de disponibilidad ("ONLINE"): radio 100. dark = sobre DarkPanel ("AI ONLINE" de Home).
+// color reemplaza el del texto ("CONSISTENT" en lima en Your progress).
 @Composable
-fun StatusTag(text: String, modifier: Modifier = Modifier, dark: Boolean = false) {
+fun StatusTag(text: String, modifier: Modifier = Modifier, dark: Boolean = false, color: Color = Color.Unspecified) {
     Text(
         text.uppercase(),
         modifier = modifier
             .background(if (dark) VoraWhiteTranslucent else VoraMintTranslucent, PillShape)
             .padding(horizontal = Spacing.s10, vertical = Spacing.s4),
         style = MaterialTheme.typography.labelSmall,
-        color = if (dark) VoraSurface else VoraGreen,
+        color = color.takeOrElse { if (dark) VoraSurface else VoraGreen },
     )
 }
 
