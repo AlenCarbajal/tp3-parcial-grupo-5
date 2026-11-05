@@ -34,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -55,6 +56,7 @@ import ar.edu.ort.vora.ui.components.VoraChip
 import ar.edu.ort.vora.ui.components.VoraOrb
 import ar.edu.ort.vora.ui.components.VoraTextButton
 import ar.edu.ort.vora.ui.components.VoraTopBar
+import ar.edu.ort.vora.ui.components.asString
 import ar.edu.ort.vora.ui.components.rememberDemoNotice
 import ar.edu.ort.vora.ui.theme.Spacing
 import ar.edu.ort.vora.ui.theme.VoraBackground
@@ -107,18 +109,18 @@ fun AddFoodScreen(
     onManual: () -> Unit,
 ) {
     val demoNotice = rememberDemoNotice()
-    DemoScreenLayout(title = "Add Food", onBack = onBack) {
+    DemoScreenLayout(title = stringResource(R.string.nutrition_add_food_title), onBack = onBack) {
         Text(
-            "How would you like to log your meal?",
+            stringResource(R.string.nutrition_add_food_question),
             style = MaterialTheme.typography.bodyLarge,
             color = VoraTextSecondary,
             modifier = Modifier.fillMaxWidth(),
         )
-        PrimaryButton("Voice", onVoice, Modifier.fillMaxWidth(), icon = R.drawable.ic_mic)
-        PrimaryButton("Photo", onPhoto, Modifier.fillMaxWidth(), icon = R.drawable.ic_camera)
+        PrimaryButton(stringResource(R.string.nutrition_add_food_voice), onVoice, Modifier.fillMaxWidth(), icon = R.drawable.ic_mic)
+        PrimaryButton(stringResource(R.string.nutrition_add_food_photo), onPhoto, Modifier.fillMaxWidth(), icon = R.drawable.ic_camera)
         // "Search Database" no tiene pantalla en Figma: avisa que es demo (ver specs/02-screens.md).
-        SecondaryButton("Search Database", demoNotice, Modifier.fillMaxWidth(), icon = R.drawable.ic_search)
-        SecondaryButton("Log Manually", onManual, Modifier.fillMaxWidth(), icon = R.drawable.ic_plus)
+        SecondaryButton(stringResource(R.string.nutrition_add_food_search), demoNotice, Modifier.fillMaxWidth(), icon = R.drawable.ic_search)
+        SecondaryButton(stringResource(R.string.nutrition_manual_title), onManual, Modifier.fillMaxWidth(), icon = R.drawable.ic_plus)
     }
 }
 
@@ -129,22 +131,22 @@ fun VoiceLoggingScreen(
     onDone: () -> Unit,
     onTypeInstead: () -> Unit,
 ) {
-    DemoScreenLayout(title = "Voice Logging", onBack = onBack) {
+    DemoScreenLayout(title = stringResource(R.string.nutrition_voice_title), onBack = onBack) {
         Spacer(Modifier.height(Spacing.s8))
         VoiceOrb(listening = true)
         Spacer(Modifier.height(Spacing.s8))
         InfoCard {
-            Text("LIVE TRANSCRIPT", style = MaterialTheme.typography.labelSmall, color = VoraTextSecondary)
+            Text(stringResource(R.string.nutrition_voice_transcript_label), style = MaterialTheme.typography.labelSmall, color = VoraTextSecondary)
             Spacer(Modifier.height(Spacing.s6))
             Text(
-                "\"I had a grilled chicken salad with avocado and a small orange juice.\"",
+                stringResource(R.string.nutrition_voice_transcript),
                 style = MaterialTheme.typography.bodyLarge,
                 color = VoraTextPrimary,
             )
         }
         MicButton(onClick = onDone, listening = true)
-        PrimaryButton("Done Speaking", onDone, Modifier.fillMaxWidth())
-        VoraTextButton("Type instead", onTypeInstead, underline = true)
+        PrimaryButton(stringResource(R.string.nutrition_voice_done), onDone, Modifier.fillMaxWidth())
+        VoraTextButton(stringResource(R.string.common_type_instead), onTypeInstead, underline = true)
     }
 }
 
@@ -160,14 +162,14 @@ fun AnalyzingMealScreen(
         currentOnFinished()
     }
 
-    DemoScreenLayout(title = "VORA AI", onBack = onCancel) {
+    DemoScreenLayout(title = stringResource(R.string.nutrition_ai_title), onBack = onCancel) {
         Spacer(Modifier.height(Spacing.s40))
         VoraOrb(size = 120.dp, ripple = true) {
             Icon(painterResource(R.drawable.ic_sparkles), contentDescription = null, tint = VoraSurface)
         }
         Spacer(Modifier.height(Spacing.s16))
         Text(
-            "Analyzing your meal...",
+            stringResource(R.string.nutrition_analyzing_title),
             style = MaterialTheme.typography.titleLarge,
             color = VoraTextPrimary,
             textAlign = TextAlign.Center,
@@ -175,13 +177,13 @@ fun AnalyzingMealScreen(
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s8)) {
             CircularProgressIndicator(Modifier.size(16.dp), color = VoraGreen, strokeWidth = 2.dp)
             Text(
-                "Identifying ingredients and estimating portions",
+                stringResource(R.string.nutrition_analyzing_subtitle),
                 style = MaterialTheme.typography.bodyMedium,
                 color = VoraTextSecondary,
             )
         }
         Spacer(Modifier.height(Spacing.s24))
-        VoraTextButton("Cancel", onCancel)
+        VoraTextButton(stringResource(R.string.common_cancel), onCancel)
     }
 }
 
@@ -193,7 +195,7 @@ fun AnalyseMealScreen(
     onReview: () -> Unit,
 ) {
     val demoNotice = rememberDemoNotice()
-    DemoScreenLayout(title = "Analyse Meal", onBack = onBack) {
+    DemoScreenLayout(title = stringResource(R.string.nutrition_analyse_title), onBack = onBack) {
         Box(
             Modifier
                 .fillMaxWidth()
@@ -204,11 +206,11 @@ fun AnalyseMealScreen(
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.s8)) {
                 Icon(painterResource(R.drawable.ic_camera), contentDescription = null, tint = VoraMint, modifier = Modifier.size(32.dp))
-                Text("Photo preview (demo)", style = MaterialTheme.typography.bodyMedium, color = VoraSurface)
+                Text(stringResource(R.string.nutrition_analyse_photo_preview), style = MaterialTheme.typography.bodyMedium, color = VoraSurface)
             }
         }
         Text(
-            "DETECTED INGREDIENTS",
+            stringResource(R.string.nutrition_analyse_detected),
             style = MaterialTheme.typography.labelSmall,
             color = VoraTextSecondary,
             modifier = Modifier.fillMaxWidth(),
@@ -218,13 +220,18 @@ fun AnalyseMealScreen(
             horizontalArrangement = Arrangement.spacedBy(Spacing.s8),
             verticalArrangement = Arrangement.spacedBy(Spacing.s8),
         ) {
-            listOf("Grilled chicken", "Avocado", "Mixed greens", "Cherry tomatoes").forEach {
-                VoraChip(text = it, onClick = {}, style = ChipStyle.Checked)
+            listOf(
+                R.string.nutrition_ingredient_chicken,
+                R.string.nutrition_ingredient_avocado,
+                R.string.nutrition_ingredient_greens,
+                R.string.nutrition_ingredient_tomatoes,
+            ).forEach {
+                VoraChip(text = stringResource(it), onClick = {}, style = ChipStyle.Checked)
             }
         }
-        CoachNote("Looks like a balanced lunch. Review the estimate before adding it.")
-        PrimaryButton("Review & Add", onReview, Modifier.fillMaxWidth())
-        SecondaryButton("Retake Photo", demoNotice, Modifier.fillMaxWidth())
+        CoachNote(stringResource(R.string.nutrition_analyse_coach_note))
+        PrimaryButton(stringResource(R.string.nutrition_analyse_review), onReview, Modifier.fillMaxWidth())
+        SecondaryButton(stringResource(R.string.nutrition_analyse_retake), demoNotice, Modifier.fillMaxWidth())
     }
 }
 
@@ -244,41 +251,43 @@ fun ReviewMealScreen(
     val actionError by viewModel.actionError.collectAsStateWithLifecycle()
     LaunchedEffect(actionError) { if (actionError != null) saving = false }
     DisposableEffect(Unit) { onDispose { viewModel.clearActionError() } }
+    // Se resuelve acá porque también se usa como nombre de la comida que se guarda
+    val demoMealName = stringResource(R.string.nutrition_review_meal_name)
 
-    DemoScreenLayout(title = "Review Meal", onBack = onBack) {
+    DemoScreenLayout(title = stringResource(R.string.nutrition_review_title), onBack = onBack) {
         InfoCard {
-            Text("LUNCH", style = MaterialTheme.typography.labelSmall, color = VoraTextSecondary)
+            Text(stringResource(R.string.nutrition_review_lunch), style = MaterialTheme.typography.labelSmall, color = VoraTextSecondary)
             Spacer(Modifier.height(Spacing.s4))
             Text(
-                "Grilled chicken salad",
+                demoMealName,
                 style = MaterialTheme.typography.titleLarge,
                 color = VoraTextPrimary,
             )
             Spacer(Modifier.height(Spacing.s4))
             Text(
-                "420 kcal",
+                stringResource(R.string.nutrition_kcal, 420),
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 color = VoraGreen,
             )
             Spacer(Modifier.height(Spacing.s16))
             Column(verticalArrangement = Arrangement.spacedBy(Spacing.s12)) {
-                MacroProgress("Protein", "38 g", 0.6f, VoraGreen)
-                MacroProgress("Carbs", "24 g", 0.3f, VoraMint)
-                MacroProgress("Fat", "18 g", 0.4f, VoraLime)
+                MacroProgress(stringResource(R.string.common_protein), stringResource(R.string.nutrition_grams_int, 38), 0.6f, VoraGreen)
+                MacroProgress(stringResource(R.string.common_carbs), stringResource(R.string.nutrition_grams_int, 24), 0.3f, VoraMint)
+                MacroProgress(stringResource(R.string.common_fat), stringResource(R.string.nutrition_grams_int, 18), 0.4f, VoraLime)
             }
         }
-        CoachNote("Estimated by VORA AI. These are demo values.")
+        CoachNote(stringResource(R.string.nutrition_review_coach_note))
         actionError?.let {
-            Text(it, style = MaterialTheme.typography.bodySmall, color = VoraError, modifier = Modifier.fillMaxWidth())
+            Text(it.asString(), style = MaterialTheme.typography.bodySmall, color = VoraError, modifier = Modifier.fillMaxWidth())
         }
         PrimaryButton(
-            text = "Add to Lunch",
+            text = stringResource(R.string.nutrition_review_add_to_lunch),
             onClick = {
                 saving = true
                 viewModel.addMeal(
                     Meal(
-                        name = "Grilled chicken salad",
+                        name = demoMealName,
                         date = todayIso(),
                         type = MealType.LUNCH,
                         kcal = 420,
@@ -292,6 +301,6 @@ fun ReviewMealScreen(
             modifier = Modifier.fillMaxWidth(),
             enabled = !saving,
         )
-        SecondaryButton("Save without logging", onSaveWithoutLogging, Modifier.fillMaxWidth())
+        SecondaryButton(stringResource(R.string.nutrition_review_save_without_logging), onSaveWithoutLogging, Modifier.fillMaxWidth())
     }
 }

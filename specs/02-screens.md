@@ -1,6 +1,6 @@
 # Inventario de pantallas (37 de Figma + 1 extra obligatoria)
 Fuente: Figma "Parcial Domiciliario 7 Oct 26", páginas de flujo. Estado: F = funcional (Retrofit/Room) · D = demostración.
-Barra inferior (5 destinos constantes): Home · Workout · Nutrition · Progress · Profile. Visible en Home, Workout, Nutrition, Progress, Profile (y en Notifications, Review/Analyse/Lunch en Nutrition, sub-pantallas de Progress de nivel 1).
+Barra inferior (5 destinos constantes): Home · Workout · Nutrition · Progress · Profile. Visible en Home, Workout, Nutrition, Progress, Profile (y en Notifications, Today's Meals/Review/Analyse/Lunch en Nutrition, sub-pantallas de Progress de nivel 1).
 
 ## 1. Login Flow (2)
 | # | Pantalla (Figma) | Ruta | Va a | Estado |
@@ -13,6 +13,8 @@ Barra inferior (5 destinos constantes): Home · Workout · Nutrition · Progress
 |---|---|---|---|---|
 | 3 | Home (Good morning, Alex Morgan) | home | notifications (campana), coach ("Start voice session"), workout/{id}/prep ("Start workout"), workout ("Start my workout"), nutrition/add ("Log breakfast"), progress/today ("Today's Overview") | D |
 | 4 | Notifications | notifications | atrás; weekly review → progress/weekly | D |
+
+Tocar la pestaña Home siempre vuelve a la pantalla principal de Home; las demás pestañas recuperan la pantalla en la que se dejaron.
 
 ## 3. AI Voice Flow (6) — rutas propias, mismo flujo
 | # | Pantalla | Ruta | Va a | Estado |
@@ -38,8 +40,8 @@ Barra inferior (5 destinos constantes): Home · Workout · Nutrition · Progress
 ## 5. Nutrition Flow (8) + 1 extra
 | # | Pantalla | Ruta | Va a | Estado |
 |---|---|---|---|---|
-| 18 | Nutrition (dashboard) | nutrition | nutrition/meals ("View History"/comidas), nutrition/voice (Voice), nutrition/photo (Photo), nutrition/search (Search) | **F** (total del día de Room) |
-| 19 | Today's Meals | nutrition/meals | nutrition/add (+ Add Dinner), nutrition/meal/{id} | **F** (lista por fecha, borrar) |
+| 18 | Nutrition (dashboard) | nutrition | nutrition/meals ("View History", calendario y cada comida), nutrition/add ("+ Add" de una comida sin registrar), nutrition/voice (Voice), nutrition/photo (Photo), Search (aviso de demo) | **F** (calorías, macros y comidas del día salen de Room; los objetivos son de ejemplo) |
+| 19 | Today's Meals | nutrition/meals | nutrition/add ("+ Add Dinner" de cada comida sin registrar), nutrition/meal/{id} | **F** (lista por fecha agrupada por tipo, total del día; se borra desde el detalle con confirmación) |
 | 20 | Add Food | nutrition/add | nutrition/voice, nutrition/photo, nutrition/search, **nutrition/manual** | D |
 | 21 | Voice Logging | nutrition/voice | nutrition/analyzing (Done Speaking), nutrition/manual (Type instead) | D |
 | 22 | VORA AI (Analyzing Meal) | nutrition/analyzing | nutrition/review (tras simular), atrás (Cancel) | D |

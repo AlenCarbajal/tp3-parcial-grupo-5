@@ -1,8 +1,10 @@
 package ar.edu.ort.vora.ui.components
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.TextAutoSize
@@ -25,7 +27,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -42,14 +46,14 @@ import ar.edu.ort.vora.ui.theme.VoraTextPrimary
 import ar.edu.ort.vora.ui.theme.VoraTextSecondary
 import ar.edu.ort.vora.ui.theme.VoraWhiteTranslucent
 
-data class BottomBarItem(val label: String, @DrawableRes val icon: Int)
+data class BottomBarItem(@StringRes val label: Int, @DrawableRes val icon: Int)
 
 val VoraBottomBarItems = listOf(
-    BottomBarItem("Home", R.drawable.ic_nav_home),
-    BottomBarItem("Workout", R.drawable.ic_nav_workout),
-    BottomBarItem("Nutrition", R.drawable.ic_nav_nutrition),
-    BottomBarItem("Progress", R.drawable.ic_nav_progress),
-    BottomBarItem("Profile", R.drawable.ic_nav_profile),
+    BottomBarItem(R.string.common_nav_home, R.drawable.ic_nav_home),
+    BottomBarItem(R.string.common_nav_workout, R.drawable.ic_nav_workout),
+    BottomBarItem(R.string.common_nav_nutrition, R.drawable.ic_nav_nutrition),
+    BottomBarItem(R.string.common_nav_progress, R.drawable.ic_nav_progress),
+    BottomBarItem(R.string.common_nav_profile, R.drawable.ic_nav_profile),
 )
 
 @Composable
@@ -81,9 +85,9 @@ fun VoraBottomBar(
                         Icon(painterResource(item.icon), contentDescription = null, tint = color, modifier = Modifier.size(20.dp))
                         // Una sola línea: con letra grande o pantallas angostas achica en vez de cortarse.
                         BasicText(
-                            item.label,
+                            stringResource(item.label),
                             style = MaterialTheme.typography.labelMedium.copy(
-                                fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium,
+                                fontWeight = FontWeight.Medium,
                                 color = color,
                                 textAlign = TextAlign.Center,
                             ),
@@ -137,7 +141,7 @@ enum class TopBarBack {
 }
 
 // Encabezado de Figma: fila de 350 (margen 20), padding superior 12, chevron 20 o botón de 32, 8/12 hasta el título.
-// Con centered, el título va al centro (Workout Overview, Exercise Guide). titleDot: punto menta de "en línea" junto al título (chat del Coach).
+// style reemplaza el del título (VORA Coach usa 18 Medium). Con centered, el título va al centro (Workout Overview, Exercise Guide). titleDot: punto menta de "en línea" junto al título (chat del Coach).
 @Composable
 fun VoraTopBar(
     title: String,
@@ -147,10 +151,11 @@ fun VoraTopBar(
     centered: Boolean = false,
     dark: Boolean = false,
     titleDot: Boolean = false,
+    style: TextStyle? = null,
     actions: @Composable RowScope.() -> Unit = {},
 ) {
     val contentColor = if (dark) VoraSurface else VoraTextPrimary
-    val titleStyle = if (back == TopBarBack.Plain || centered) {
+    val titleStyle = style ?: if (back == TopBarBack.Plain || centered) {
         MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.SemiBold)
     } else {
         MaterialTheme.typography.titleLarge
@@ -169,11 +174,11 @@ fun VoraTopBar(
                 TopBarBack.None -> Unit
                 TopBarBack.Plain -> Icon(
                     painterResource(R.drawable.ic_chevron_left),
-                    contentDescription = "Volver",
+                    contentDescription = stringResource(R.string.common_back),
                     tint = contentColor,
                     modifier = Modifier.clickable(role = Role.Button, onClick = onBack),
                 )
-                TopBarBack.Circle -> IconCircleButton(R.drawable.ic_chevron_left, "Volver", onBack, dark = dark)
+                TopBarBack.Circle -> IconCircleButton(R.drawable.ic_chevron_left, stringResource(R.string.common_back), onBack, dark = dark)
             }
             if (!centered) {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s6)) {
@@ -194,13 +199,14 @@ fun VoraTopBar(
     }
 }
 
-// Selector de período (Week / Month / 3 Months): contenedor blanco y opción activa verde.
+// Selector de período (Week / Month / 3 Months): píldora blanca con borde y opción activa verde.
 @Composable
 fun SegmentedControl(options: List<String>, selectedIndex: Int, onSelect: (Int) -> Unit, modifier: Modifier = Modifier) {
     Row(
         modifier
             .fillMaxWidth()
             .background(VoraSurface, PillShape)
+            .border(1.dp, VoraBorder, PillShape)
             .padding(Spacing.s4),
     ) {
         options.forEachIndexed { index, option ->
@@ -213,7 +219,7 @@ fun SegmentedControl(options: List<String>, selectedIndex: Int, onSelect: (Int) 
                     .clickable(role = Role.Tab) { onSelect(index) }
                     .padding(vertical = Spacing.s8),
                 style = MaterialTheme.typography.bodyMedium,
-                fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium,
+                fontWeight = FontWeight.Medium,
                 color = if (selected) VoraSurface else VoraTextSecondary,
                 textAlign = TextAlign.Center,
             )

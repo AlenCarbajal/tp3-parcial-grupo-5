@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -110,7 +111,7 @@ fun VoraLogo(modifier: Modifier = Modifier, style: LogoStyle = LogoStyle.SignIn)
             }
         }
         Text(
-            "AI",
+            stringResource(R.string.auth_logo_badge),
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .offset(x = if (signUp) 8.dp else 4.dp, y = 4.dp)

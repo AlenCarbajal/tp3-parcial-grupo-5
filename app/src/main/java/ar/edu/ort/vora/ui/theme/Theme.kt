@@ -1,8 +1,11 @@
 package ar.edu.ort.vora.ui.theme
 
+import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.unit.Dp
 
 // Figma solo define tema claro.
 private val VoraColorScheme = lightColorScheme(
@@ -30,6 +33,8 @@ fun VoraCoachTheme(content: @Composable () -> Unit) {
         colorScheme = VoraColorScheme,
         typography = Typography,
         shapes = Shapes,
-        content = content,
-    )
+    ) {
+        // Sin el mínimo táctil de 48: botones y chips miden lo que dice Figma y no suman aire alrededor.
+        CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified, content = content)
+    }
 }

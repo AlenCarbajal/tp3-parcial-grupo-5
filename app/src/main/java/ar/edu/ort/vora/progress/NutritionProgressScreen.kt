@@ -12,25 +12,28 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SingleChoiceSegmentedButtonRow
-import androidx.compose.material3.SegmentedButton
-import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ar.edu.ort.vora.R
+import ar.edu.ort.vora.ui.theme.VoraBackground
+import ar.edu.ort.vora.ui.theme.VoraBorder
+import ar.edu.ort.vora.ui.theme.VoraGreen
+import ar.edu.ort.vora.ui.theme.VoraGreenAccent
+import ar.edu.ort.vora.ui.theme.VoraMintLight
+import ar.edu.ort.vora.ui.theme.VoraMintSoft
+import ar.edu.ort.vora.ui.theme.VoraSurfaceMuted
+import ar.edu.ort.vora.ui.theme.VoraTextPrimary
+import ar.edu.ort.vora.ui.theme.VoraTextSecondary
 
-private val NutritionGreen = Color(0xFF123F35)
-private val NutritionBackground = Color(0xFFF7F8F5)
-private val NutritionMuted = Color(0xFF7A8580)
-private val NutritionBorder = Color(0xFFE4EAE6)
-private val NutritionLight = Color(0xFFF2F5F2)
-private val NutritionMint = Color(0xFFBDEBD7)
 
 @Composable
 fun NutritionProgressScreen(
@@ -40,28 +43,28 @@ fun NutritionProgressScreen(
     var selectedNutrient by remember { mutableStateOf("Protein") }
 
     val calories = when (period) {
-        "Month" -> "1,920"
-        "3 Months" -> "1,870"
-        else -> "1,980"
+        "Month" -> stringResource(R.string.common_number, 1920)
+        "3 Months" -> stringResource(R.string.common_number, 1870)
+        else -> stringResource(R.string.common_number, 1980)
     }
 
     val protein = when (period) {
-        "Month" -> "128g"
-        "3 Months" -> "124g"
-        else -> "132g"
+        "Month" -> stringResource(R.string.common_value_g, 128)
+        "3 Months" -> stringResource(R.string.common_value_g, 124)
+        else -> stringResource(R.string.common_value_g, 132)
     }
 
-    val daysHit = when (period) {
-        "Month" -> "22 / 30 days"
-        "3 Months" -> "65 / 90 days"
-        else -> "5 / 7 days"
+    val (hitDays, totalDays) = when (period) {
+        "Month" -> 22 to 30
+        "3 Months" -> 65 to 90
+        else -> 5 to 7
     }
 
     val target = when (selectedNutrient) {
-        "Calories" -> "2,100 kcal"
-        "Protein" -> "140g"
-        "Carbs" -> "210g"
-        else -> "70g"
+        "Calories" -> stringResource(R.string.common_value_kcal, 2100)
+        "Protein" -> stringResource(R.string.common_value_g, 140)
+        "Carbs" -> stringResource(R.string.common_value_g, 210)
+        else -> stringResource(R.string.common_value_g, 70)
     }
 
     val dailyValues = when (selectedNutrient) {
@@ -72,13 +75,13 @@ fun NutritionProgressScreen(
     }
 
     Scaffold(
-        containerColor = NutritionBackground
+        containerColor = VoraBackground
     ) { padding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .background(NutritionBackground)
+                .background(VoraBackground)
                 .padding(horizontal = 16.dp),
             contentPadding = PaddingValues(
                 top = 8.dp,
@@ -104,22 +107,22 @@ fun NutritionProgressScreen(
                         Text(
                             text = "‹",
                             fontSize = 25.sp,
-                            color = NutritionGreen
+                            color = VoraGreen
                         )
                     }
 
                     Text(
-                        text = "Nutrition progress",
+                        text = stringResource(R.string.progress_nutrition_title),
                         fontSize = 19.sp,
                         fontWeight = FontWeight.SemiBold,
-                        color = Color(0xFF18231F)
+                        color = VoraTextPrimary
                     )
 
                     Spacer(Modifier.weight(1f))
 
                     Text(
                         text = "•••",
-                        color = NutritionGreen,
+                        color = VoraGreen,
                         fontSize = 18.sp
                     )
                 }
@@ -127,35 +130,7 @@ fun NutritionProgressScreen(
 
             // Selector de período
             item {
-                SingleChoiceSegmentedButtonRow(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    listOf("Week", "Month", "3 Months")
-                        .forEachIndexed { index, option ->
-                            SegmentedButton(
-                                selected = period == option,
-                                onClick = { period = option },
-                                shape = SegmentedButtonDefaults.itemShape(
-                                    index = index,
-                                    count = 3
-                                ),
-                                colors = SegmentedButtonDefaults.colors(
-                                    activeContainerColor = NutritionGreen,
-                                    activeContentColor = Color.White,
-                                    inactiveContainerColor = Color.White,
-                                    inactiveContentColor = NutritionMuted,
-                                    activeBorderColor = NutritionGreen,
-                                    inactiveBorderColor = NutritionBorder
-                                )
-                            ) {
-                                Text(
-                                    text = option,
-                                    fontSize = 10.sp,
-                                    maxLines = 1
-                                )
-                            }
-                        }
-                }
+                PeriodSelector(period) { period = it }
             }
 
             // Indicadores principales
@@ -168,7 +143,7 @@ fun NutritionProgressScreen(
                     ),
                     border = androidx.compose.foundation.BorderStroke(
                         1.dp,
-                        NutritionBorder
+                        VoraBorder
                     )
                 ) {
                     Row(
@@ -178,7 +153,7 @@ fun NutritionProgressScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         NutritionSummaryMetric(
-                            title = "AVG CALORIES",
+                            title = stringResource(R.string.progress_avg_calories),
                             value = "$calories kcal",
                             modifier = Modifier.weight(1f)
                         )
@@ -186,7 +161,7 @@ fun NutritionProgressScreen(
                         SummaryDivider()
 
                         NutritionSummaryMetric(
-                            title = "AVG PROTEIN",
+                            title = stringResource(R.string.progress_avg_protein),
                             value = protein,
                             modifier = Modifier.weight(1f)
                         )
@@ -194,8 +169,13 @@ fun NutritionProgressScreen(
                         SummaryDivider()
 
                         NutritionSummaryMetric(
-                            title = "TARGET HIT",
-                            value = daysHit,
+                            title = stringResource(R.string.progress_target_hit),
+                            value = pluralStringResource(
+                                R.plurals.progress_days_ratio,
+                                totalDays,
+                                hitDays,
+                                totalDays
+                            ),
                             modifier = Modifier.weight(1f)
                         )
                     }
@@ -212,7 +192,7 @@ fun NutritionProgressScreen(
                     ),
                     border = androidx.compose.foundation.BorderStroke(
                         1.dp,
-                        NutritionBorder
+                        VoraBorder
                     )
                 ) {
                     Column(
@@ -223,14 +203,19 @@ fun NutritionProgressScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(
-                                    NutritionLight,
+                                    VoraSurfaceMuted,
                                     RoundedCornerShape(10.dp)
                                 )
                                 .padding(3.dp),
                             horizontalArrangement = Arrangement.spacedBy(3.dp)
                         ) {
-                            listOf("Calories", "Protein", "Carbs", "Fat")
-                                .forEach { nutrient ->
+                            listOf(
+                                "Calories" to R.string.progress_nutrient_calories,
+                                "Protein" to R.string.common_protein,
+                                "Carbs" to R.string.common_carbs,
+                                "Fat" to R.string.common_fat
+                            )
+                                .forEach { (nutrient, label) ->
                                     val selected = selectedNutrient == nutrient
 
                                     Box(
@@ -238,7 +223,7 @@ fun NutritionProgressScreen(
                                             .weight(1f)
                                             .background(
                                                 color = if (selected) {
-                                                    NutritionGreen
+                                                    VoraGreen
                                                 } else {
                                                     Color.Transparent
                                                 },
@@ -254,11 +239,11 @@ fun NutritionProgressScreen(
                                         contentAlignment = Alignment.Center
                                     ) {
                                         Text(
-                                            text = nutrient,
+                                            text = stringResource(label),
                                             color = if (selected) {
                                                 Color.White
                                             } else {
-                                                NutritionMuted
+                                                VoraTextSecondary
                                             },
                                             fontSize = 9.sp,
                                             fontWeight = if (selected) {
@@ -273,21 +258,24 @@ fun NutritionProgressScreen(
                         }
 
                         Text(
-                            text = when (selectedNutrient) {
-                                "Calories" -> "DAILY CALORIE TARGET ($target)"
-                                "Protein" -> "DAILY AVG PROTEIN TARGET ($target)"
-                                "Carbs" -> "DAILY CARBS TARGET ($target)"
-                                else -> "DAILY FAT TARGET ($target)"
-                            },
+                            text = stringResource(
+                                when (selectedNutrient) {
+                                    "Calories" -> R.string.progress_target_calories
+                                    "Protein" -> R.string.progress_target_protein
+                                    "Carbs" -> R.string.progress_target_carbs
+                                    else -> R.string.progress_target_fat
+                                },
+                                target
+                            ),
                             fontSize = 9.sp,
-                            color = NutritionMuted
+                            color = VoraTextSecondary
                         )
 
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            val days = listOf("M", "T", "W", "T", "F", "S", "S")
+                            val days = WeekDayInitials.map { stringResource(it) }
 
                             days.forEachIndexed { index, day ->
                                 val hit = dailyValues[index] >= 80
@@ -302,17 +290,17 @@ fun NutritionProgressScreen(
                                             .border(
                                                 width = 1.dp,
                                                 color = if (hit) {
-                                                    NutritionMint
+                                                    VoraMintSoft
                                                 } else {
-                                                    NutritionBorder
+                                                    VoraBorder
                                                 },
                                                 shape = CircleShape
                                             )
                                             .background(
                                                 color = if (hit) {
-                                                    Color(0xFFE7F8F0)
+                                                    VoraMintLight
                                                 } else {
-                                                    NutritionLight
+                                                    VoraSurfaceMuted
                                                 },
                                                 shape = CircleShape
                                             ),
@@ -322,20 +310,22 @@ fun NutritionProgressScreen(
                                             text = day,
                                             fontSize = 9.sp,
                                             color = if (hit) {
-                                                NutritionGreen
+                                                VoraGreen
                                             } else {
-                                                NutritionMuted
+                                                VoraTextSecondary
                                             }
                                         )
                                     }
 
                                     Text(
-                                        text = if (hit) "HIT" else "MISS",
+                                        text = stringResource(
+                                            if (hit) R.string.progress_hit else R.string.progress_miss
+                                        ),
                                         fontSize = 7.sp,
                                         color = if (hit) {
-                                            NutritionGreen
+                                            VoraGreen
                                         } else {
-                                            NutritionMuted
+                                            VoraTextSecondary
                                         }
                                     )
                                 }
@@ -351,7 +341,7 @@ fun NutritionProgressScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = NutritionGreen
+                        containerColor = VoraGreen
                     )
                 ) {
                     Column(
@@ -365,12 +355,12 @@ fun NutritionProgressScreen(
                                 modifier = Modifier
                                     .size(25.dp)
                                     .background(
-                                        Color(0xFF286B58),
+                                        VoraGreenAccent,
                                         CircleShape
                                     )
                                     .border(
                                         1.dp,
-                                        NutritionMint,
+                                        VoraMintSoft,
                                         CircleShape
                                     )
                             )
@@ -378,17 +368,15 @@ fun NutritionProgressScreen(
                             Spacer(Modifier.width(9.dp))
 
                             Text(
-                                text = "Nutrition Analysis",
+                                text = stringResource(R.string.progress_nutrition_analysis),
                                 fontSize = 13.sp,
-                                color = NutritionMint,
+                                color = VoraMintSoft,
                                 fontWeight = FontWeight.Medium
                             )
                         }
 
                         Text(
-                            text = "\"Your protein intake has improved this week, " +
-                                    "especially on workout days. Keeping this consistent " +
-                                    "will better support your strength goal.\"",
+                            text = stringResource(R.string.progress_nutrition_insight),
                             fontSize = 11.sp,
                             lineHeight = 16.sp,
                             color = Color.White
@@ -400,9 +388,9 @@ fun NutritionProgressScreen(
             // Hábitos alimentarios
             item {
                 Text(
-                    text = "FOOD HABITS & PATTERNS",
+                    text = stringResource(R.string.progress_food_habits),
                     fontSize = 10.sp,
-                    color = NutritionMuted,
+                    color = VoraTextSecondary,
                     fontWeight = FontWeight.SemiBold
                 )
             }
@@ -413,14 +401,14 @@ fun NutritionProgressScreen(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     FoodHabitCard(
-                        title = "Frequent lunch",
-                        value = "Chicken & Rice Bowl",
+                        title = stringResource(R.string.progress_food_frequent_lunch),
+                        value = stringResource(R.string.progress_food_chicken_rice_bowl),
                         modifier = Modifier.weight(1f)
                     )
 
                     FoodHabitCard(
-                        title = "Top protein source",
-                        value = "Whey & Chicken Breast",
+                        title = stringResource(R.string.progress_food_top_protein),
+                        value = stringResource(R.string.progress_food_whey_chicken),
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -432,14 +420,14 @@ fun NutritionProgressScreen(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     FoodHabitCard(
-                        title = "Avg breakfast",
-                        value = "420 kcal",
+                        title = stringResource(R.string.progress_food_avg_breakfast),
+                        value = stringResource(R.string.common_value_kcal, 420),
                         modifier = Modifier.weight(1f)
                     )
 
                     FoodHabitCard(
-                        title = "Avg dinner",
-                        value = "610 kcal",
+                        title = stringResource(R.string.progress_food_avg_dinner),
+                        value = stringResource(R.string.common_value_kcal, 610),
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -462,7 +450,7 @@ private fun NutritionSummaryMetric(
         Text(
             text = title,
             fontSize = 7.sp,
-            color = NutritionMuted,
+            color = VoraTextSecondary,
             maxLines = 1
         )
 
@@ -470,7 +458,7 @@ private fun NutritionSummaryMetric(
             text = value,
             fontSize = 10.sp,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF18231F),
+            color = VoraTextPrimary,
             maxLines = 1
         )
     }
@@ -482,7 +470,7 @@ private fun SummaryDivider() {
         modifier = Modifier
             .width(1.dp)
             .height(30.dp)
-            .background(NutritionBorder)
+            .background(VoraBorder)
     )
 }
 
@@ -500,7 +488,7 @@ private fun FoodHabitCard(
         ),
         border = androidx.compose.foundation.BorderStroke(
             1.dp,
-            NutritionBorder
+            VoraBorder
         )
     ) {
         Column(
@@ -512,7 +500,7 @@ private fun FoodHabitCard(
             Text(
                 text = title,
                 fontSize = 9.sp,
-                color = NutritionMuted
+                color = VoraTextSecondary
             )
 
             Text(
@@ -520,7 +508,7 @@ private fun FoodHabitCard(
                 fontSize = 11.sp,
                 lineHeight = 14.sp,
                 fontWeight = FontWeight.Medium,
-                color = Color(0xFF18231F)
+                color = VoraTextPrimary
             )
         }
     }
