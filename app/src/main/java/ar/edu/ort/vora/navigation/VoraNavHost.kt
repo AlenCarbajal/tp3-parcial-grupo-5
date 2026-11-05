@@ -4,6 +4,7 @@ import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
@@ -42,7 +43,7 @@ import ar.edu.ort.vora.ui.components.VoraBottomBar
 import ar.edu.ort.vora.ui.home.HomeScreen
 import ar.edu.ort.vora.ui.home.NotificationsScreen
 import ar.edu.ort.vora.ui.nutrition.AddFoodScreen
-import ar.edu.ort.vora.ui.nutrition.PhotoLoggingScreen
+import ar.edu.ort.vora.ui.nutrition.AnalyseMealScreen
 import ar.edu.ort.vora.ui.nutrition.AnalyzingMealScreen
 import ar.edu.ort.vora.ui.nutrition.ManualMealScreen
 import ar.edu.ort.vora.ui.nutrition.MealDetailScreen
@@ -256,7 +257,8 @@ fun VoraNavHost(navController: NavHostController = rememberNavController()) {
                     },
                 )
             }
-            // Nutrition: se conserva el dashboard y el historial existentes, incorporando el flujo T33.
+
+            // Nutrition (RF03, RF04). Las pantallas demo (Add Food, voz, análisis, foto, revisión) usan datos de ejemplo (T33).
             composable(Routes.NUTRITION) {
                 NutritionDashboardScreen(
                     onHistory = { go(Routes.NUTRITION_MEALS) },
@@ -282,55 +284,41 @@ fun VoraNavHost(navController: NavHostController = rememberNavController()) {
             composable(Routes.NUTRITION_VOICE) {
                 VoiceLoggingScreen(
                     onBack = back,
-                    onDoneSpeaking = { go(Routes.NUTRITION_ANALYZING) },
+                    onDone = { go(Routes.NUTRITION_ANALYZING) },
                     onTypeInstead = { go(Routes.NUTRITION_MANUAL) },
                 )
             }
             composable(Routes.NUTRITION_ANALYZING) {
                 AnalyzingMealScreen(
-                    onBack = back,
-                    onAnalyzed = { go(Routes.NUTRITION_REVIEW) },
-                )
-            }
-            composable(Routes.NUTRITION_PHOTO) {
-                PhotoLoggingScreen(
-                    onBack = back,
-                    onReview = { go(Routes.NUTRITION_REVIEW) },
-                )
-            }
-            composable(Routes.NUTRITION_REVIEW) {
-                ReviewMealScreen(
-                    onBack = back,
-                    onSaved = {
-                        if (!navController.popBackStack(Routes.NUTRITION_MEALS, inclusive = false) &&
-                            !navController.popBackStack(Routes.NUTRITION, inclusive = false)) {
-                            navController.navigate(Routes.NUTRITION) {
-                                popUpTo(Routes.NUTRITION_REVIEW) { inclusive = true }
-                            }
+                    onCancel = back,
+                    // Analyzing se saca de la pila: atrás desde Review no vuelve a esperar el análisis.
+                    onFinished = {
+                        navController.navigate(Routes.NUTRITION_REVIEW) {
+                            popUpTo(Routes.NUTRITION_ANALYZING) { inclusive = true }
                         }
                     },
                 )
             }
+            composable(Routes.NUTRITION_PHOTO) {
+                AnalyseMealScreen(onBack = back, onReview = { go(Routes.NUTRITION_REVIEW) })
+            }
+            composable(Routes.NUTRITION_REVIEW) {
+                val toMeals: () -> Unit = {
+                    navController.navigate(Routes.NUTRITION_MEALS) {
+                        popUpTo(Routes.NUTRITION_ADD) { inclusive = true }
+                    }
+                }
+                ReviewMealScreen(onBack = back, onAdd = toMeals, onSaveWithoutLogging = toMeals)
+            }
             composable(
-                route = Routes.NUTRITION_MEAL,
+                Routes.NUTRITION_MEAL,
                 arguments = listOf(navArgument("mealId") { type = NavType.IntType }),
             ) {
                 MealDetailScreen(onBack = back)
             }
             composable(Routes.NUTRITION_MANUAL) {
-                ManualMealScreen(
-                    onBack = back,
-                    onSaved = {
-                        if (!navController.popBackStack(Routes.NUTRITION_MEALS, inclusive = false) &&
-                            !navController.popBackStack(Routes.NUTRITION, inclusive = false)) {
-                            navController.navigate(Routes.NUTRITION) {
-                                popUpTo(Routes.NUTRITION_MANUAL) { inclusive = true }
-                            }
-                        }
-                    },
-                )
+                ManualMealScreen(onBack = back, onSaved = back)
             }
-
 
             // Progress (pantallas reales de Lisandro)
             composable(Routes.PROGRESS) { ProgressDashboardScreen(onNavigate = go) }
