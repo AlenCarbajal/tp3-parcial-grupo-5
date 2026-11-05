@@ -25,12 +25,7 @@ class MealDetailViewModel @Inject constructor(
     repository: MealRepository,
 ) : ViewModel() {
 
-    private val mealId: Int = checkNotNull(
-        savedStateHandle.get<Int>("id")
-            ?: savedStateHandle.get<String>("id")?.toIntOrNull()
-            ?: savedStateHandle.get<Int>("mealId")
-            ?: savedStateHandle.get<String>("mealId")?.toIntOrNull()
-    )
+    private val mealId: Int = checkNotNull(savedStateHandle["mealId"])
 
     val uiState: StateFlow<MealDetailUiState> = repository.getMealById(mealId)
         .map<Meal?, MealDetailUiState> { if (it == null) MealDetailUiState.NotFound else MealDetailUiState.Found(it) }

@@ -2,17 +2,26 @@ package ar.edu.ort.vora.navigation
 
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -23,6 +32,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import ar.edu.ort.vora.R
 import ar.edu.ort.vora.domain.model.Workout
 import ar.edu.ort.vora.progress.HealthTrendsScreen
 import ar.edu.ort.vora.progress.NutritionProgressScreen
@@ -38,11 +48,14 @@ import ar.edu.ort.vora.ui.coach.CoachIdleScreen
 import ar.edu.ort.vora.ui.coach.CoachListeningScreen
 import ar.edu.ort.vora.ui.coach.CoachProcessingScreen
 import ar.edu.ort.vora.ui.coach.CoachSpeakingScreen
+import ar.edu.ort.vora.ui.components.PrimaryButton
 import ar.edu.ort.vora.ui.components.VoraBottomBar
+import ar.edu.ort.vora.ui.components.VoraTextButton
+import ar.edu.ort.vora.ui.components.asString
 import ar.edu.ort.vora.ui.home.HomeScreen
 import ar.edu.ort.vora.ui.home.NotificationsScreen
 import ar.edu.ort.vora.ui.nutrition.AddFoodScreen
-import ar.edu.ort.vora.ui.nutrition.PhotoLoggingScreen
+import ar.edu.ort.vora.ui.nutrition.AnalyseMealScreen
 import ar.edu.ort.vora.ui.nutrition.AnalyzingMealScreen
 import ar.edu.ort.vora.ui.nutrition.ManualMealScreen
 import ar.edu.ort.vora.ui.nutrition.MealDetailScreen
@@ -56,6 +69,9 @@ import ar.edu.ort.vora.ui.profile.ProfileNutritionScreen
 import ar.edu.ort.vora.ui.profile.ProfileScreen
 import ar.edu.ort.vora.ui.profile.ProfileSettingsScreen
 import ar.edu.ort.vora.ui.profile.ProfileVoiceScreen
+import ar.edu.ort.vora.ui.theme.Spacing
+import ar.edu.ort.vora.ui.theme.VoraBackground
+import ar.edu.ort.vora.ui.theme.VoraError
 import ar.edu.ort.vora.ui.workout.ExerciseGuideScreen
 import ar.edu.ort.vora.ui.workout.WorkoutActiveScreen
 import ar.edu.ort.vora.ui.workout.WorkoutCatalogScreen
@@ -220,43 +236,52 @@ fun VoraNavHost(navController: NavHostController = rememberNavController()) {
             }
             composable(Routes.WORKOUT_PREP) { entry ->
                 val id = entry.arguments?.getString("workoutId").orEmpty()
-                WorkoutPrepScreen(
-                    workout = workoutFor(id, workoutViewModel),
-                    onStartWorkout = { go(Routes.workoutActive(id)) },
-                    onBack = back,
-                )
+                WithWorkout(id, workoutViewModel, back) { workout ->
+                    WorkoutPrepScreen(
+                        workout = workout,
+                        onStartWorkout = { go(Routes.workoutActive(id)) },
+                        onBack = back,
+                    )
+                }
             }
             composable(Routes.WORKOUT_ACTIVE) { entry ->
                 val id = entry.arguments?.getString("workoutId").orEmpty()
-                WorkoutActiveScreen(
-                    workout = workoutFor(id, workoutViewModel),
-                    onGuideClick = { go(Routes.workoutGuide(id, it)) },
-                    onFinish = { go(Routes.workoutDone(id)) },
-                )
+                WithWorkout(id, workoutViewModel, back) { workout ->
+                    WorkoutActiveScreen(
+                        workout = workout,
+                        onGuideClick = { go(Routes.workoutGuide(id, it)) },
+                        onFinish = { go(Routes.workoutDone(id)) },
+                    )
+                }
             }
             composable(Routes.WORKOUT_GUIDE) { entry ->
                 val id = entry.arguments?.getString("workoutId").orEmpty()
                 val exerciseId = entry.arguments?.getString("exerciseId").orEmpty()
-                ExerciseGuideScreen(
-                    workout = workoutFor(id, workoutViewModel),
-                    exerciseId = exerciseId,
-                    onBack = back,
-                )
+                WithWorkout(id, workoutViewModel, back) { workout ->
+                    ExerciseGuideScreen(
+                        workout = workout,
+                        exerciseId = exerciseId,
+                        onBack = back,
+                    )
+                }
             }
             composable(Routes.WORKOUT_DONE) { entry ->
                 val id = entry.arguments?.getString("workoutId").orEmpty()
-                WorkoutCompletedScreen(
-                    workout = workoutFor(id, workoutViewModel),
-                    onHome = { goTab(Routes.HOME) },
-                    // Si el detalle no está en la pila (se llegó desde Home), se abre.
-                    onBackToWorkout = {
-                        if (!navController.popBackStack(Routes.WORKOUT_DETAIL, inclusive = false)) {
-                            go(Routes.workoutDetail(id))
-                        }
-                    },
-                )
+                WithWorkout(id, workoutViewModel, back) { workout ->
+                    WorkoutCompletedScreen(
+                        workout = workout,
+                        onHome = { goTab(Routes.HOME) },
+                        // Si el detalle no está en la pila (se llegó desde Home), se abre.
+                        onBackToWorkout = {
+                            if (!navController.popBackStack(Routes.WORKOUT_DETAIL, inclusive = false)) {
+                                go(Routes.workoutDetail(id))
+                            }
+                        },
+                    )
+                }
             }
-            // Nutrition: se conserva el dashboard y el historial existentes, incorporando el flujo T33.
+
+            // Nutrition (RF03, RF04). Las pantallas demo (Add Food, voz, análisis, foto, revisión) usan datos de ejemplo (T33).
             composable(Routes.NUTRITION) {
                 NutritionDashboardScreen(
                     onHistory = { go(Routes.NUTRITION_MEALS) },
@@ -282,55 +307,41 @@ fun VoraNavHost(navController: NavHostController = rememberNavController()) {
             composable(Routes.NUTRITION_VOICE) {
                 VoiceLoggingScreen(
                     onBack = back,
-                    onDoneSpeaking = { go(Routes.NUTRITION_ANALYZING) },
+                    onDone = { go(Routes.NUTRITION_ANALYZING) },
                     onTypeInstead = { go(Routes.NUTRITION_MANUAL) },
                 )
             }
             composable(Routes.NUTRITION_ANALYZING) {
                 AnalyzingMealScreen(
-                    onBack = back,
-                    onAnalyzed = { go(Routes.NUTRITION_REVIEW) },
-                )
-            }
-            composable(Routes.NUTRITION_PHOTO) {
-                PhotoLoggingScreen(
-                    onBack = back,
-                    onReview = { go(Routes.NUTRITION_REVIEW) },
-                )
-            }
-            composable(Routes.NUTRITION_REVIEW) {
-                ReviewMealScreen(
-                    onBack = back,
-                    onSaved = {
-                        if (!navController.popBackStack(Routes.NUTRITION_MEALS, inclusive = false) &&
-                            !navController.popBackStack(Routes.NUTRITION, inclusive = false)) {
-                            navController.navigate(Routes.NUTRITION) {
-                                popUpTo(Routes.NUTRITION_REVIEW) { inclusive = true }
-                            }
+                    onCancel = back,
+                    // Analyzing se saca de la pila: atrás desde Review no vuelve a esperar el análisis.
+                    onFinished = {
+                        navController.navigate(Routes.NUTRITION_REVIEW) {
+                            popUpTo(Routes.NUTRITION_ANALYZING) { inclusive = true }
                         }
                     },
                 )
             }
+            composable(Routes.NUTRITION_PHOTO) {
+                AnalyseMealScreen(onBack = back, onReview = { go(Routes.NUTRITION_REVIEW) })
+            }
+            composable(Routes.NUTRITION_REVIEW) {
+                val toMeals: () -> Unit = {
+                    navController.navigate(Routes.NUTRITION_MEALS) {
+                        popUpTo(Routes.NUTRITION_ADD) { inclusive = true }
+                    }
+                }
+                ReviewMealScreen(onBack = back, onAdd = toMeals, onSaveWithoutLogging = toMeals)
+            }
             composable(
-                route = Routes.NUTRITION_MEAL,
+                Routes.NUTRITION_MEAL,
                 arguments = listOf(navArgument("mealId") { type = NavType.IntType }),
             ) {
                 MealDetailScreen(onBack = back)
             }
             composable(Routes.NUTRITION_MANUAL) {
-                ManualMealScreen(
-                    onBack = back,
-                    onSaved = {
-                        if (!navController.popBackStack(Routes.NUTRITION_MEALS, inclusive = false) &&
-                            !navController.popBackStack(Routes.NUTRITION, inclusive = false)) {
-                            navController.navigate(Routes.NUTRITION) {
-                                popUpTo(Routes.NUTRITION_MANUAL) { inclusive = true }
-                            }
-                        }
-                    },
-                )
+                ManualMealScreen(onBack = back, onSaved = back)
             }
-
 
             // Progress (pantallas reales de Lisandro)
             composable(Routes.PROGRESS) { ProgressDashboardScreen(onNavigate = go) }
@@ -382,11 +393,30 @@ fun VoraNavHost(navController: NavHostController = rememberNavController()) {
 
 // Devuelve el entrenamiento `id` y lo pide al ViewModel si todavía no es el seleccionado
 // (por ejemplo, al entrar directo desde Home sin pasar por el detalle).
+// Get Ready, Active, Exercise Guide y Completed necesitan el detalle completo. Mientras carga, cada pantalla
+// muestra su "Loading workout..."; si falla y no está en caché, se muestra el error con Reintentar en lugar de esperar para siempre.
 @Composable
-private fun workoutFor(id: String, viewModel: WorkoutViewModel): Workout? {
+private fun WithWorkout(id: String, viewModel: WorkoutViewModel, onBack: () -> Unit, content: @Composable (Workout?) -> Unit) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     LaunchedEffect(id) {
         if (state.selectedWorkout?.id != id) viewModel.loadWorkoutDetail(id)
     }
-    return state.selectedWorkout?.takeIf { it.id == id }
+    val workout = state.selectedWorkout?.takeIf { it.id == id }
+    val error = state.detailError
+    if (workout == null && error != null && !state.isLoadingDetail) {
+        Column(
+            Modifier
+                .fillMaxSize()
+                .background(VoraBackground)
+                .padding(Spacing.screen),
+            verticalArrangement = Arrangement.spacedBy(Spacing.s12, Alignment.CenterVertically),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(error.asString(), style = MaterialTheme.typography.bodyMedium, color = VoraError, textAlign = TextAlign.Center)
+            PrimaryButton(stringResource(R.string.common_retry), { viewModel.loadWorkoutDetail(id) })
+            VoraTextButton(stringResource(R.string.common_back), onBack)
+        }
+    } else {
+        content(workout)
+    }
 }

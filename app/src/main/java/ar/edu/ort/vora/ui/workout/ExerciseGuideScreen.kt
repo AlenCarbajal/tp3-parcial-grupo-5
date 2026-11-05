@@ -2,6 +2,7 @@
 package ar.edu.ort.vora.ui.workout
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,9 +40,8 @@ fun ExerciseGuideScreen(
 ) {
     val exercise = workout?.exercises?.find { it.id == exerciseId }
 
-    Column(
+    WorkoutScreenColumn(
         modifier = Modifier
-            .fillMaxSize()
             .background(VoraBackground)
             .padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(18.dp)
@@ -51,6 +51,7 @@ fun ExerciseGuideScreen(
             color = VoraGreen,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
+                .clickable(onClick = onBack)
                 .background(
                     color = Color.White,
                     shape = RoundedCornerShape(12.dp)

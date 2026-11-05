@@ -52,16 +52,17 @@ fun WorkoutActiveScreen(
         mutableIntStateOf(0)
     }
 
-    Column(
+    WorkoutScreenColumn(
         modifier = Modifier
-            .fillMaxSize()
             .background(VoraBackground)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(18.dp)
     ) {
         if (workout == null) {
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -71,7 +72,9 @@ fun WorkoutActiveScreen(
             }
         } else if (workout.exercises.isEmpty()) {
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
                 contentAlignment = Alignment.Center
             ) {
                 Column(
