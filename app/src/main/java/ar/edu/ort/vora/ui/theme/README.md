@@ -182,9 +182,10 @@ Los íconos son de [Lucide](https://lucide.dev) (licencia ISC), igual que en Fig
 | `ic_arrow_right` | `arrow-right` | 20 | 2 | CTA de acceso |
 | `ic_mail` / `ic_lock` / `ic_user` / `ic_eye` | `mail` / `lock` / `user` / `eye` | 20 | 2 | Campos de acceso |
 | `ic_scan_face` | `scan-face` | 20 | 2 | Acceso con Face ID |
-| `ic_more` / `ic_bell` / `ic_close` / `ic_plus` / `ic_send` | `ellipsis` / `bell` / `x` / `plus` / `send` | 20 | 2 | Acciones de encabezado y chat |
+| `ic_more` / `ic_bell` / `ic_plus` / `ic_send` | `ellipsis` / `bell` / `plus` / `send` | 20 | 2 | Acciones de encabezado y chat |
 | `ic_calendar` / `ic_flame` / `ic_shield_check` / `ic_chevron_down` | `calendar` / `flame` / `shield-check` / `chevron-down` | 14–16 | 2 | Entrenamiento recomendado, racha, notas de seguridad y selector de idioma |
 | `ic_play` / `ic_pause` / `ic_repeat` / `ic_circle_dot` / `ic_rotate_cw` | `play` / `pause` / `repeat-2` / `circle-dot` / `rotate-cw` | 12–28 | 2 | Respuesta hablada del Coach, reintentar en el error de micrófono |
+| `ic_target` | `target` | 18 | 2,4 | Objetivo activo en Your progress |
 | `ic_audio_lines` | `audio-lines` | 32 | 2 | Centro del orbe del asistente |
 | `ic_mic_large` | `mic` | 28 | 2,5 | Botón de micrófono del asistente |
 
