@@ -46,9 +46,8 @@ fun WorkoutPrepScreen(
     onStartWorkout: () -> Unit,
     onBack: () -> Unit
 ) {
-    Column(
+    WorkoutScreenColumn(
         modifier = Modifier
-            .fillMaxSize()
             .background(VoraBackground)
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(18.dp)
@@ -69,7 +68,9 @@ fun WorkoutPrepScreen(
 
         if (workout == null) {
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
                 contentAlignment = Alignment.Center
             ) {
                 Column(

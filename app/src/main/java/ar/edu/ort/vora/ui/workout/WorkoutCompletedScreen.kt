@@ -42,9 +42,8 @@ fun WorkoutCompletedScreen(
     onHome: () -> Unit,
     onBackToWorkout: () -> Unit
 ) {
-    Column(
+    WorkoutScreenColumn(
         modifier = Modifier
-            .fillMaxSize()
             .background(VoraBackground)
             .padding(24.dp),
         verticalArrangement = Arrangement.Center,
