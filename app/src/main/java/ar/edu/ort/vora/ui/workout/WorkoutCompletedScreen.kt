@@ -16,6 +16,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -151,7 +152,7 @@ fun WorkoutCompletedScreen(
         Spacer(modifier = Modifier.height(28.dp))
 
         Button(
-            onClick = onBackToWorkout,
+            onClick = onHome,
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
             colors = ButtonDefaults.buttonColors(
@@ -160,7 +161,21 @@ fun WorkoutCompletedScreen(
             )
         ) {
             Text(
+                text = stringResource(R.string.common_done),
+                modifier = Modifier.padding(vertical = 6.dp)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        OutlinedButton(
+            onClick = onBackToWorkout,
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            Text(
                 text = stringResource(R.string.workout_back_to_workout),
+                color = VoraGreen,
                 modifier = Modifier.padding(vertical = 6.dp)
             )
         }
